@@ -1,0 +1,30 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                //colors for text
+                tWhite: "#D9D9D9",
+                tHoverNav: "#A9C6D9", 
+                tBlack: "#400101",
+                tLink:'#3C05FF',
+
+                //colors for background navbar
+                NavBar1: "#BF6B04",
+                NavBar2: "#BF7E04",
+                buscadorButton: "#7693A6",
+
+                //colors for background footer
+
+                //colors general
+                redAlert: "#8C1C03",
+            },
+        },
+    },
+    plugins: [],
+};
