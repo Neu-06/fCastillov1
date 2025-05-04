@@ -1,0 +1,15 @@
+## ***Notas para GIT/GITHUB***
+#### comandos para push en git en ramas existentes
+~~~ 
+git add .
+git commit -m "Avances del ciclo1"
+git push origin nombre-de-la-rama
+~~~
+#### ver ramas disponibles
+`git branch`
+#### crear nueva rama
+`git branch nombre-de-la-rama`
+### moverse a una rama existente
+`git checkout nombre-de-la-rama`
+### crear y moversea una rama
+`git checkout -b nombre-de-la-rama`

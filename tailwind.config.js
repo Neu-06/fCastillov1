@@ -10,19 +10,26 @@ export default {
             colors: {
                 //colors for text
                 tWhite: "#D9D9D9",
-                tHoverNav: "#A9C6D9", 
+                tHover: "#A9C6D9", 
                 tBlack: "#400101",
                 tLink:'#3C05FF',
 
-                //colors for background navbar
+                //colors for backgrounds
                 NavBar1: "#BF6B04",
                 NavBar2: "#BF7E04",
-                buscadorButton: "#7693A6",
+
+
+                btn1: "#BF3706",
+                btn2: "#D9C7C1",
 
                 //colors for background footer
 
                 //colors general
                 redAlert: "#8C1C03",
+            },
+            spacing: {
+                //tamaños para formularios
+                'wLR': '390px',
             },
         },
     },

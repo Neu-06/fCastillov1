@@ -4,7 +4,7 @@
          focus:outline-none"
         placeholder="Que buscas?">
 
-    <button type="button" class="absolute my-2 p-2 inset-y-0 right-0  text-tBlack border border-gray-600 rounded-e-lg  bg-tGray">
+    <button type="button" class="absolute my-2 p-2 inset-y-0 right-0  text-tBlack border border-gray-600 rounded-e-lg  bg-btn2">
         Buscar
     </button>
 
