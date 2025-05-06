@@ -10,15 +10,16 @@
 
     <div class="flex w-wLR">
         <div class="w-full">
-            <form class="bg-white rounded-md shadow-2xl p-5">
-                <h1 class="text-tBlack text-center font-bold text-2xl pt-4 pb-14">Iniciar Sesion</h1>
+            <form method="POST" action="{{ url('/clienteLogin') }}"  class="bg-white rounded-md shadow-2xl p-5">
+            @csrf  
+            <h1 class="text-tBlack text-center font-bold text-2xl pt-4 pb-14">Iniciar Sesion</h1>
                 <div class="flex items-center border-2 mb-8 py-2 px-3 rounded-2xl">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                             d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                     </svg>
-                    <input id="email" class=" pl-2 w-full outline-none border-none" type="email" name="email"
+                    <input id="email" class=" pl-2 w-full outline-none border-none" type="email" name="correo"
                         placeholder="Correo Electronico" />
                 </div>
                 <div class="flex items-center border-2 mb-12 py-2 px-3 rounded-2xl ">
@@ -28,7 +29,7 @@
                             d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                             clipRule="evenodd" />
                     </svg>
-                    <input class="pl-2 w-full outline-none border-none" type="password" name="password" id="password"
+                    <input class="pl-2 w-full outline-none border-none" type="password" name="contrasena" id="password"
                         placeholder="Contraseña" />
 
                 </div>
@@ -44,7 +45,7 @@
                     <span class="text-tBlack text-sm">
                         no tienes cuenta?
                     </span>
-                    <a href="/Register"
+                    <a href="{{url('/Register')}}"
                     class="text-sm pl-1 text-tLink cursor-pointer hover:-translate-y-1 duration-500 transition-all">
                     registrate
                 </a>

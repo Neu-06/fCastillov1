@@ -11,45 +11,47 @@
 
     <div class="flex w-wLR">
         <div class="w-full">
-            <form  method="POST" action="/register" class="bg-white rounded-md shadow-2xl p-5">
-                @csrf
-                <h1 class="text-tBlack text-center font-bold text-2xl pt-4 pb-14">Registrate</h1>
-                <div class="flex items-center border-2 mb-8 py-2 px-3 rounded-2xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                    </svg>
-                    <input id="email" class=" pl-2 w-full outline-none border-none" type="email" name="email"
-                        placeholder="Correo Electronico" />
-                </div>
-                
-                <div class="flex items-center border-2 mb-12 py-2 px-3 rounded-2xl ">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fillRule="evenodd"
-                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                            clipRule="evenodd" />
-                    </svg>
-                    <input class="pl-2 w-full outline-none border-none" type="password" name="password" id="password"
-                        placeholder="Contraseña" />
+        <form  action="{{ route('cliente.store') }}" method="POST" class="bg-orange-400 rounded-md shadow-2xl p-5">
+    @csrf
 
-                </div>
-                <button type="submit"
-                    class="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1
-                     transition-all duration-500 text-white font-semibold mb-2">Registrar</button>
-                <div class="flex justify-between mt-4 min-w-max">
+    <h2 class="text-2xl font-semibold mb-6 text-center">Registro de Cliente</h2>
 
-                    <span class="text-tBlack text-sm">
-                        ya tienes una cuenta?
-                    </span>
-                    <a href="/login"
-                    class="text-sm pl-1 text-tLink cursor-pointer hover:-translate-y-1 duration-500 transition-all">
-                    ingresar
-                </a>
-                </div>
+    <div class="mb-4">
+        <label for="ci" class="block text-gray-700 font-medium mb-1">CI</label>
+        <input type="text" name="ci" id="ci" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" required>
+    </div>
 
-            </form>
+    <div class="mb-4">
+        <label for="nombre" class="block text-gray-700 font-medium mb-1">Nombre</label>
+        <input type="text" name="nombre" id="nombre" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" required>
+    </div>
+
+    <div class="mb-4">
+        <label for="correo" class="block text-gray-700 font-medium mb-1">Correo</label>
+        <input type="email" name="correo" id="correo" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" required>
+    </div>
+
+    <div class="mb-4">
+        <label for="contrasena" class="block text-gray-700 font-medium mb-1">Contraseña</label>
+        <input type="password" name="contrasena" id="contrasena" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" required>
+    </div>
+
+    <div class="mb-4">
+        <label for="telefono" class="block text-gray-700 font-medium mb-1">Teléfono</label>
+        <input type="text" name="telefono" id="telefono" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
+    </div>
+
+    <div class="mb-4">
+        <label for="direccion" class="block text-gray-700 font-medium mb-1">Dirección</label>
+        <input type="text" name="direccion" id="direccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
+    </div>
+
+
+    <div class="text-center">
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition">Registrarse</button>
+    </div>
+</form>
+
         </div>
 
     </div>
