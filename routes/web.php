@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\accessController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\registerController;
+use App\Http\Controllers\gestionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,6 @@ Route::get('/login',[accessController::class, 'showLogin']);
 Route::get('/Register',[accessController::class, 'showRegister']);
 Route::get('/regProv',[accessController::class, 'showRegProv']);
 
-
-
 Route::post('/register', [registerController::class, 'store']);
+
+Route::get('/gestion/usuarios',[gestionController::class, 'showUserG']);

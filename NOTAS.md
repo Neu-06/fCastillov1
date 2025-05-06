@@ -11,5 +11,5 @@ git push origin nombre-de-la-rama
 `git branch nombre-de-la-rama`
 ### moverse a una rama existente
 `git checkout nombre-de-la-rama`
-### crear y moversea una rama
+### crear y moverse a una rama
 `git checkout -b nombre-de-la-rama`
