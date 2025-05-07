@@ -8,8 +8,10 @@ use App\Http\Controllers\homeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\accessController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RegisterController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,3 +59,11 @@ Route::delete('/admin/usuarios/{ci}', [UsuarioController::class, 'destroy'])->na
 Route::delete('/admin/roles/{id}', [RolController::class, 'destroy'])->name('rol.destroy');
 // Eliminar rol
 Route::delete('/admin/roles/{id}', [RolController::class, 'destroy'])->name('roles.destroy');
+
+// Route::get('/administrador/proveedores', [ProveedorController::class, 'index'])->name('administrador.gestionarProveedor');
+// Route::get('/administrador/proveedores/crear',[ProveedorController::class, 'create'])->name('proveedores.create');
+
+//al realizar este comando, ya no va a ser necesario las dos rutas anteriores? 
+Route::prefix('administrador')->group(function(){
+    Route::resource('proveedor', ProveedorController::class);
+});
