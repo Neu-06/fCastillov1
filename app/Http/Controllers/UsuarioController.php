@@ -30,8 +30,13 @@ class UsuarioController extends Controller
 
      public function gestionarUsuario()
     {
-    $usuarios = Usuario::with('rol')->get(); // Asumiendo que tu modelo se llama Usuario y tiene relación con Rol
-    return view('pages.usuario.gestionUsuario', compact('usuarios'));
+        $estado = request()->query('estado', 'activo'); // por defecto es 'activo'
+
+    $usuarios = Usuario::with('rol')
+                ->where('estado', $estado === 'activo')
+                ->get();
+
+    return view('pages.usuario.gestionUsuario', compact('usuarios', 'estado'));
     }
     public function agregarUsuarios(Request $request)   
     {
@@ -52,7 +57,7 @@ class UsuarioController extends Controller
     $usuario->id_rol = $request->id_rol;
     $usuario->save();
 
-    return redirect()->route('vista.administrador.home')->with('success', 'Usuario administrador registrado correctamente.');
+    return redirect()->route('administrador.gestionarUsuario')->with('success', 'Usuario administrador registrado correctamente.');
     }
 
     public function usuarioRegister()
@@ -114,7 +119,7 @@ class UsuarioController extends Controller
     $usuario->id_rol = $request->id_rol;
     $usuario->save();
 
-    return redirect()->route('vista.administrador.home')->with('success', 'Usuario actualizado correctamente.');
+    return redirect()->route('administrador.gestionarUsuario')->with('success', 'Usuario actualizado correctamente.');
     }
 
     /**
@@ -123,8 +128,9 @@ class UsuarioController extends Controller
     public function destroy($ci)
     {
         $usuario = Usuario::findOrFail($ci);
-         $usuario->delete();
+        $usuario->estado = false; // Asigna false al atributo estado
+        $usuario->save();         // Guarda los cambios en la base de datos
 
-        return redirect()->route('vista.administrador.home')->with('success', 'Usuario eliminado correctamente.');
+        return redirect()->route('administrador.gestionarUsuario')->with('success', 'Usuario eliminado correctamente.');
     }
 }

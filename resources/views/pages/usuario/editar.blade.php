@@ -32,9 +32,11 @@
         </div>
 
         <div class="mb-4">
-            <label for="estado" class="block font-semibold mb-1">estado</label>
-            <input type="boolean" name="estado" id="estado" value="{{ old('estado', $usuario->estado) }}"
-                class="w-full border-gray-300 rounded-md p-2" required />
+                 <label for="estado" class="block font-semibold mb-1">Estado</label>
+                 <select name="estado" id="estado" class="w-full border-gray-300 rounded-md p-2">
+                  <option value="1" {{ old('estado', $usuario->estado) == 1 ? 'selected' : '' }}>Activo</option>
+                  <option value="0" {{ old('estado', $usuario->estado) == 0 ? 'selected' : '' }}>Inactivo</option>
+                </select>
         </div>
 
         <div class="mb-4">

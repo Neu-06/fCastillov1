@@ -23,5 +23,4 @@ class Proveedor extends Model
         'telefono',
         'email',
     ];
-
 }

@@ -11,19 +11,19 @@
   <!-- Botones de navegación -->
   <div class="mb-4 flex space-x-4">
     @if($estado === 'activo')
-      <a href="{{ route('vista.usuarioRegister') }}" 
+      <a href="{{ route('vista.clienteRegister') }}" 
          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-        + Nuevo Usuario
+        + Nuevo Cliente
       </a>
 
-      <a href="{{ route('administrador.gestionarUsuario', ['estado' => 'inactivo']) }}"
+      <a href="{{ route('administrador.gestionarCliente', ['estado' => 'inactivo']) }}"
          class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-        Ver Usuarios Inactivos
+        Ver Clientes Inactivos
       </a>
     @else
-      <a href="{{ route('administrador.gestionarUsuario', ['estado' => 'activo']) }}"
+      <a href="{{ route('administrador.gestionarCliente', ['estado' => 'activo']) }}"
          class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-        Ver Usuarios Activos
+        Ver Clientes Activos
       </a>
     @endif
   </div>
@@ -35,21 +35,23 @@
           <th class="px-6 py-3">CI</th>
           <th class="px-6 py-3">Nombre</th>
           <th class="px-6 py-3">Correo</th>
-          <th class="px-6 py-3">Rol</th>
+          <th class="px-6 py-3">Telefono</th>
+          <th class="px-6 py-3">Direccion</th>
           <th class="px-6 py-3 text-center">Acciones</th>
         </tr>
       </thead>
       <tbody class="text-gray-700 divide-y">
-        @foreach($usuarios as $usuario)
+        @foreach($clientes as $cliente)
         <tr>
-          <td class="px-6 py-4">{{ $usuario->ci }}</td>
-          <td class="px-6 py-4">{{ $usuario->nombre }}</td>
-          <td class="px-6 py-4">{{ $usuario->correo }}</td>
-          <td class="px-6 py-4">{{ $usuario->rol->nombre ?? 'Sin rol' }}</td>
+          <td class="px-6 py-4">{{ $cliente->ci }}</td>
+          <td class="px-6 py-4">{{ $cliente->nombre }}</td>
+          <td class="px-6 py-4">{{ $cliente->correo }}</td>
+          <td class="px-6 py-4">{{ $cliente->telefono }}</td>
+          <td class="px-6 py-4">{{ $cliente->direccion }}</td>
           <td class="px-6 py-4 text-center">
-          <a href="{{ route('usuario.edit', $usuario->ci) }}" class="text-blue-600 hover:underline mr-2">Editar</a>
+          <a href="{{ route('cliente.edit', $cliente->ci) }}" class="text-blue-600 hover:underline mr-2">Editar</a>
 
-            <form action="{{ route('usuario.destroy', $usuario->ci) }}"
+            <form action="{{ route('cliente.destroy', $cliente->ci) }}"
                   method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro?')">
               @csrf
               @method('DELETE')

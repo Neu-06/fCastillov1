@@ -24,7 +24,10 @@ class ClienteController extends Controller
     {
         //
     }
-
+    public function clienteRegister()
+    {
+        return view('pages.access.agregarCliente');
+    }
     /**
      * Store a newly created resource in storage.
      * este metodo toma los datos de un nuevo cliente para el registro
@@ -61,33 +64,101 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
+    public function gestionarCliente(Cliente $cliente)
+    {
+        $estado = request()->query('estado', 'activo'); // por defecto es 'activo'
+
+        $clientes = Cliente::where('estado', $estado === 'activo')
+                ->get();
+
+    return view('pages.access.gestionarCliente', compact('clientes', 'estado'));
+    }
     public function show(Cliente $cliente)
     {
         //
     }
 
+    public function agregarClientes(Request $request)   
+    {
+    // Validación de los campos del formulario
+    $request->validate([
+        'ci' => 'required|string|unique:clientes,ci',
+        'nombre' => 'required|string|max:255',
+        'correo' => 'required|email|unique:clientes,correo',
+        'contrasena' => 'required|string|min:6',
+        'direccion' => 'required|string',
+        'telefono' => 'required|int|min:6',
+    ]);
+    // Crear el nuevo cliente
+    $cliente = new Cliente();
+    $cliente->ci = $request->ci;
+    $cliente->nombre = $request->nombre;
+    $cliente->correo = $request->correo;
+    $cliente->contrasena = Hash::make($request->contrasena); // encriptar la contraseña
+    $cliente->telefono = $request->telefono;
+    $cliente->direccion = $request->direccion;
+    $cliente->save();
+
+    return redirect()->route('administrador.gestionarCliente')->with('success', 'Cliente registrado correctamente.');
+    }
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cliente $cliente)
+    public function edit($ci)
     {
-        //
+       $cliente = Cliente::findOrFail($ci);
+      return view('pages.access.editCliente', compact('cliente'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cliente $cliente)
+    public function update(Request $request, $ci)
     {
-        //
+        // Validación
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'correo' => 'required|email|unique:clientes,correo,' . $ci . ',ci',
+                'estado' => 'required|boolean',
+                'telefono' => 'required|string',
+                'direccion' => 'required|string',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e->errors()); // <-- Esto te muestra un array con los errores por campo
+        }
+    //$request->validate([
+     //   'nombre' => 'required|string|max:255',
+     //   'correo' => 'required|email|unique:clientes,correo,' . $ci . ',ci',
+     //   'estado' => 'required|boolean',
+     //   'telefono' => 'required|numeric',
+     //   'direccion' => 'required|string',
+    //]);
+    //dd($request->all());
+    // Buscar el usuario por CI
+    $cliente = Cliente::findOrFail($ci);
+
+    // Actualizar datos
+    $cliente->nombre = $request->nombre;
+    $cliente->correo = $request->correo;
+    $cliente->estado = $request->estado;
+    $cliente->telefono = $request->telefono;
+    $cliente->direccion = $request->direccion;
+    $cliente->save();
+
+    return redirect()->route('administrador.gestionarCliente')->with('success', 'Cliente actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cliente $cliente)
+    public function destroy($ci)
     {
-        //
+        $Cliente = Cliente::findOrFail($ci);
+        $Cliente->estado = false; // Asigna false al atributo estado
+        $Cliente->save();         // Guarda los cambios en la base de datos
+
+        return redirect()->route('administrador.gestionarCliente')->with('success', 'Cliente eliminado correctamente.');
     }
 
     public function login(Request $request)
@@ -106,7 +177,6 @@ class ClienteController extends Controller
         if (!$usuario->rol) {
             return redirect()->route('login')->with('error', 'El usuario no tiene un rol asignado.');
         }
-        
         Auth::login($usuario);
         // Redirigir según el rol
         switch ($usuario->rol->nombre) {

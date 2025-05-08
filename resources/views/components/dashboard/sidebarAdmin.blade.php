@@ -7,6 +7,7 @@
 
       <li><a href="{{ route('administrador.gestionarUsuario') }}">Gestión de Usuarios</a></li>
       @endif
+      <li><a href="{{ route('administrador.gestionarCliente') }}" class="block hover:text-blue-500">Gestionar Clientes</a></li>
       @if (auth()->check() && auth()->user()->tienePermiso('CU7: Gestionar proveedor'))
 
       <li><a href="{{ route('proveedor.index') }}">Gestión de Proveedores</a></li>

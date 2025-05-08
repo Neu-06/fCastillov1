@@ -23,6 +23,7 @@ class RolController extends Controller
     public function create()
     {
         return view('pages.Rol.rolCreate');
+
     }
 
     /**

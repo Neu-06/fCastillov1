@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 
 class ProveedorController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $proveedores = Proveedor::all();
-        return view('pages.proveedor.index', compact('proveedores'));
+        return view('pages.Proveedor.index', compact('proveedores'));
     }
     //2.Mostrar formulario para crear nuevo proveedor
     public function create()
