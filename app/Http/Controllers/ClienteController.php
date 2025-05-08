@@ -101,13 +101,20 @@ class ClienteController extends Controller
     $usuario = Usuario::where('correo', $request->correo)->first();
     
     if ($usuario && Hash::check($request->contrasena, $usuario->contrasena)) {
+        
+        // Verificar si tiene rol asignado
+        if (!$usuario->rol) {
+            return redirect()->route('login')->with('error', 'El usuario no tiene un rol asignado.');
+        }
+        
         Auth::login($usuario);
         // Redirigir según el rol
         switch ($usuario->rol->nombre) {
             case 'Administrador':
                 return redirect()->route('vista.administrador.home');
             case 'Vendedor':
-                return redirect()->route('vista.vendedor.home');
+                return redirect()->route('vista.administrador.home');
+                // return redirect()->route('vista.vendedor.home');
             default:
                 Auth::logout();
                 return redirect()->route('login')->with('error', 'Rol no válido.');

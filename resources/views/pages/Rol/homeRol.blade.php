@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    <div class="bg-white shadow-md rounded overflow-x-auto">
+    <div class="bg-white shadow-md rounded overflow-x-auto ">
         <table class="min-w-full text-left">
             <thead class="bg-gray-200">
                 <tr>
@@ -43,7 +43,14 @@
                                   <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('¿Estás seguro?')">
                                        Eliminar
                                   </button>
+                                  
                             </form>
+                            @if (auth()->check() && auth()->user()->tienePermiso('CU5: Asignar permisos a usuarios'))
+                            <a href="{{ route('rol.permisos.editar', $rol->id) }}" class="text-yellow-500 hover:underline ml-4">
+                                Editar Permisos
+                            </a>
+                            @endif
+                        
                         </td>
                     </tr>
                 @endforeach

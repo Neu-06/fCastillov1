@@ -23,13 +23,18 @@ use App\Http\Controllers\RegisterController;
 |
 */
 //se elimina el namespace de la clase en vez de la funcion
-Route::get('/',homeController::class)->name('home');;
-
-
 Route::get('/login',[accessController::class, 'showLogin'])->name('login');
 Route::get('/Register',[accessController::class, 'showRegister']);
 Route::get('/regProv',[accessController::class, 'showRegProv']);
-Route::get('/admin/roles',[RolController::class, 'index']);
+Route::post('/clienteLogin', [ClienteController::class, 'login']);
+
+Route::middleware(['auth'])->group(function () {
+Route::get('/',homeController::class)->name('home');;
+
+
+
+Route::get('/admin/roles', [RolController::class, 'index'])
+    ->name('rol.index');
 Route::get('/admin/rolesCreate',[RolController::class, 'create'])->name('roles.create');
 Route::get('/home/vendedor',[UsuarioController::class, 'homeVendedor'])->name('vista.vendedor.home');
 Route::get('/home/administrador',[UsuarioController::class, 'homeAdmin'])->name('vista.administrador.home');
@@ -44,7 +49,7 @@ Route::put('/admin/usuarios/{ci}', [UsuarioController::class, 'update'])->name('
 Route::post('/admin/rolStore',[RolController::class, 'store'])->name('roles.store');
 Route::post('/usuarios/store', [UsuarioController::class, 'agregarUsuarios'])->name('usuarios.store');
 Route::post('/cliente/register', [ClienteController::class, 'store'])->name('cliente.store');
-Route::post('/clienteLogin', [ClienteController::class, 'login']);
+
 
 
 Route::post('/logout', function (Request $request) {
@@ -66,4 +71,7 @@ Route::delete('/admin/roles/{id}', [RolController::class, 'destroy'])->name('rol
 //al realizar este comando, ya no va a ser necesario las dos rutas anteriores? 
 Route::prefix('administrador')->group(function(){
     Route::resource('proveedor', ProveedorController::class);
+});
+Route::get('/roles/{id}/permisos', [RolController::class, 'editarPermisos'])->name('rol.permisos.editar');
+Route::put('/roles/{id}/permisos', [RolController::class, 'actualizarPermisos'])->name('rol.permisos.actualizar');
 });
