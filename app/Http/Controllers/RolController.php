@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rol;
+use App\Models\Permiso;
 use Illuminate\Http\Request;
 
 class RolController extends Controller
@@ -22,6 +23,7 @@ class RolController extends Controller
     public function create()
     {
         return view('pages.Rol.rolCreate');
+
     }
 
     /**
@@ -37,7 +39,8 @@ class RolController extends Controller
         'nombre' => $request->nombre,
     ]);
 
-    return redirect()->route('vista.administrador.home')->with('success', 'Rol registrado correctamente.');
+    return redirect()->route('roles.home')->with('success', 'Rol registrado correctamente.');
+    
     }
 
     /**
@@ -74,4 +77,7 @@ class RolController extends Controller
 
         return redirect('/admin/roles')->with('success', 'Rol eliminado correctamente.');
     }
+
+  
+
 }

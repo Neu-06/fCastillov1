@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Usuario;
 use App\Models\Rol;
+use App\Models\Permiso;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $rol->nombre="Administrador";
         $rol->save();
 
+       
 
         // Crear usuario con el rol 'Administrador'
         $usuario = new Usuario();
@@ -32,5 +34,8 @@ class DatabaseSeeder extends Seeder
         $usuario->id_rol = $rol->id; // Relación con el rol recién creado
         $usuario->save();
 
+        //S Llamar al factory para generar 20 clientes
+        \App\Models\Cliente::factory(20)->create();
+       
     }
 }

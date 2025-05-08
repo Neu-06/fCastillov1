@@ -3,7 +3,9 @@
   <nav class="p-4">
     <ul class="space-y-4 text-gray-700">
       <li><a href="{{ route('vista.administrador.home') }}" class="block hover:text-blue-500">Inicio</a></li>
-      <li><a href="{{ route('administrador.gestionarUsuario') }}" class="block hover:text-blue-500">Gestión de Usuarios</a></li>
+      <li><a href="{{ route('administrador.gestionarUsuario') }}" class="block hover:text-blue-500">Gestionar Usuarios</a></li>
+      <li><a href="{{ route('administrador.gestionarCliente') }}" class="block hover:text-blue-500">Gestionar Clientes</a></li>
+      <li><a href="{{ route('proveedor.index') }}" class="block hover:text-blue-500">Gestionar Proveedor</a></li>
       <li><a href="{{ url('/admin/roles') }}" class="block hover:text-blue-500">Roles</a></li>
       <li><a href="{{ url('/admin/ventas') }}" class="block hover:text-blue-500">Ventas</a></li>
       <li><a href="{{ url('/admin/inventario') }}" class="block hover:text-blue-500">Inventario</a></li>
