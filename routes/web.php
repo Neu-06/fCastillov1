@@ -27,9 +27,10 @@ Route::get('/login',[accessController::class, 'showLogin'])->name('login');
 Route::get('/Register',[accessController::class, 'showRegister']);
 Route::get('/regProv',[accessController::class, 'showRegProv']);
 Route::post('/clienteLogin', [ClienteController::class, 'login']);
+Route::get('/',homeController::class)->name('home');;
 
 Route::middleware(['auth'])->group(function () {
-Route::get('/',homeController::class)->name('home');;
+
 
 
 

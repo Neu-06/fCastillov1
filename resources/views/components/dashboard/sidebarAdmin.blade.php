@@ -11,7 +11,9 @@
 
       <li><a href="{{ route('proveedor.index') }}">Gestión de Proveedores</a></li>
       @endif
+      @if (auth()->check() && auth()->user()->tienePermiso('CU4: Asignar roles a usuarios'))
       <li><a href="{{ url('/admin/roles') }}" class="block hover:text-blue-500">Roles</a></li>
+      @endif
       <li><a href="{{ url('/admin/ventas') }}" class="block hover:text-blue-500">Ventas</a></li>
       <li><a href="{{ url('/admin/inventario') }}" class="block hover:text-blue-500">Inventario</a></li>
       <li><a href="{{ url('/admin/productos') }}" class="block hover:text-blue-500">Productos</a></li>
