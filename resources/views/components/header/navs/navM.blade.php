@@ -26,18 +26,18 @@
     </button>
 
     <nav :class="{ 'flex': open, 'hidden': !open }"
-    class="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row space-y-2 md:space-y-0">
-    <x-header.elementosNav.optionNav texto="Gestionar">
-        <x-header.elementosNav.optionSecundario link="/gestion/usuarios" texto="Usuarios" />
-        <x-header.elementosNav.optionSecundario link="/" texto="Clientes" />
-    </x-header.elementosNav.optionNav>
+        class="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row space-y-2 md:space-y-0">
+        <x-header.elementosNav.optionNav texto="Gestionar" display="static">
+            <x-header.elementosNav.optionSecundario link="/gestion/usuarios" texto="Usuarios" />
+            <x-header.elementosNav.optionSecundario link="/" texto="Clientes" />
+        </x-header.elementosNav.optionNav>
 
-    <x-header.elementosNav.optionNav texto="Categorías">
-        <x-header.elementosNav.optionSecundario link="/" texto="Hardware" />
-        <x-header.elementosNav.optionSecundario link="/" texto="Software" />
-    </x-header.elementosNav.optionNav>
+        <x-header.elementosNav.optionNav texto="Categorías" display="static">
+            <x-header.elementosNav.optionSecundario link="/" texto="Hardware" />
+            <x-header.elementosNav.optionSecundario link="/" texto="Software" />
+        </x-header.elementosNav.optionNav>
 
-</nav>
+    </nav>
 
 
 </div>

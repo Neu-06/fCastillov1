@@ -1,3 +1,3 @@
-@extends('layouts.plantilla1')
+@extends('layouts.plantillaHome')
 
 @section('title', 'Home')

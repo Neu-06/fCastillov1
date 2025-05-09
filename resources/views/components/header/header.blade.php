@@ -12,7 +12,7 @@
             </a>
 
             <div>
-                <x-auths.accountD/>
+                <x-header.accountD/>
             </div>
             
         </div>
@@ -35,12 +35,12 @@
             </div>
 
             <div class="hidden md:flex md:order-3 md:basis-38 lg:basis-44 justify-end pr-2">
-                <x-auths.accountD />
+                <x-header.accountD />
             </div>
         </div>
 
         <div class="hidden md:flex md:justify-center md:items-center">
-            <x-header.navs.navD />
+            <x-header.navs.navD/>
         </div>
 
     </div>
