@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('correo_proveedor', 100)->unique(); 
             $table->string('telefono_proveedor', 20)->nullable(); 
             $table->string('direccion_proveedor', 255)->nullable(); 
-            $table->timestamps();
-            $table->softDeletes(); 
+            $table->timestamps(); ///data de creacion y actualizacion
+            $table->softDeletes(); // campo para eliminar logico
         });
     }
 

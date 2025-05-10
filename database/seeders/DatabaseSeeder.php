@@ -15,12 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       
         /// Crear el rol 'Administrador'
         $rol = new Rol();
         $rol->nombre_rol="Administrador";
         $rol->save();
-
 
         // Crear usuario con el rol 'Administrador'
         $usuario = new Usuario();
@@ -29,6 +27,5 @@ class DatabaseSeeder extends Seeder
         $usuario->password_usuario = Hash::make('123456');
         $usuario->id_rol = 1; 
         $usuario->save();
-
     }
 }

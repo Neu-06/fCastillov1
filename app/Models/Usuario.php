@@ -37,6 +37,7 @@ class Usuario extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
+    //llave foranea rol
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'id_rol');
