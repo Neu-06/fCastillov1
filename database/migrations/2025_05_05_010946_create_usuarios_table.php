@@ -14,9 +14,9 @@ return new class extends Migration
             $table->string('nombre_usuario', 100);
             $table->string('correo_usuario', 100)->unique();
             $table->string('password_usuario', 255);
-            $table->unsignedBigInteger('id_rol')->nullable();
-            $table->foreign('id_rol')
-                ->references('id_rol')->on('rols')
+            $table->foreignId('id_rol')
+                ->nullable()
+                ->constrained('rols', 'id_rol')
                 ->onDelete('set null');
             $table->timestamps();
             $table->softDeletes(); // Agrega la columna deleted_at para eliminación lógica(estado)

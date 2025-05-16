@@ -18,13 +18,13 @@ return new class extends Migration
             $table->text('descripcion')->nullable(); // Descripción de la acción
             $table->string('nombre_usuario', 100)->nullable(); // Nombre del usuario que realizó la acción
             $table->string('correo_usuario', 100)->nullable(); // Nombre de la tabla afectada
-            $table->unsignedBigInteger('id_usuario')->nullable(); // Usuario que realizó la acción
             $table->string('ip_origen', 45)->nullable(); // Dirección IP desde donde se realizó la acción
             $table->timestamps(); // Campos created_at y updated_at
 
             //llave foranea
-            $table->foreign('id_usuario')
-                ->references('id_usuario')->on('usuarios')
+            $table->foreignId('id_usuario')
+                ->constrained('usuarios', 'id_usuario')
+                ->nullable()
                 ->onDelete('set null');
         });
     }

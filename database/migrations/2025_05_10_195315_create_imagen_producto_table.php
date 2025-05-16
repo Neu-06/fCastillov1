@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('imagen_producto', function (Blueprint $table) {
             $table->id('id_imagen');
-            $table->string('nombre_imagen', 100);
             $table->string('ruta_imagen', 255);
-            $table->unsignedBigInteger('id_producto')
 
             $table->foreignId('id_producto')
-                ->references('id_producto')->on('productos')
+                ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
         });
     }

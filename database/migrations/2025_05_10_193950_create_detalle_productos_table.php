@@ -18,18 +18,16 @@ return new class extends Migration
             $table->decimal('precio_compra', 10, 2);
 
             //llave foranea
-            $table->unsignedBigInteger('id_producto')->nullable();
-            $table->unsignedBigInteger('id_marca')->nullable();
-            $table->unsignedBigInteger('id_medida')->nullable();
-
             $table->foreignId('id_producto')
-                ->references('id_producto')->on('productos')
-                ->onDelete('set null');
+                ->constrained('productos', 'id_producto')
+                ->onDelete('cascade');
             $table->foreignId('id_marca')
-                ->references('id_marca')->on('marcas')
+                ->constrained('marcas', 'id_marca')
+                ->nullable()
                 ->onDelete('set null');
             $table->foreignId('id_medida')
-                ->references('id_medida')->on('medidas')
+                ->constrained('medidas', 'id_medida')
+                ->nullable()
                 ->onDelete('set null');
         });
     }

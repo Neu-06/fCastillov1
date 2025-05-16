@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id('id_estante');
             $table->string('codigo_estante', 50)->unique();
             $table->string('nombre_estante', 50);
-            $table->unsignedBigInteger('id_area')->nullable();
             //llave foranea
             $table->foreignId('id_area')
-                ->references('id_area')->on('areas')
+                ->constrained('areas', 'id_area')
+                ->nullable()
                 ->onDelete('cascade');
         });
     }

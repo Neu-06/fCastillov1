@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('venta_detalle', function (Blueprint $table) {
             $table->id('id_ventaDetalle');
-            $table->unsignedBigInteger('id_venta');
-            $table->unsignedBigInteger('id_dproducto');
             $table->decimal('precio', 10, 2);
             $table->decimal('cantidad', 10, 2);
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();
             //llave foranea
             $table->foreignId('id_venta')
-                ->references('id_venta')->on('ventas')
+                ->constrained('ventas', 'id_venta')
                 ->onDelete('cascade');
             $table->foreignId('id_dproducto')
-                ->references('id_dproducto')->on('detalle_productos')
+                ->constrained('detalle_productos', 'id_dproducto')
                 ->onDelete('cascade');
         });
     }

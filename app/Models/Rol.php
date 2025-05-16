@@ -12,6 +12,7 @@ class Rol extends Model
     
     protected $primaryKey = 'id_rol';
     public $incrementing = true;
+    public $timestamps = false;
     protected $keyType = 'int';
 
     protected $fillable = ['nombre_rol'];

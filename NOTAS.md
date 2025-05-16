@@ -18,7 +18,12 @@ git push origin nombre-de-la-rama
 
 # Comandos para la base de datos 
 ### resetear las migraciones 
+###### 1. Elimina todas las tablas.
+###### 2. Vuelve a ejecutar todas las migraciones 
+###### (incluyendo las nuevas y las modificadas).
 `php artisan migrate:reset`
+### resetea y migra de nuevo con los seeders
+`php artisan migrate:refresh --seed`
 ### migrar base de datos 
 `php artisan migrate`
 ### ejecutar los datos de prueba seeders
