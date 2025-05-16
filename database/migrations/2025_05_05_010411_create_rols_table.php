@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('rols', function (Blueprint $table) {
             $table->id('id_rol'); // auto-incremental
             $table->string('nombre_rol',50);
-            $table->timestamps();
         });
     }
 

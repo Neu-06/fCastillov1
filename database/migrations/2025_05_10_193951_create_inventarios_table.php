@@ -14,7 +14,15 @@ return new class extends Migration
         Schema::create('inventarios', function (Blueprint $table) {
             $table->id('id_inventario');
             $table->decimal('cantidad', 10, 2);
-
+            $table->unsignedBigInteger('id_estante');
+            $table->unsignedBigInteger('id_dproducto');
+            //llave foranea 
+            $table->foreignId('id_estante')
+                ->references('id_estante')->on('estantes')
+                ->onDelete('cascade');
+            $table->foreignId('id_dproducto')
+                ->references('id_dproducto')->on('detalle_productos')
+                ->onDelete('cascade');
         });
     }
 

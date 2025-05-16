@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id('id_producto');
             $table->string('nombre_producto', 100);
             $table->string('descripcion_producto', 255)->nullable();
+            $table->unsignedBigInteger('id_categoria')->nullable();
+            //llave foranea 
+            $table->foreignId('id_categoria')
+                ->references('id_categoria')->on('categorias')
+                ->onDelete('cascade');
         });
     }
 

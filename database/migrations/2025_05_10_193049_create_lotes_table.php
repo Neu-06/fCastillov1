@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('lotes', function (Blueprint $table) {
             $table->id('id_lote');
             $table->string('codigo_lote', 50)->unique();
-            $table->date('fabricacion_lote');
-            $table->date('vencimiento_lote');
+            $table->date('fabricacion_lote')->nullable();
+            $table->date('vencimiento_lote')->nullable();
             $table->decimal('cantidad_lote',10, 2);
             $table->timestamps();
         });

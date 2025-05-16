@@ -14,7 +14,12 @@ return new class extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->id('id_compra');
             $table->decimal('total_compra', 10, 2);
+            $table->unsignedBigInteger('id_proveedor');
             $table->timestamps();
+            //llave foranea 
+            $table->foreignId('id_proveedor')
+                ->references('id_proveedor')->on('proveedores')
+                ->onDelete('cascade');
         });
     }
 

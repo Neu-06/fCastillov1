@@ -20,6 +20,7 @@ return new class extends Migration
                 ->onDelete('set null');
             $table->timestamps();
             $table->softDeletes(); // Agrega la columna deleted_at para eliminación lógica(estado)
+
         });
     }
 

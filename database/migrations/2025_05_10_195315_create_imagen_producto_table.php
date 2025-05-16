@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id('id_imagen');
             $table->string('nombre_imagen', 100);
             $table->string('ruta_imagen', 255);
+            $table->unsignedBigInteger('id_producto')
+
+            $table->foreignId('id_producto')
+                ->references('id_producto')->on('productos')
+                ->onDelete('cascade');
         });
     }
 
