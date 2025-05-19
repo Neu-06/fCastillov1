@@ -3,5 +3,5 @@
 @section('title', 'Login')
 
 @section('content')
-    <x-auths.login/>
+    <x-access.login/>
 @endsection

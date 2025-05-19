@@ -14,12 +14,13 @@
 </head>
 
 <body class="bg-gray-100 font-sans">
-
-    <x-panelAdmin.sidebarAdmin/>
+    @stack('scripts')
+    <x-panelAdmin.sidebar />
 
     <!-- Contenido principal -->
     <main class="p-6 flex-1 lg:ml-64 bg-gray-100">
-      
+
+
         @yield('contenido')
     </main>
 

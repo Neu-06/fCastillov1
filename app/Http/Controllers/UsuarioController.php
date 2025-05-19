@@ -5,37 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Models\Rol;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    //vista principal de gestión de usuarios
     public function index()
     {
-        return view('pages.usuario.home');
-    }
-    public function homeVendedor()
-    {
-        return view('pages.usuario.home');
-    }
-    public function homeAdmin()
-    {
-        return view('pages.administracion.homeAdmin');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
-    public function gestionarUsuario()
-    {
         $usuarios = Usuario::with('rol')->get(); // relacionar con el rol
-        return view('pages.usuario.gestionUsuario', compact('usuarios'));
+        return view('pages.gestion.usuarios.index', [
+            'usuarios' => $usuarios,
+            'eliminados' => false
+        ]);
     }
 
-    public function agregarUsuarios(Request $request)
+    //vista formulario de registro de usuario
+    public function create()
+    {
+        $roles = Rol::all(); // Obtener todos los roles
+        return view('pages.gestion.usuarios.create', compact('roles'));
+    }
+    //guarda usuario nuevo
+    public function store(Request $request)
     {
         // Validación de los campos del formulario
         $request->validate([
@@ -49,36 +40,37 @@ class UsuarioController extends Controller
         $usuario = new Usuario();
         $usuario->nombre_usuario = $request->nombre_usuario;
         $usuario->correo_usuario = $request->correo_usuario;
-        $usuario->password_usuario = $request->password_usuario; // Se encripta automáticamente en el modelo
+        $usuario->password_usuario = $request->password_usuario; //Se encripta automáticamente en el modelo
         $usuario->id_rol = $request->id_rol;
         $usuario->save();
 
-        return redirect()->route('vista.administrador.home')->with('success', 'Usuario administrador registrado correctamente.');
+        return redirect()->route('usuario.index')->with('success', 'Usuario administrador registrado correctamente.');
     }
+
+
+
     public function eliminados()
     {
-        $usuariosEliminados = Usuario::onlyTrashed()->with('rol')->get();
-        return view('pages.usuario.gestionUsuario', compact('usuariosEliminados'));
-    }
-    public function usuarioRegister()
-    {
-        $roles = Rol::all(); // Obtener todos los roles
-        return view('pages.usuario.agregarUsuario', compact('roles'));
+        $usuarios = Usuario::onlyTrashed()->with('rol')->get();
+        return view('pages.gestion.usuarios.index', [
+            'usuarios' => $usuarios,
+            'eliminados' => true
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar el usuario especificado.
      */
     public function edit($id_usuario)
     {
         $usuario = Usuario::findOrFail($id_usuario);
         $roles = Rol::all(); // Obtener roles para el formulario
-        return view('pages.usuario.editar', compact('usuario', 'roles'));
+        return view('pages.gestion.usuarios.edit', compact('usuario', 'roles'));
     }
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el usuario especificado en la base de datos.
      */
     public function update(Request $request, $id_usuario)
     {
@@ -98,19 +90,19 @@ class UsuarioController extends Controller
         $usuario->id_rol = $request->id_rol;
         $usuario->save();
 
-        return redirect()->route('vista.administrador.home')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('usuario.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
 
     /**
-     * Elimine al usuario especificado del almacenamiento.
+     * Elimine al usuario especificado del sistema.
      */
     public function destroy($id_usuario)
     {
         $usuario = Usuario::findOrFail($id_usuario);
         $usuario->delete(); // Eliminación lógica (SoftDeletes)
 
-        return redirect()->route('vista.administrador.home')->with('success', 'Usuario eliminado correctamente.');
+        return redirect()->route('usuario.index')->with('success', 'Usuario eliminado correctamente.');
     }
 
     /**
@@ -121,6 +113,6 @@ class UsuarioController extends Controller
         $usuario = Usuario::withTrashed()->findOrFail($id_usuario);
         $usuario->restore(); // Restaurar el usuario
 
-        return redirect()->route('vista.administrador.home')->with('success', 'Usuario restaurado correctamente.');
+        return redirect()->route('usuario.index')->with('success', 'Usuario restaurado correctamente.');
     }
 }

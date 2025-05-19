@@ -10,10 +10,11 @@ class RolController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         $roles = Rol::all(); // Obtener todos los roles
-        return view('pages.Rol.homeRol', compact('roles'));
+        return view('pages.gestion.roles.index', compact('roles'));
     }
 
     /**
@@ -21,7 +22,7 @@ class RolController extends Controller
      */
     public function create()
     {
-        return view('pages.Rol.rolCreate');
+        return view('pages.gestion.roles.create');
     }
 
     /**
@@ -39,7 +40,7 @@ class RolController extends Controller
             'nombre_rol' => $request->nombre_rol,
         ]);
 
-        return redirect()->route('roles.index')->with('success', 'Rol registrado correctamente.');
+        return redirect()->route('rol.index')->with('success', 'Rol registrado correctamente.');
     }
 
     /**
@@ -50,6 +51,6 @@ class RolController extends Controller
         $rol = Rol::findOrFail($id_rol);
         $rol->delete();
 
-        return redirect()->route('roles.index')->with('success', 'Rol eliminado correctamente.');
+        return redirect()->route('rol.index')->with('success', 'Rol eliminado correctamente.');
     }
 }

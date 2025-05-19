@@ -7,10 +7,15 @@ namespace App\Http\Controllers;
 
 //use Illuminate\Http\Request;
 
-class homeController extends Controller
+class HomeController extends Controller
 { //se usa invoke para administrar una sola ruta
-    public function __invoke()
+    public function home()
     {
-        return view('pages.principal.home');
+        return view('pages.principal.index');
+    }
+
+    public function homeAdmin()
+    {
+         return view('pages.admin.homeAdmin');
     }
 }

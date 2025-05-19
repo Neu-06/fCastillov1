@@ -1,15 +1,18 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\homeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
-use App\Http\Controllers\accessController;
+use App\Http\Controllers\AccessController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\gestionController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\PermisoController;
+use App\Models\Cliente;
+use App\Models\Usuario;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +26,15 @@ use App\Http\Controllers\RegisterController;
 */
 
 // ==================== Rutas de Inicio ====================
-Route::get('/', homeController::class)->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
+Route::get('/admin/home', [HomeController::class, 'homeAdmin'])->name('admin.home');
+
 
 // ==================== Rutas de Autenticación ====================
-Route::get('/login', [accessController::class, 'showLogin'])->name('login');
-Route::post('/login', [accessController::class, 'login'])->name('login.post');
-Route::get('/Register', [accessController::class, 'showRegister']);
-Route::get('/regProv', [accessController::class, 'showRegProv']);
+Route::get('/login', [AccessController::class, 'showLogin'])->name('login');
+Route::post('/login', [AccessController::class, 'login'])->name('login.post');
+
+
 Route::post('/logout', function (Request $request) {
     Auth::logout(); // Cierra la sesión
     $request->session()->invalidate(); // Invalida la sesión
@@ -37,29 +42,65 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('home'); // Redirige al home
 })->name('logout');
 
-// ==================== Rutas de Usuarios ====================
-Route::get('/usuarioRegister', [UsuarioController::class, 'usuarioRegister'])->name('vista.usuarioRegister');
-Route::post('/usuarios/store', [UsuarioController::class, 'agregarUsuarios'])->name('usuarios.store');
-Route::get('/admin/usuarios/{ci}/editar', [UsuarioController::class, 'edit'])->name('usuario.edit');
-Route::put('/admin/usuarios/{ci}', [UsuarioController::class, 'update'])->name('usuario.update');
-Route::delete('/admin/usuarios/{ci}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
-Route::get('/administrador/usuarios', [UsuarioController::class, 'gestionarUsuario'])->name('administrador.gestionarUsuario');
-Route::get('/home/vendedor', [UsuarioController::class, 'homeVendedor'])->name('vista.vendedor.home');
-Route::get('/home/administrador', [UsuarioController::class, 'homeAdmin'])->name('vista.administrador.home');
+// ==================== Rutas de Usuarios ===================r
+Route::prefix('admin/usuario')->name('usuario.')->group(function () {
+    Route::get('/', [UsuarioController::class, 'index'])->name('index'); // Listar usuarios
+    Route::get('/registro', [UsuarioController::class, 'create'])->name('create'); //formulario para registrar usuario
+    Route::post('/registro', [UsuarioController::class, 'store'])->name('store'); //guardar usuario
+    Route::get('/{id}/edit', [UsuarioController::class, 'edit'])->name('edit'); //formulario para editar usuario
+    Route::put('/{id}', [UsuarioController::class, 'update'])->name('update'); //actualizar usuario
+    Route::delete('/{id}', [UsuarioController::class, 'destroy'])->name('destroy'); //eliminar usuario
 
-// ==================== Rutas de Roles ====================
-Route::get('/admin/roles', [RolController::class, 'index']);
-Route::get('/admin/rolesCreate', [RolController::class, 'create'])->name('roles.create');
-Route::post('/admin/rolStore', [RolController::class, 'store'])->name('roles.store');
-Route::delete('/admin/roles/{id}', [RolController::class, 'destroy'])->name('roles.destroy');
-Route::resource('roles', RolController::class);
+    Route::get('/eliminados', [UsuarioController::class, 'eliminados'])->name('eliminados');
+    Route::put('/{id}/restaurar', [UsuarioController::class, 'restore'])->name('restore');
+});
+
+// ==================== Rutas de Roles ===================C
+Route::prefix('admin/rol')->name('rol.')->group(function () {
+    Route::get('/', [RolController::class, 'index'])->name('index'); // Listar roles
+    Route::get('/create', [RolController::class, 'create'])->name('create');
+    Route::post('/create', [RolController::class, 'store'])->name('store');
+    Route::delete('/{id}', [RolController::class, 'destroy'])->name('destroy');
+});
+
+
 
 // ==================== Rutas de Clientes ====================
-// Ruta para mostrar el formulario de registro de clientes
-Route::get('/cliente/register', [ClienteController::class, 'showRegister'])->name('cliente.register');
-// Ruta para procesar el registro de clientes
-Route::post('/cliente/register', [ClienteController::class, 'store'])->name('cliente.store');
-Route::post('/clienteLogin', [ClienteController::class, 'login']);
 
-// ==================== Rutas de Gestión ====================
-Route::get('/gestion/usuarios', [gestionController::class, 'showUserG']);
+// Formulario de registro público
+Route::get('/Register', [ClienteController::class, 'publicRegister'])->name('cliente.register'); 
+
+
+Route::prefix('admin/cliente')->name('cliente.')->group(function () {
+    Route::get('/', [ClienteController::class, 'index'])->name('index'); // Listar clientes activos
+    Route::get('/registro', [ClienteController::class, 'create'])->name('create'); // Formulario para registrar cliente
+    Route::post('/registro', [ClienteController::class, 'store'])->name('store'); // Guardar cliente
+    Route::get('/{id}/edit', [ClienteController::class, 'edit'])->name('edit'); // Formulario para editar cliente
+    Route::put('/{id}', [ClienteController::class, 'update'])->name('update'); // Actualizar cliente
+    Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('destroy'); // Eliminar cliente (soft delete)
+    
+    Route::get('/eliminados', [ClienteController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
+    Route::put('/{id}/restaurar', [ClienteController::class, 'restore'])->name('restore'); // Restaurar cliente
+});
+
+// ==================== Rutas de Proveedores ====================
+Route::prefix('admin/proveedor')->name('proveedor.')->group(function () {
+    Route::get('/', [ProveedorController::class, 'index'])->name('index'); // Listar proveedores
+    Route::get('/registro', [ProveedorController::class, 'create'])->name('create'); // Formulario para registrar proveedor
+    Route::post('/registro', [ProveedorController::class, 'store'])->name('store'); // Guardar proveedor
+    Route::get('/{id}/edit', [ProveedorController::class, 'edit'])->name('edit'); // Formulario para editar proveedor
+    Route::put('/{id}', [ProveedorController::class, 'update'])->name('update'); // Actualizar proveedor
+    Route::delete('/{id}', [ProveedorController::class, 'destroy'])->name('destroy'); // Eliminar proveedor
+
+    // Opcionales para SoftDeletes
+    Route::get('/eliminados', [ProveedorController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
+    Route::put('/{id}/restaurar', [ProveedorController::class, 'restore'])->name('restore'); // Restaurar proveedor
+});
+
+// ==================== Rutas de Permisos ====================
+Route::prefix('admin/permiso')->name('permiso.')->group(function () {
+    Route::get('/', [PermisoController::class, 'index'])->name('index'); // Listar permisos
+    Route::get('/create', [PermisoController::class, 'create'])->name('create'); // Formulario para registrar permiso
+    Route::post('/create', [PermisoController::class, 'store'])->name('store'); // Guardar permiso
+    Route::delete('/{id}', [PermisoController::class, 'destroy'])->name('destroy'); // Eliminar permiso
+});

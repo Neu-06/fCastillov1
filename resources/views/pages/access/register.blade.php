@@ -2,5 +2,5 @@
 
 @section('title', 'Register')
 @section('content')
-    <x-auths.register/>
+    <x-access.register/>
 @endsection

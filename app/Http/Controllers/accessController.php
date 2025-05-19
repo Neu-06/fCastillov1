@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class accessController extends Controller
+class AccessController extends Controller
 {
     public function showLogin()
     {
@@ -47,13 +47,4 @@ class accessController extends Controller
         ]);
     }
 
-    public function showRegister()
-    {
-        return view('pages.access.register');
-    }
-
-    public function showRegProv()
-    {
-        return view('pages.access.regProv');
-    }
 }

@@ -3,24 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-//use App\Models\Usuario;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
 {
-    public function showRegister()
+    // Registro público de cliente
+    public function publicRegister()
     {
         return view('pages.access.register');
     }
 
+    // Vista principal de gestión de clientes
+    public function index()
+    {
+        $clientes = Cliente::all();
+        return view('pages.gestion.clientes.index', [
+            'clientes' => $clientes,
+            'eliminados' => false
+        ]);
+    }
+
+    // Vista formulario de registro de cliente (admin)
+    public function create()
+    {
+        return view('pages.gestion.clientes.create');
+    }
+
+    // Guardar cliente (público o admin)
     public function store(Request $request)
     {
-        // Verifica si los datos que se están enviando son correctos
-        //dd($request->all());
-
-        // Validación de los datos
         $request->validate([
             'nombre_cliente' => 'required|string|max:100',
             'apellido_cliente' => 'required|string|max:100',
@@ -30,7 +42,6 @@ class ClienteController extends Controller
             'direccion_cliente' => 'nullable|string|max:255',
         ]);
 
-        // Crear el nuevo cliente
         Cliente::create([
             'nombre_cliente'  => $request->nombre_cliente,
             'apellido_cliente' => $request->apellido_cliente,
@@ -40,46 +51,73 @@ class ClienteController extends Controller
             'direccion_cliente' => $request->direccion_cliente,
         ]);
 
-        return redirect()->route('login')->with('success', 'Cliente registrado exitosamente. Inicia sesión.');
+        if ($request->has('registro_publico')) {
+            // Registro desde el e-commerce
+            return redirect()->route('index')
+                ->with('success', '¡Bienvenido! Tu cuenta fue creada.');
+        } else {
+            // Registro desde el admin clientes
+            return redirect()->route('cliente.index')
+                ->with('success', 'Cliente registrado correctamente.');
+        }
     }
 
+    // Mostrar clientes eliminados (soloTrashed)
+    public function eliminados()
+    {
+        $clientes = Cliente::onlyTrashed()->get();
+        return view('pages.gestion.clientes.index', [
+            'clientes' => $clientes,
+            'eliminados' => true
+        ]);
+    }
 
-    // public function login(Request $request)
-    // {// Validar datos de entrada
-    //     $request->validate([
-    //         'correo' => 'required|email',
-    //         'password' => 'required',
-    //     ]);
+    // Editar cliente (formulario)
+    public function edit($id_cliente)
+    {
+        $cliente = Cliente::findOrFail($id_cliente);
+        return view('pages.gestion.clientes.edit', compact('cliente'));
+    }
 
-    //     // Intentar autenticar como usuario administrativo
-    //     $usuario = Usuario::where('correo_usuario', $request->correo)->first();
-    //     if ($usuario && Hash::check($request->password, $usuario->password_usuario)) {
-    //         Auth::login($usuario);
+    // Actualizar cliente
+    public function update(Request $request, $id_cliente)
+    {
+        $request->validate([
+            'nombre_cliente' => 'required|string|max:100',
+            'apellido_cliente' => 'required|string|max:100',
+            'correo_cliente'  => 'required|email|unique:clientes,correo_cliente,' . $id_cliente . ',id_cliente',
+            'telefono_cliente' => 'nullable|regex:/^[0-9]+$/|max:20',
+            'direccion_cliente' => 'nullable|string|max:255',
+        ]);
 
-    //         // Redirigir según el rol
-    //         switch ($usuario->rol->nombre_rol) {
-    //             case 'Administrador':
-    //                 return redirect()->route('vista.administrador.home');
-    //             case 'Vendedor':
-    //                 return redirect()->route('vista.vendedor.home');
-    //             default:
-    //                 Auth::logout();
-    //                 return redirect()->route('login')->with('error', 'Rol no válido.');
-    //         }
-    //     }
+        $cliente = Cliente::findOrFail($id_cliente);
+        $cliente->nombre_cliente = $request->nombre_cliente;
+        $cliente->apellido_cliente = $request->apellido_cliente;
+        $cliente->correo_cliente = $request->correo_cliente;
+        $cliente->telefono_cliente = $request->telefono_cliente;
+        $cliente->direccion_cliente = $request->direccion_cliente;
+        $cliente->save();
 
-    //     // Intentar autenticar como cliente
-    //     $cliente = Cliente::where('correo_cliente', $request->correo)->first();
-    //     if ($cliente && Hash::check($request->password, $cliente->password_cliente)) {
-    //         Auth::login($cliente);
+        return redirect()->route('cliente.index')->with('success', 'Cliente actualizado correctamente.');
+    }
 
-    //         // Redirigir a la vista del e-commerce
-    //         return redirect()->route('ecommerce.home');
-    //     }
+    // Eliminar cliente (soft delete)
+    public function destroy($id_cliente)
+    {
+        $cliente = Cliente::findOrFail($id_cliente);
+        $cliente->delete();
 
-    //     // Si no se encuentra en ninguna tabla
-    //     return back()->with('error', 'Correo o contraseña incorrectos.');
-    // }
+        return redirect()->route('cliente.index')->with('success', 'Cliente eliminado correctamente.');
+    }
+
+    // Restaurar cliente eliminado
+    public function restore($id_cliente)
+    {
+        $cliente = Cliente::withTrashed()->findOrFail($id_cliente);
+        $cliente->restore();
+
+        return redirect()->route('cliente.index')->with('success', 'Cliente restaurado correctamente.');
+    }
 
     /**
      * Logout para usuarios y clientes.
