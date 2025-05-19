@@ -12,5 +12,7 @@
 `npm install`
 ### copiar el .env
 `copy .env.example .env`
+### configurar el .env para la base de datos
 ### Genera la clave de la aplicación
 `php artisan key:generate`
+### segir en *comandosDB.md*
