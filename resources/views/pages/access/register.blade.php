@@ -2,5 +2,5 @@
 
 @section('title', 'Register')
 @section('content')
-    <x-access.register/>
+    <x-access.register :is-cliente="$isCliente" :is-usuario="$isUsuario"/>
 @endsection

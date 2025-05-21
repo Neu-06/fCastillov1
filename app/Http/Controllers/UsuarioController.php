@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Models\Rol;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsuarioController extends Controller
 {
@@ -114,5 +115,16 @@ class UsuarioController extends Controller
         $usuario->restore(); // Restaurar el usuario
 
         return redirect()->route('usuario.index')->with('success', 'Usuario restaurado correctamente.');
+    }
+
+
+    // cerrar seccion usuario 
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('index')
+            ->with('success', 'Sesión cerrada correctamente.');
     }
 }

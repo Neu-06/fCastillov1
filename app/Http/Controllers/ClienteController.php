@@ -9,9 +9,12 @@ use Illuminate\Http\Request;
 class ClienteController extends Controller
 {
     // Registro público de cliente
+
     public function publicRegister()
     {
-        return view('pages.access.register');
+        $isCliente = Auth::guard('cliente')->check();
+        $isUsuario = Auth::guard('web')->check();
+        return view('pages.access.register', compact('isCliente', 'isUsuario'));
     }
 
     // Vista principal de gestión de clientes
@@ -42,7 +45,7 @@ class ClienteController extends Controller
             'direccion_cliente' => 'nullable|string|max:255',
         ]);
 
-        Cliente::create([
+        $cliente = Cliente::create([
             'nombre_cliente'  => $request->nombre_cliente,
             'apellido_cliente' => $request->apellido_cliente,
             'correo_cliente'   => $request->correo_cliente,
@@ -52,7 +55,9 @@ class ClienteController extends Controller
         ]);
 
         if ($request->has('registro_publico')) {
-            // Registro desde el e-commerce
+
+            // Login automático después de registrar
+            Auth::guard('cliente')->login($cliente);
             return redirect()->route('index')
                 ->with('success', '¡Bienvenido! Tu cuenta fue creada.');
         } else {
@@ -120,11 +125,15 @@ class ClienteController extends Controller
     }
 
     /**
-     * Logout para usuarios y clientes.
+     * Logout para clientes.
      */
-    public function logout()
+
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect()->route('login')->with('success', 'Sesión cerrada correctamente.');
+        Auth::guard('cliente')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('index')
+            ->with('success', 'Sesión cerrada correctamente.');
     }
 }

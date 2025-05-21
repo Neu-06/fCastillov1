@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $usuario = new Usuario();
         $usuario->nombre_usuario = 'SuperAdmin';
         $usuario->correo_usuario = 'admin@admin.com';
-        $usuario->password_usuario = Hash::make('123456');
+        $usuario->password_usuario = '123456'; 
         $usuario->id_rol = 1; 
         $usuario->save();
     }

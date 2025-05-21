@@ -12,7 +12,7 @@
             </a>
 
             <div>
-                <x-header.accountD/>
+                <x-access.logoutBtt/>
             </div>
             
         </div>
@@ -35,7 +35,7 @@
             </div>
 
             <div class="hidden md:flex md:order-3 md:basis-38 lg:basis-44 justify-end pr-2">
-                <x-header.accountD />
+                <x-access.logoutBtt/>
             </div>
         </div>
 

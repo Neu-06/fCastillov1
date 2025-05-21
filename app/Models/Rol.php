@@ -9,7 +9,8 @@ class Rol extends Model
 {
     use HasFactory;
 
-    
+
+    protected $table = 'rols';
     protected $primaryKey = 'id_rol';
     public $incrementing = true;
     public $timestamps = false;
@@ -22,5 +23,3 @@ class Rol extends Model
         return $this->belongsToMany(Permiso::class, 'permiso_rol', 'id_rol', 'id_permiso');
     }
 }
-
-

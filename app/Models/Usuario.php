@@ -35,7 +35,9 @@ class Usuario extends Authenticatable
         'deleted_at' => 'datetime',
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $hidden = [
+        'password_usuario',
+    ];
 
     //llave foranea rol
     public function rol()
@@ -51,5 +53,10 @@ class Usuario extends Authenticatable
     public function setPasswordUsuarioAttribute($value)
     {
         $this->attributes['password_usuario'] = bcrypt($value);  // Encripta la contraseña
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'correo_usuario'; // Cambia esto si usas otro campo para la autenticación
     }
 }

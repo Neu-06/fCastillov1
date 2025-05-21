@@ -95,9 +95,16 @@ return [
     |
     */
 
+
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'usuarios' => [
+            'provider' => 'usuarios',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'clientes' => [
+            'provider' => 'clientes',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

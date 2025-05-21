@@ -52,17 +52,12 @@
         </div>
 
         <!-- Botón de cerrar sesión -->
-        <div class="p-4 border-t border-gray-200">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit"
-                    class="w-full text-left px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white font-semibold">
-                    Cerrar sesión
-                </button>
-            </form>
+        <div class="flex justify-center items-center mt-4 mb-4">
+            <x-access.logoutBtt />
         </div>
+        
     </aside>
 
     <!-- Fondo oscuro para cerrar el menú (solo en pantallas pequeñas) -->
-    <div x-show="isOpen" @click="isOpen = false" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
+    <div x-show="isOpen" @click="isOpen = false" class="fixed inset-0 bg-black bg-opacity-50 z-40 "></div>
 </div>

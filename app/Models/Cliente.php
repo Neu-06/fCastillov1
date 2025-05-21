@@ -41,4 +41,9 @@ class Cliente extends Authenticatable
     {
         return $this->password_cliente;
     }
+
+    public function getAuthIdentifierName()
+    {
+        return 'correo_cliente';
+    }
 }
