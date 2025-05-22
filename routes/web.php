@@ -5,10 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\PermisoController;
+use App\Http\Controllers\ProductoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +36,7 @@ Route::get('/registro', [ClienteController::class, 'publicRegister'])->name('cli
 Route::post('/registro', [ClienteController::class, 'store'])->name('cliente.public.store');
 
 
-
+//// rutas protegidas para administradores
 Route::middleware(['auth:web'])->group(function () {
 
     Route::get('/admin/home', [HomeController::class, 'homeAdmin'])->name('admin.home');
@@ -101,9 +103,25 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/create', [PermisoController::class, 'store'])->name('store'); // Guardar permiso
         Route::delete('/{id}', [PermisoController::class, 'destroy'])->name('destroy'); // Eliminar permiso
     });
+
+    // ==================== Rutas de Productos ====================
+    Route::prefix('admin/producto')->name('producto.')->group(function () {
+        Route::get('/', [ProductoController::class, 'index'])->name('index'); // Listar productos
+        Route::get('/create', [ProductoController::class, 'create'])->name('create'); // Formulario para registrar producto
+        Route::post('/create', [ProductoController::class, 'store'])->name('store'); // Guardar producto
+        Route::get('/{id}/edit', [ProductoController::class, 'edit'])->name('edit'); // Formulario para editar producto
+        Route::put('/{id}', [ProductoController::class, 'update'])->name('update'); // Actualizar producto
+        Route::delete('/{id}', [ProductoController::class, 'destroy'])->name('destroy'); // Eliminar producto
+    });
+
+    // ==================== Rutas de Categorías ====================
+    Route::prefix('admin/categoria')->name('categoria.')->group(function () {
+        Route::get('/', [CategoriaController::class, 'index'])->name('index'); // Listar categorías
+        Route::get('/create', [CategoriaController::class, 'create'])->name('create'); // Formulario para registrar categoría
+        Route::post('/create', [CategoriaController::class, 'store'])->name('store'); // Guardar categoría
+        Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy'); // Eliminar categoría
+    });
 });
 
-
-Route::middleware(['auth:cliente'])->group(function () {
-
-});
+/// rutas protegidas para clientes
+Route::middleware(['auth:cliente'])->group(function () {});

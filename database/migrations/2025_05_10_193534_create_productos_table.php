@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id('id_producto');
+            $table->string('codigo_producto', 50)->unique();
             $table->string('nombre_producto', 100);
             $table->string('descripcion_producto', 255)->nullable();
             //llave foranea 
