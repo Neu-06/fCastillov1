@@ -5,8 +5,8 @@
 @endphp
 
 <div x-data="{ loggedOut: false }">
-    @if ($isUsuario)
-        <form action="{{ route('usuario.logout') }}" method="POST"
+    @if ($isUsuario)     <!-- usuario.logout -->
+        <form action="{{ route('logout') }}" method="POST"
             @submit.prevent="
                 fetch($el.action, {
                     method: 'POST',

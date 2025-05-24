@@ -26,7 +26,9 @@ use App\Http\Controllers\ProductoController;
 // ==================== Rutas de Inicio ====================
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
 
-
+// ==================== Rutas de Logout (fuera del middleware) ====================
+Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+Route::post('/cliente/logout', [ClienteController::class, 'logout'])->name('cliente.logout');
 
 
 // ==================== Rutas de Autenticación ====================
@@ -53,7 +55,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/eliminados', [UsuarioController::class, 'eliminados'])->name('eliminados');
         Route::put('/{id}/restaurar', [UsuarioController::class, 'restore'])->name('restore');
 
-        Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+        //Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
     });
 
     // ==================== Rutas de Roles ===================C
@@ -79,7 +81,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/eliminados', [ClienteController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
         Route::put('/{id}/restaurar', [ClienteController::class, 'restore'])->name('restore'); // Restaurar cliente
 
-        Route::post('/logout', [ClienteController::class, 'logout'])->name('logout'); // cerrar seccion Para clientes
+        //Route::post('/logout', [ClienteController::class, 'logout'])->name('logout'); // cerrar seccion Para clientes
     });
 
     // ==================== Rutas de Proveedores ====================
