@@ -8,6 +8,13 @@
         'subtitulo' => 'Administración de usuarios.',
     ])
 
-    <x-gestion.usuarios.create :roles="$roles"/>
+
+    @can('create', App\Models\Usuario::class)
+        <x-gestion.usuarios.create :roles="$roles"/>
+    @else
+        <div class="text-red-600 text-center mt-8 font-semibold">
+            No tienes permiso para registrar nuevos usuarios.
+        </div>
+    @endcan
 
 @endsection

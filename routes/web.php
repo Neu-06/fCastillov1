@@ -64,6 +64,12 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/create', [RolController::class, 'create'])->name('create');
         Route::post('/create', [RolController::class, 'store'])->name('store');
         Route::delete('/{id}', [RolController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}/permisos', [RolController::class, 'verPermisos'])->name('permisos');
+        Route::get('/{id}/edit', [RolController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [RolController::class, 'update'])->name('update');
+
+
+
     });
 
 

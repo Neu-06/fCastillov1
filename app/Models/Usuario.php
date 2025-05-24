@@ -21,7 +21,9 @@ class Usuario extends Authenticatable
     public $incrementing = true;
     protected $keyType = 'int';
 
-    // Campos que se pueden asignar masivamente
+    /**
+     * Atributos asignables en masa (formulario).
+     */
     protected $fillable = [
         'nombre_usuario',
         'correo_usuario',
@@ -31,10 +33,16 @@ class Usuario extends Authenticatable
 
     //para asegurar que el campo deleted_at se trate como una fecha
     //este campo se el nuevo campo estado del modelo original, por recomendacion de laravel
+    //activa el comportamiento de eliminacion logica (soft delete)
     protected $casts = [
+
         'deleted_at' => 'datetime',
+        // marca el campo deleted_at con la fecha en que se elimino
     ];
 
+    /**
+     * Oculta el campo de contraseña al serializar.
+     */    
     protected $hidden = [
         'password_usuario',
     ];
@@ -45,6 +53,9 @@ class Usuario extends Authenticatable
         return $this->belongsTo(Rol::class, 'id_rol');
     }
 
+    /**
+     * Devuelve el campo de contraseña personalizado.
+     */
     public function getAuthPassword()
     {
         return $this->password_usuario;
@@ -55,8 +66,29 @@ class Usuario extends Authenticatable
         $this->attributes['password_usuario'] = bcrypt($value);  // Encripta la contraseña
     }
 
+    /**
+     * Define qué campo se usará para el login (correo personalizado).
+     */    
     public function getAuthIdentifierName()
     {
         return 'correo_usuario'; // Cambia esto si usas otro campo para la autenticación
     }
+
+
+    /**
+     * Devuelve todos los permisos asociados al usuario a través de su rol.
+     */    
+    public function permisos()
+    {
+        return $this->rol ? $this->rol->permisos : collect([]);
+    }
+
+    /**
+     * Verifica si el usuario tiene un permiso específico.
+     */    
+    public function tienePermiso($permiso)
+    {
+        return $this->permisos()->contains('nombre_permiso', $permiso);
+    }
+
 }
