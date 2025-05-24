@@ -61,7 +61,13 @@
     <x-header.elementosNav.optionSecundario
         link="{{ route('permiso.index') }}"
         texto="Gestionar Permiso" />
-@endif
+                    
+                    
+@endif                    
+                </x-header.elementosNav.optionNav>
+
+                <x-header.elementosNav.optionNav texto="Compras" display="static" >
+
 @if(
     auth()->user()->tienePermiso('Ver Proveedores')
 )
@@ -69,6 +75,10 @@
         link="{{ route('proveedor.index') }}"
         texto="Gestionar Proveedores" />
 @endif
+                </x-header.elementosNav.optionNav>
+                <!-- Ventas -->
+                <x-header.elementosNav.optionNav texto="Ventas" display="static" >
+
 
 @if(
     auth()->user()->tienePermiso('Ver Clientes') 
@@ -89,7 +99,7 @@
         <div class="flex justify-center items-center mt-4 mb-4">
             <x-access.logoutBtt />
         </div>
-        
+
     </aside>
 
     <!-- Fondo oscuro para cerrar el menú (solo en pantallas pequeñas) -->

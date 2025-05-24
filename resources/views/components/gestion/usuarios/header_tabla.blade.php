@@ -41,3 +41,10 @@
         {{ session('success') }}
     </div>
 @endif
+
+@if (session('error'))
+    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
+        class="mb-4 rounded bg-red-100 text-red-800 px-4 py-2 transition-all duration-500">
+        {{ session('error') }}
+    </div>
+@endif

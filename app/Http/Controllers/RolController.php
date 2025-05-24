@@ -98,6 +98,13 @@ class RolController extends Controller
     {
         $rol = Rol::findOrFail($id_rol);
         $this->authorize('delete', $rol);
+
+        // Verificar si tiene usuarios asociados
+        if ($rol->usuarios()->count() > 0) {
+            return redirect()->route('rol.index')
+                ->with('error', 'No se puede eliminar el rol porque tiene usuarios asociados.');
+        }
+
         $rol->delete();
 
         return redirect()->route('rol.index')->with('success', 'Rol eliminado correctamente.');

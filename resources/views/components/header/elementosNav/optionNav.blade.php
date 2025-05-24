@@ -1,8 +1,8 @@
-<div @click.away="open = false" class="relative" x-data="{ open: false }">
+<div @click.away="open = false" @keydown.escape.window="open = false" class="relative" x-data="{ open: false }">
 
     <button @click="open = !open"
-        class="flex flex-row text-tBlack bg-gray-200 items-center px-2 w-full py-2 mt-2 text-sm 
-        font-semibold text-left bg-transparent rounded-lg 
+        class="flex flex-row text-tBlack items-center px-2 w-full py-2 mt-2 text-sm 
+        font-semibold text-left rounded-lg 
         md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 
         focus:outline-none focus:shadow-outline">
         <span>{{ $texto }}</span>
@@ -18,13 +18,11 @@
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="{{$display}} pt-1 right-0 pl-2 w-full origin-top-right">
+        class="{{ $display ?? '' }} pt-1 right-0 pl-2 w-full origin-top-right">
         <div class="px-2 pt-2 pb-2 bg-white rounded-md shadow-lg">
             <div class="grid grid-cols-1 gap-1">
                 {{ $slot }}
             </div>
         </div>
-
-
     </div>
 </div>

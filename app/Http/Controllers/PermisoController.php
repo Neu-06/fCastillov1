@@ -54,7 +54,16 @@ class PermisoController extends Controller
     public function destroy($id_permiso)
     {
         $permiso = Permiso::findOrFail($id_permiso);
+
         $this->authorize('delete', $permiso);
+
+        // Verificar si tiene roles asociados
+        if ($permiso->roles()->count() > 0) {
+            return redirect()->route('permiso.index')
+                ->with('error', 'No se puede eliminar el permiso porque tiene roles asociados.');
+        }
+        // Eliminar el permiso
+
         $permiso->delete();
 
         return redirect()->route('permiso.index')->with('success', 'Permiso eliminado correctamente.');
