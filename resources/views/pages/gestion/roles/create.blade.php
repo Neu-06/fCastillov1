@@ -9,7 +9,8 @@
     ])
 
 
-    <x-gestion.roles.create />
+       {{-- Aquí se invoca el componente --}}
+    <x-gestion.roles.create :permisos="$permisos" :casosDeUso="$casosDeUso" />
 
 
 @endsection

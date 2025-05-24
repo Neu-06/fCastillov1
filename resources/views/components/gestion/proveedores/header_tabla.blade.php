@@ -6,6 +6,7 @@
         <p class="text-slate-500">Revisar bien antes de editar.</p>
     </div>
     <div class="flex flex-col gap-2 shrink-0 sm:flex-row">
+        @if(auth()->user()->tienePermiso('Ver Proveedores'))
         @if ($eliminados)
             <a href="{{ route('proveedor.index') }}"
                 class="rounded border border-slate-300 py-2.5 px-3 text-center text-xs font-semibold text-slate-600 transition-all hover:opacity-75 focus:ring focus:ring-slate-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -19,7 +20,10 @@
                 Ver Eliminados
             </a>
         @endif
+        @endif
 
+        {{-- Agregar Proveedor --}}
+        @if(auth()->user()->tienePermiso('Agregar Proveedores'))
         <a href="{{ route('proveedor.create') }}"
             class="flex select-none items-center gap-2 rounded bg-slate-800 py-2.5 px-4 text-xs font-semibold text-white shadow-md shadow-slate-900/10 transition-all hover:shadow-lg hover:shadow-slate-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
@@ -30,6 +34,7 @@
             </svg>
             Agregar Proveedor
         </a>
+        @endif
     </div>
 </div>
 @if (session('success'))

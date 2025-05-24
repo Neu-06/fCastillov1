@@ -8,7 +8,7 @@
         'titulo' => 'Gestión de Roles',
         'subtitulo' => 'Administración de Roles del sistema.',
     ])
-
+    <!-- ENVOLTORIO Alpine.js -->
     <div class="mt-6">
 
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
@@ -23,13 +23,17 @@
 
                     <tbody class="text-gray-700 divide-y">
                         @foreach ($roles as $rol)
-                            <x-gestion.roles.fila_tabla id_rol="{{$rol->id_rol }}"
-                                nombre_rol="{{ $rol->nombre_rol }}" />
+                            <x-gestion.roles.fila_tabla :id_rol="$rol->id_rol" :nombre_rol="$rol->nombre_rol" />
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+
+
+
     </div>
+
+
 
 @endsection

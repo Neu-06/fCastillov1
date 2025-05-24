@@ -14,7 +14,7 @@ class Permiso extends Model
     protected $keyType = 'int';
 
     protected $fillable = ['nombre_permiso'];
-
+//Aquí se define qué campos son seguros para la asignación masiva.
 
     public function roles()
     {

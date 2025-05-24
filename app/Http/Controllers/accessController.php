@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AccessController extends Controller
 {
+    /**
+     * Muestra el formulario de login para usuarios o clientes.
+     */
     public function showLogin()
     {
         $isCliente = Auth::guard('cliente')->check();
@@ -14,6 +17,9 @@ class AccessController extends Controller
         return view('pages.access.login', compact('isCliente', 'isUsuario'));
     }
 
+    /**
+     * Maneja la lógica de autenticación para usuarios del sistema y clientes.
+     */    
     public function login(Request $request)
     {
         // Validar las credenciales del formulario
@@ -22,29 +28,25 @@ class AccessController extends Controller
             'password' => 'required',
         ]);
 
-        // Intentar autenticar como usuario (guard web, provider usuarios)
+        // 👤 Autenticación para usuarios del sistema (administrador, vendedor, etc.)
         if (Auth::guard('web')->attempt([
             'correo_usuario' => $credentials['correo'],
             'password' => $credentials['password'],
         ])) {
-            $request->session()->regenerate();
+            $request->session()->regenerate(); // Reforzar seguridad
 
-            $user = Auth::guard('web')->user();
-            if ($user->rol && $user->rol->nombre_rol === 'Administrador') {
-                return redirect()->route('admin.home');
-            }
-            // Si es usuario pero no administrador, redirigir al home general
-            return redirect()->route('index');
+            // Redirigir al dashboard general del sistema
+            return redirect()->route('admin.home');
         }
 
-        // Intentar autenticar como cliente (guard cliente, provider clientes)
+        // 🛒 Autenticación para clientes del e-commerce
         if (Auth::guard('cliente')->attempt([
             'correo_cliente' => $credentials['correo'],
             'password' => $credentials['password'],
         ])) {
             $request->session()->regenerate();
 
-            // Redirigir al home del e-commerce para clientes
+            // Redirigir al home de clientes
             return redirect()->route('index');
         }
 
