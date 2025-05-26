@@ -13,7 +13,8 @@
 
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
 
-            <x-gestion.productos.header_tabla />
+            <x-gestion.productos.header_tabla :eliminados="$eliminados" />
+
 
             <!-- Tabla de usuarios -->
             <div class="bg-white shadow rounded-lg overflow-x-auto">

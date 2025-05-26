@@ -1,6 +1,6 @@
 @extends('layouts.panelAdmin')
 
-@section('title', 'Registrar Usuario')
+@section('title', 'Registrar Producto')
 
 @section('contenido')
     @include('components.panelAdmin.header', [
@@ -8,6 +8,10 @@
         'subtitulo' => 'Administración de Productos.',
     ])
 
-    <x-gestion.productos.create :categorias="$categorias"/>
+    {{-- <x-gestion.productos.create :categorias="$categorias":marcas="$marcas"/> --}}
+    @include('components.gestion.productos.create', [
+        'categorias' => $categorias,
+        'marcas' => $marcas
+    ])
 
 @endsection

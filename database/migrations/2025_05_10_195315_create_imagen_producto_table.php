@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_imagen');
             $table->string('ruta_imagen', 255);
 
-            $table->foreignId('id_producto')
-                ->constrained('productos', 'id_producto')
+            $table->foreignId('id_dproducto')
+                ->constrained('detalle_productos', 'id_dproducto')
                 ->onDelete('cascade');
         });
     }

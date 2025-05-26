@@ -1,4 +1,4 @@
-@props(['producto', 'categorias'])
+@props(['producto', 'categorias', 'marcas'])
 
 @if ($errors->any())
     <div class="mb-4 rounded bg-red-100 text-red-800 px-4 py-2">
@@ -10,34 +10,43 @@
     </div>
 @endif
 
-<form action="{{ route('producto.update', $producto->id_producto) }}" method="POST" class="space-y-6">
+<form action="{{ route('producto.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
     @csrf
     @method('PUT')
-    <div class="bg-white px-10 py-8 rounded-xl shadow-md max-w-sm mx-auto">
+
+    <div class="bg-white px-10 py-8 rounded-xl shadow-md max-w-md mx-auto">
         <div class="space-y-4">
             <h1 class="text-center text-2xl font-semibold text-gray-600 mb-4">Editar Producto</h1>
+
+            <!-- Código -->
             <div>
                 <label for="codigo_producto" class="block mb-1 text-gray-600 font-semibold">Código del Producto</label>
                 <input type="text" name="codigo_producto" id="codigo_producto" required
                     value="{{ old('codigo_producto', $producto->codigo_producto) }}"
-                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition" />
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
             </div>
+
+            <!-- Nombre -->
             <div>
                 <label for="nombre_producto" class="block mb-1 text-gray-600 font-semibold">Nombre del Producto</label>
                 <input type="text" name="nombre_producto" id="nombre_producto" required
                     value="{{ old('nombre_producto', $producto->nombre_producto) }}"
-                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition" />
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
             </div>
+
+            <!-- Descripción -->
             <div>
-                <label for="descripcion_producto" class="block mb-1 text-gray-600 font-semibold">Descripción</label>
-                <input type="text" name="descripcion_producto" id="descripcion_producto"
-                    value="{{ old('descripcion_producto', $producto->descripcion_producto) }}"
-                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition" />
+                <label for="descripcion" class="block mb-1 text-gray-600 font-semibold">Descripción</label>
+                <input type="text" name="descripcion" id="descripcion"
+                    value="{{ old('descripcion', $producto->detalle->descripcion ?? '') }}"
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
             </div>
+
+            <!-- Categoría -->
             <div>
                 <label for="id_categoria" class="block mb-1 text-gray-600 font-semibold">Categoría</label>
-                <select name="id_categoria" id="id_categoria"
-                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+                <select name="id_categoria" id="id_categoria" required
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
                     <option value="">Sin categoría</option>
                     @foreach ($categorias as $categoria)
                         <option value="{{ $categoria->id_categoria }}"
@@ -47,7 +56,32 @@
                     @endforeach
                 </select>
             </div>
+
+            <!-- Marca -->
+            <div>
+                <label for="id_marca" class="block mb-1 text-gray-600 font-semibold">Marca</label>
+                <select name="id_marca" id="id_marca" required
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
+                    <option value="">Seleccione una marca</option>
+                    @foreach ($marcas as $marca)
+                        <option value="{{ $marca->id_marca }}"
+                            {{ old('id_marca', $producto->detalle->id_marca ?? '') == $marca->id_marca ? 'selected' : '' }}>
+                            {{ $marca->nombre_marca }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Subir nuevas imágenes (opcional) -->
+            <div>
+                <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Nuevas Imágenes (opcional)</label>
+                <input type="file" name="imagenes[]" multiple
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                <small class="text-xs text-gray-500">Puedes subir nuevas imágenes si deseas reemplazar o agregar más.</small>
+            </div>
         </div>
+
+        <!-- Botones -->
         <div class="flex justify-between mt-6">
             <button type="submit"
                 class="bg-blue-600 text-white py-2 px-4 rounded-lg font-bold shadow hover:bg-blue-700 transition">
@@ -60,3 +94,4 @@
         </div>
     </div>
 </form>
+
