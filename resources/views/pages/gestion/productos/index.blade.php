@@ -28,6 +28,7 @@
                             :nombre_producto="$producto->nombre_producto" 
                             :descripcion_producto="$producto->descripcion_producto"
                             :categoria="$producto->categoria? $producto->categoria->nombre_categoria: 'Sin categoría'" 
+                            :marca="$producto->marca? $producto->marca->nombre_marca: 'Sin Marca'"
                             :id_producto="$producto->id_producto" />
                         @endforeach
                     </tbody>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Marca;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -22,7 +23,8 @@ class ProductoController extends Controller
     public function create()
     {
         $categorias = Categoria::all();
-        return view('pages.gestion.productos.create', compact('categorias'));
+        $marcas = Marca::all();
+        return view('pages.gestion.productos.create', compact('categorias', 'marcas'));
     }
 
     // Guardar producto
@@ -33,6 +35,7 @@ class ProductoController extends Controller
             'nombre_producto' => 'required|string|max:100',
             'descripcion_producto' => 'nullable|string|max:255',
             'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_marca' => 'required|exists:marcas,id_marca',
         ]);
 
         Producto::create([
@@ -40,6 +43,7 @@ class ProductoController extends Controller
             'nombre_producto' => $request->nombre_producto,
             'descripcion_producto' => $request->descripcion_producto,
             'id_categoria' => $request->id_categoria,
+            'id_marca' => $request->id_marca,
         ]);
 
         return redirect()->route('producto.index')->with('success', 'Producto creado correctamente.');
@@ -50,7 +54,8 @@ class ProductoController extends Controller
     {
         $producto = Producto::findOrFail($id_producto);
         $categorias = Categoria::all();
-        return view('pages.gestion.productos.edit', compact('producto', 'categorias'));
+        $marcas = Marca::all();
+        return view('pages.gestion.productos.edit', compact('producto', 'categorias', 'marcas'));
     }
 
     // Actualizar producto
@@ -61,6 +66,7 @@ class ProductoController extends Controller
             'nombre_producto' => 'required|string|max:100',
             'descripcion_producto' => 'nullable|string|max:255',
             'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_marca' => 'required|exists:marcas,id_marca',
         ]);
 
         $producto = Producto::findOrFail($id_producto);
@@ -68,6 +74,7 @@ class ProductoController extends Controller
         $producto->nombre_producto = $request->nombre_producto;
         $producto->descripcion_producto = $request->descripcion_producto;
         $producto->id_categoria = $request->id_categoria;
+        $producto->id_marca = $request->id_marca;
         $producto->save();
 
         return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');

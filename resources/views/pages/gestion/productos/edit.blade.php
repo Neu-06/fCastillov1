@@ -8,5 +8,5 @@
         'subtitulo' => 'Modifica la información del producto.',
     ])
 
-    <x-gestion.productos.edit :producto="$producto" :categorias="$categorias"/>
+    <x-gestion.productos.edit :producto="$producto" :categorias="$categorias":marcas="$marcas"/>
 @endsection

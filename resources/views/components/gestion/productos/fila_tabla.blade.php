@@ -3,6 +3,7 @@
     'nombre_producto',
     'descripcion_producto',
     'categoria',
+    'marca',
     'id_producto',
 ])
 
@@ -23,6 +24,12 @@
     <td class="p-4 border-b border-slate-200">
         <p class="text-sm text-slate-700">
             {{ $categoria }}
+        </p>
+    </td>
+        <!-- Marca -->
+    <td class="p-4 border-b border-slate-200">
+        <p class="text-sm text-slate-700">
+            {{ $marca }}
         </p>
     </td>
 

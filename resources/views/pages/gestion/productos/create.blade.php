@@ -8,6 +8,6 @@
         'subtitulo' => 'Administración de Productos.',
     ])
 
-    <x-gestion.productos.create :categorias="$categorias"/>
+    <x-gestion.productos.create :categorias="$categorias" :marcas="$marcas"/>
 
 @endsection

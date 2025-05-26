@@ -78,7 +78,9 @@
                         texto="Gestionar Productos" />
                     <x-header.elementosNav.optionSecundario link="{{ route('categoria.index') }}"
                         texto="Gestionar Categorias" />
-                </x-header.elementosNav.optionNav>
+                  <x-header.elementosNav.optionSecundario  link="{{ route('marca.index') }}"
+                         texto="Gestionar Marcas" />
+                   </x-header.elementosNav.optionNav>
 
             </nav>
         </div>

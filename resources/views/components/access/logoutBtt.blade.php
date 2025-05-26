@@ -61,7 +61,7 @@
         </form>
     @else
         <a href="{{ route('login') }}"
-            class="flex text-white text-center bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600">
+            class="flex text-white text-center bg-yellow-500 py-2 px-4 rounded-md hover:bg-yellow-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
             </svg>
