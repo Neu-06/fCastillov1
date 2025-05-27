@@ -15,7 +15,7 @@ export default {
                 tLink:'#3C05FF',
 
                 //colors for backgrounds
-                NavBar1: "#BF6B04",
+                NavBar1: "#1F2937",           //"#BF6B04",
                 NavBar2: "#BF7E04",
 
 
@@ -32,6 +32,6 @@ export default {
                 'wLR': '390px',
             },
         },
-    },
+    }, 
     plugins: [],
 };

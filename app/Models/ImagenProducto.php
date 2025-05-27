@@ -22,7 +22,9 @@ class ImagenProducto extends Model
 // Declaramos los campos que se pueden asignar de forma masiva (por ejemplo, con create())
     protected $fillable = [
         'ruta_imagen', // Aquí se guarda la ruta del archivo de imagen (por ejemplo: 'storage/imagenes/producto1.jpg')
-        'id_dproducto'// Esta es la clave foránea que conecta la imagen con un producto específico
+        'public_id',
+        'id_dproducto',// Esta es la clave foránea que conecta la imagen con un producto específico
+         
     ];
 
     // Cada imagen pertenece a un producto_detalle

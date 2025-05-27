@@ -30,4 +30,9 @@ class Marca extends Model
     protected $fillable = [
         'nombre_marca'
     ];
+        // Relación con DetalleProducto
+    public function detalleProductos()
+    {
+        return $this->hasMany(DetalleProducto::class, 'id_marca', 'id_marca');
+    }
 }

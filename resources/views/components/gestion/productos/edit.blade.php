@@ -10,7 +10,8 @@
     </div>
 @endif
 
-<form action="{{ route('producto.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+<form action="{{ route('producto.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data"
+    class="space-y-6">
     @csrf
     @method('PUT')
 
@@ -72,26 +73,52 @@
                 </select>
             </div>
 
-            <!-- Subir nuevas imágenes (opcional) -->
-            <div>
-                <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Nuevas Imágenes (opcional)</label>
+            <!-- 🖼 Imágenes actuales con opción para eliminar -->
+            @if ($producto->detalle && $producto->detalle->imagenes->count())
+                <div class="mt-6">
+                    <label class="block mb-1 text-gray-600 font-semibold">Imágenes Actuales</label>
+                    <div class="flex flex-wrap gap-4">
+                        @foreach ($producto->detalle->imagenes as $imagen)
+                            <div class="relative group" id="imagen-{{ $imagen->id_imagen }}">
+                                <img src="{{ $imagen->ruta_imagen }}"
+                                    class="w-28 h-28 object-cover rounded shadow border border-gray-300">
+
+                                <!-- Botón X para eliminar visualmente -->
+                                <button type="button" onclick="eliminarImagen('{{ $imagen->id_imagen }}')"
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 py-0.5 rounded-full cursor-pointer"
+                                    title="Eliminar imagen">
+                                    ❌
+                                </button>
+
+                                <!-- Checkbox oculto que será enviado al backend -->
+                                <input type="checkbox" name="imagenes_eliminar[]" value="{{ $imagen->id_imagen }}"
+                                    id="check-{{ $imagen->id_imagen }}" class="hidden">
+                            </div>
+                        @endforeach
+                    </div>
+                    <small class="text-xs text-gray-500 mt-1 block">Marca las imágenes que deseas eliminar.</small>
+                </div>
+            @endif
+            <!-- 📤 Nuevas imágenes -->
+            <div class="mt-6">
+                <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Subir nuevas imágenes
+                    (opcional)</label>
                 <input type="file" name="imagenes[]" multiple
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
-                <small class="text-xs text-gray-500">Puedes subir nuevas imágenes si deseas reemplazar o agregar más.</small>
+                <small class="text-xs text-gray-500">Puedes subir nuevas imágenes para agregar o reemplazar las
+                    actuales.</small>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-between mt-6">
+                <button type="submit"
+                    class="bg-blue-600 text-white py-2 px-4 rounded-lg font-bold shadow hover:bg-blue-700 transition">
+                    Actualizar
+                </button>
+                <a href="{{ route('producto.index') }}"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition shadow">
+                    Cancelar
+                </a>
             </div>
         </div>
-
-        <!-- Botones -->
-        <div class="flex justify-between mt-6">
-            <button type="submit"
-                class="bg-blue-600 text-white py-2 px-4 rounded-lg font-bold shadow hover:bg-blue-700 transition">
-                Actualizar
-            </button>
-            <a href="{{ route('producto.index') }}"
-               class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition shadow">
-                Cancelar
-            </a>
-        </div>
-    </div>
 </form>
-

@@ -5,8 +5,8 @@
             <h2 class="text-lg font-bold mb-4 text-red-600">¡Atención!</h2>
             <p class="mb-6">Para iniciar sesión o registrar una nueva cuenta, primero debes cerrar sesión.
             </p>
-            <div class="flex justify-center gap-4">
-                <form method="POST" action="{{ $isCliente ? route('cliente.logout') : route('usuario.logout') }}">
+            <div class="flex justify-center gap-4">                                 <!-- usuario.logout -->
+                <form method="POST" action="{{ $isCliente ? route('cliente.logout') : route('logout') }}">
                     @csrf
                     <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                         Cerrar sesión
@@ -21,7 +21,7 @@
     </div>
 @else
     <div class="h-auto flex justify-center mt-5">
-        <div class="hidden lg:flex w-full lg:w-1/2 justify-around items-center bg-gray-600">
+        <div class="hidden lg:flex w-full lg:w-1/2 justify-around items-center bg-gray-600">    
             <div class="w-full mx-auto px-20 flex-col items-center space-y-6">
                 <h1 class="text-white font-bold text-4xl font-sans">Ferreteria Castillo</h1>
                 <p class="text-white mt-1">Todo lo que necesites para construir.</p>
@@ -54,8 +54,8 @@
 
                         <input id="nombre_cliente" class="pl-2 w-full outline-none border-none" type="text"
                             name="nombre_cliente" placeholder="Nombre" value="{{ old('nombre_cliente') }}" required />
-                    </div>
-
+                     </div>
+                          
                     <div class="flex items-center border-2 mb-4 py-2 px-3 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="h-5 w-5 text-gray-400">

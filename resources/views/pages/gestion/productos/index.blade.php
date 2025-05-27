@@ -13,7 +13,7 @@
 
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
 
-            <x-gestion.productos.header_tabla :eliminados="$eliminados" />
+              <x-gestion.productos.header_tabla :eliminados="$eliminados ?? false" />
 
 
             <!-- Tabla de usuarios -->
@@ -27,9 +27,12 @@
                             <x-gestion.productos.fila_tabla 
                             :codigo_producto="$producto->codigo_producto" 
                             :nombre_producto="$producto->nombre_producto" 
-                            :descripcion_producto="$producto->descripcion_producto"
+                            :descripcion_producto="$producto->detalle?->descripcion ?? 'Sin descripción'"
                             :categoria="$producto->categoria? $producto->categoria->nombre_categoria: 'Sin categoría'" 
-                            :id_producto="$producto->id_producto" />
+                            :marca="$producto->detalle?->marca?->nombre_marca ?? 'Sin Marca'"
+                            :id_producto="$producto->id_producto"
+                            :eliminados="$eliminados ?? false" />
+                            
                         @endforeach
                     </tbody>
                 </table>

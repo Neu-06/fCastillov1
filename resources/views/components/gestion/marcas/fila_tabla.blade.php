@@ -1,16 +1,16 @@
-@props(['id_categoria', 'nombre_categoria'])
+@props(['id_marca', 'nombre_marca'])
 
 <tr>
     <td class="p-4 border-b border-slate-200">
         <p class="text-sm font-semibold text-slate-700">
-            {{ $id_categoria }}
+            {{ $id_marca }}
         </p>
     </td>
 
     <!-- Nombre de la categoría -->
     <td class="p-4 border-b border-slate-200">
         <p class="text-sm font-semibold text-slate-700">
-            {{ $nombre_categoria }}
+            {{ $nombre_marca }}
         </p>
     </td>
 
@@ -18,8 +18,8 @@
     <td class="p-4 border-b border-slate-200 text-center">
         <div class="flex justify-center gap-6">
             <!-- Botón Eliminar -->
-            @if(auth()->user()->tienePermiso('Eliminar Categorias'))
-            <button type="button" onclick="showDeleteModal('delete-modal-{{ $id_categoria }}')" 
+            @if(auth()->user()->tienePermiso('Eliminar Marcas'))
+            <button type="button" onclick="showDeleteModal('delete-modal-{{ $id_marca }}')" 
                 class="text-red-600 hover:underline">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-5">
@@ -32,8 +32,8 @@
     </td>
 </tr>
 <x-ventanaFlotante.delete
-    :modalId="'delete-modal-' . $id_categoria"
-    :action="route('categoria.destroy', $id_categoria)"
-    :itemName="$nombre_categoria"
-    question="¿Estás seguro de eliminar la categoría?"
+    :modalId="'delete-modal-' . $id_marca"
+    :action="route('marca.destroy', $id_marca)"
+    :itemName="$nombre_marca"
+    question="¿Estás seguro de eliminar la  Marca?"
 />

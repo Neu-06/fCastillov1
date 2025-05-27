@@ -6,11 +6,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProductoController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,9 @@ use App\Http\Controllers\ProductoController;
 // ==================== Rutas de Inicio ====================
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
 
-
+// ==================== Rutas de Logout (fuera del middleware) ====================
+Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+Route::post('/cliente/logout', [ClienteController::class, 'logout'])->name('cliente.logout');
 
 
 // ==================== Rutas de Autenticación ====================
@@ -53,7 +57,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/eliminados', [UsuarioController::class, 'eliminados'])->name('eliminados');
         Route::put('/{id}/restaurar', [UsuarioController::class, 'restore'])->name('restore');
 
-        Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+        //Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
     });
 
     // ==================== Rutas de Roles ===================C
@@ -82,7 +86,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/eliminados', [ClienteController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
         Route::put('/{id}/restaurar', [ClienteController::class, 'restore'])->name('restore'); // Restaurar cliente
 
-        Route::post('/logout', [ClienteController::class, 'logout'])->name('logout'); // cerrar seccion Para clientes
+        //Route::post('/logout', [ClienteController::class, 'logout'])->name('logout'); // cerrar seccion Para clientes
     });
 
     // ==================== Rutas de Proveedores ====================
@@ -126,6 +130,13 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/create', [CategoriaController::class, 'create'])->name('create'); // Formulario para registrar categoría
         Route::post('/create', [CategoriaController::class, 'store'])->name('store'); // Guardar categoría
         Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy'); // Eliminar categoría
+    });
+     // ==================== Rutas de Marcas ====================
+    Route::prefix('admin/marca')->name('marca.')->group(function () {
+        Route::get('/', [MarcaController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/create', [MarcaController::class, 'create'])->name('create'); // Formulario para registrar marca
+        Route::post('/create', [MarcaController::class, 'store'])->name('store'); // Guardar marca
+        Route::delete('/{id}', [MarcaController::class, 'destroy'])->name('destroy'); // Eliminar marca
     });
 });
 

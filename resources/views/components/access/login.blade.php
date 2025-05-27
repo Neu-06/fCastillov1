@@ -5,8 +5,8 @@
             <h2 class="text-lg font-bold mb-4 text-red-600">¡Atención!</h2>
             <p class="mb-6">Para iniciar sesión o registrar una nueva cuenta, primero debes cerrar sesión.
             </p>
-            <div class="flex justify-center gap-4">
-                <form method="POST" action="{{ $isCliente ? route('cliente.logout') : route('usuario.logout') }}">
+            <div class="flex justify-center gap-4">                               <!-- usuario.logout -->
+                <form method="POST" action="{{ $isCliente ? route('cliente.logout') : route('logout') }}">
                     @csrf
                     <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                         Cerrar sesión

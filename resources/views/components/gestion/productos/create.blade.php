@@ -54,13 +54,12 @@
                     @endforeach
                 </select>
             </div>
-
-            <!-- Marca -->
+            {{-- marca --}}
             <div>
                 <label for="id_marca" class="block mb-1 text-gray-600 font-semibold">Marca</label>
                 <select name="id_marca" id="id_marca" required
-                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
-                    <option value="">Seleccione una marca</option>
+                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+                    <option value="">Seleccione una Marca</option>
                     @foreach ($marcas as $marca)
                         <option value="{{ $marca->id_marca }}" {{ old('id_marca') == $marca->id_marca ? 'selected' : '' }}>
                             {{ $marca->nombre_marca }}
