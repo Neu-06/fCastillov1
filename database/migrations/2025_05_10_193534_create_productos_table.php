@@ -18,8 +18,9 @@ return new class extends Migration
             //$table->string('descripcion_producto', 255)->nullable();
             //llave foranea 
             $table->foreignId('id_categoria')
+                 ->nullable()
                 ->constrained('categorias', 'id_categoria')
-                ->nullable()
+                
                 ->onDelete('set null');
             $table->softDeletes();  // ✅ esto permite soft delete
         });

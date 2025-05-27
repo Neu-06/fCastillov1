@@ -23,8 +23,9 @@ return new class extends Migration
                 ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
             $table->foreignId('id_marca')
+            ->nullable()
                 ->constrained('marcas', 'id_marca')
-                ->nullable()
+                
                 ->onDelete('set null');
         });
     }
