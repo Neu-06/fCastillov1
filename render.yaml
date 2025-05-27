@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: laravel-app
+    env: docker
+    plan: free
+    branch: main  # o la rama que estés usando
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: ""
