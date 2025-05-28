@@ -1,5 +1,4 @@
-<div @click.away="open = false" @keydown.escape.window="open = false" class="relative" x-data="{ open: false }">
-
+<div @keydown.escape.window="open = false" class="relative" x-data="{ open: false }">
     <button @click="open = !open"
         class="flex flex-row text-tBlack items-center px-2 w-full py-2 mt-2 text-sm 
         font-semibold text-left rounded-lg 

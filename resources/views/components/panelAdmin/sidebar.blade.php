@@ -17,7 +17,7 @@
         class="fixed lg:translate-x-0 transform top-0 left-0 w-64 bg-white shadow-md h-screen border-r border-gray-200 transition-transform duration-300 ease-in-out z-50 flex flex-col justify-between">
 
         <!-- Contenido superior del sidebar -->
-        <div>
+        <div class="flex flex-col h-full">
             <div class="p-6 font-bold text-xl border-b text-blue-600 flex justify-between items-center">
                 Panel Admin
                 <!-- Botón para cerrar el menú (visible solo en pantallas pequeñas) -->
@@ -29,8 +29,8 @@
                 </button>
             </div>
 
-            <nav class="flex flex-col mt-4 gap-1 mx-4">
-
+            <!-- Menú scrollable -->
+            <nav class="flex flex-col mt-4 gap-1 mx-4 overflow-y-auto" style="max-height: calc(100vh - 200px);">
                 <!-- Inicio -->
                 <a href="{{ route('admin.home') }}"
                     class="items-start rounded-lg bg-transparent p-2 font-semibold hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
@@ -39,57 +39,34 @@
 
                 <!-- Opciones de gestión -->
                 <x-header.elementosNav.optionNav texto="Gestionar" display="static">
-                    @if (auth()->user()->tienePermiso('Ver Usuarios'))
-                        <x-header.elementosNav.optionSecundario link="{{ route('usuario.index') }}"
-                            texto="Gestionar Usuarios" />
-                    @endif
-
-                    @if (auth()->user()->tienePermiso('Ver Roles'))
-                        <x-header.elementosNav.optionSecundario link="{{ route('rol.index') }}"
-                            texto="Gestionar Roles" />
-                    @endif
-
-                    @if (auth()->user()->tienePermiso('Ver Permisos'))
-                        <x-header.elementosNav.optionSecundario link="{{ route('permiso.index') }}"
-                            texto="Gestionar Permiso" />
-                    @endif
+                    <x-header.elementosNav.optionSecundario link="{{ route('usuario.index') }}"
+                        texto="Gestionar Usuarios" />
+                    <x-header.elementosNav.optionSecundario link="{{ route('rol.index') }}" texto="Gestionar Roles" />
+                    <x-header.elementosNav.optionSecundario link="{{ route('permiso.index') }}" texto="Gestionar Permiso" />
+                    
+                    
+                    
                 </x-header.elementosNav.optionNav>
 
-                <x-header.elementosNav.optionNav texto="Compras" display="static">
-
-                    @if (auth()->user()->tienePermiso('Ver Proveedores'))
-                        <x-header.elementosNav.optionSecundario link="{{ route('proveedor.index') }}"
-                            texto="Gestionar Proveedores" />
-                    @endif
+                <x-header.elementosNav.optionNav texto="Compras" display="static" >
+                    <x-header.elementosNav.optionSecundario link="{{ route('proveedor.index') }}" texto="Gestionar Proveedores" />
                 </x-header.elementosNav.optionNav>
                 <!-- Ventas -->
-                <x-header.elementosNav.optionNav texto="Ventas" display="static">
-
-
-                    @if (auth()->user()->tienePermiso('Ver Clientes'))
-                        <x-header.elementosNav.optionSecundario link="{{ route('cliente.index') }}"
-                            texto="Gestionar Clientes" />
-                    @endif
-
+                <x-header.elementosNav.optionNav texto="Ventas" display="static" >
+                    <x-header.elementosNav.optionSecundario link="{{ route('cliente.index') }}" texto="Gestionar Clientes" />
                 </x-header.elementosNav.optionNav>
 
                 <x-header.elementosNav.optionNav texto="Inventario" display="static">
-                    <x-header.elementosNav.optionSecundario link="{{ route('producto.index') }}"
-                        texto="Gestionar Productos" />
-                    <x-header.elementosNav.optionSecundario link="{{ route('categoria.index') }}"
-                        texto="Gestionar Categorias" />
-                  <x-header.elementosNav.optionSecundario  link="{{ route('marca.index') }}"
-                         texto="Gestionar Marcas" />
-                   </x-header.elementosNav.optionNav>
-
+                    <x-header.elementosNav.optionSecundario link="{{ route('producto.index') }}" texto="Gestionar Productos" />
+                    <x-header.elementosNav.optionSecundario link="{{ route('categoria.index') }}" texto="Gestionar Categorias" />
+                </x-header.elementosNav.optionNav>
             </nav>
         </div>
 
-        <!-- Botón de cerrar sesión -->
+        <!-- Botón de cerrar sesión SIEMPRE visible -->
         <div class="flex justify-center items-center mt-4 mb-4">
             <x-access.logoutBtt />
         </div>
-
     </aside>
 
     <!-- Fondo oscuro para cerrar el menú (solo en pantallas pequeñas) -->
