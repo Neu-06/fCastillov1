@@ -147,7 +147,10 @@ public function update(Request $request, $id_rol)
             'Gestionar Roles',
             'Gestionar Permisos',
             'Gestionar Proveedores',
-            'Gestionar Clientes'
+            'Gestionar Clientes',
+            'Gestionar Productos',
+            'Gestionar Marcas',
+            'Gestionar Categorias',
         ];
 
         return view('pages.gestion.roles.permisos', compact('rol', 'permisos', 'casosDeUso'));

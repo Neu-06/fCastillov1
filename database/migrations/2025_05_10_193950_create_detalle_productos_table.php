@@ -16,17 +16,14 @@ return new class extends Migration
             $table->decimal('precio_venta', 10, 2);
             $table->decimal('costo_promedio', 10, 2);
             $table->decimal('precio_compra', 10, 2);
+            $table->string('descripcion')->nullable(); // 👈 Aquí se añade
 
-            //llave foranea
+            //llave foranea, BORRAR MARCA Y PONERLO A PRODUCTO. 
             $table->foreignId('id_producto')
                 ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
             $table->foreignId('id_marca')
                 ->constrained('marcas', 'id_marca')
-                ->nullable()
-                ->onDelete('set null');
-            $table->foreignId('id_medida')
-                ->constrained('medidas', 'id_medida')
                 ->nullable()
                 ->onDelete('set null');
         });

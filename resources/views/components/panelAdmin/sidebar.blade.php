@@ -74,13 +74,19 @@
                 </x-header.elementosNav.optionNav>
 
                 <x-header.elementosNav.optionNav texto="Inventario" display="static">
-                    <x-header.elementosNav.optionSecundario link="{{ route('producto.index') }}"
-                        texto="Gestionar Productos" />
-                    <x-header.elementosNav.optionSecundario link="{{ route('categoria.index') }}"
-                        texto="Gestionar Categorias" />
-                  <x-header.elementosNav.optionSecundario  link="{{ route('marca.index') }}"
-                         texto="Gestionar Marcas" />
-                   </x-header.elementosNav.optionNav>
+                    @if (auth()->user()->tienePermiso('Ver Productos'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('producto.index') }}"
+                            texto="Gestionar Productos" />
+                    @endif
+                    @if (auth()->user()->tienePermiso('Ver Categorias'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('categoria.index') }}"
+                            texto="Gestionar Categorias" />
+                    @endif
+                    @if (auth()->user()->tienePermiso('Ver Marcas'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('marca.index') }}"
+                            texto="Gestionar Marcas" />
+                    @endif
+                </x-header.elementosNav.optionNav>
 
             </nav>
         </div>
