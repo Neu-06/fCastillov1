@@ -23,8 +23,11 @@
 
         @yield('contenido')
     </main>
+<script src="{{ asset('js/producto-edit.js') }}"></script>
+@stack('scripts')
 
 
 </body>
+
 
 </html>

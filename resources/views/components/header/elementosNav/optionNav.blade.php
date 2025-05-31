@@ -1,6 +1,12 @@
+@props([
+    'texto',
+    'textColor'=>'text-text-tBlack',
+    'display',
+])
+
 <div @keydown.escape.window="open = false" class="relative" x-data="{ open: false }">
     <button @click="open = !open"
-        class="flex flex-row text-tBlack items-center px-2 w-full py-2 mt-2 text-sm 
+        class="flex flex-row {{$textColor}} items-center px-2 w-full py-2 mt-2 text-sm 
         font-semibold text-left rounded-lg 
         md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 
         focus:outline-none focus:shadow-outline">

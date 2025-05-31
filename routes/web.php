@@ -69,9 +69,6 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/{id}/permisos', [RolController::class, 'verPermisos'])->name('permisos');
         Route::get('/{id}/edit', [RolController::class, 'edit'])->name('edit');
         Route::put('/{id}', [RolController::class, 'update'])->name('update');
-
-
-
     });
 
 
@@ -122,6 +119,9 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/{id}/edit', [ProductoController::class, 'edit'])->name('edit'); // Formulario para editar producto
         Route::put('/{id}', [ProductoController::class, 'update'])->name('update'); // Actualizar producto
         Route::delete('/{id}', [ProductoController::class, 'destroy'])->name('destroy'); // Eliminar producto
+        // Rutas adicionales
+        Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados'); // Mostrar productos eliminados
+        Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');    // Restaurar producto eliminado
     });
 
     // ==================== Rutas de Categorías ====================
