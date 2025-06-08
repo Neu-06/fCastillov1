@@ -27,9 +27,9 @@
                             <x-gestion.productos.fila_tabla 
                             :codigo_producto="$producto->codigo_producto" 
                             :nombre_producto="$producto->nombre_producto" 
-                            :descripcion_producto="$producto->detalle?->descripcion ?? 'Sin descripción'"
+                            :descripcion_producto="$producto->descripcion ?? 'Sin descripción'"
                             :categoria="$producto->categoria? $producto->categoria->nombre_categoria: 'Sin categoría'" 
-                            :marca="$producto->detalle?->marca?->nombre_marca ?? 'Sin Marca'"
+                            :marca="$producto->marca?->nombre_marca ?? 'Sin Marca'"
                             :id_producto="$producto->id_producto"
                             :eliminados="$eliminados ?? false" />
                             

@@ -53,7 +53,7 @@ class ClientePolicy
      */
     public function restore(Usuario $usuario, Cliente $cliente): bool
     {
-        return false;
+         return $usuario->tienePermiso('Ver Clientes');
     }
 
     /**

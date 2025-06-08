@@ -15,15 +15,26 @@ return new class extends Migration
             $table->id('id_producto');
             $table->string('codigo_producto', 50)->unique();
             $table->string('nombre_producto', 100);
-            //$table->string('descripcion_producto', 255)->nullable();
+             $table->string('descripcion')->nullable(); 
+            $table->decimal('precio_venta', 10, 2);
+            $table->decimal('costo_promedio', 10, 2);
+            $table->decimal('precio_compra', 10, 2);
+             $table->integer('stock')->default(0);
             //llave foranea 
             $table->foreignId('id_categoria')
                  ->nullable()
                 ->constrained('categorias', 'id_categoria')
                 
                 ->onDelete('set null');
-            $table->softDeletes();  // ✅ esto permite soft delete
+                 $table->softDeletes();  
+            $table->foreignId('id_marca')
+                ->nullable()
+                ->constrained('marcas', 'id_marca')
+                
+                ->onDelete('set null');
         });
+
+         
     }
 
     /**

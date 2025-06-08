@@ -34,5 +34,15 @@ class DatabaseSeeder extends Seeder
                 'id_rol' => $rol->id_rol,
             ]
         );
+
+         // 5. Cargar las categorías de productos de ferretería
+             $this->call(CategoriaSeeder::class);
+
+         // 6. Cargar las marcas de productos de ferretería
+             $this->call(MarcaSeeder::class);
+
+
+         // 6. Cargar los proveedores de la ferretería
+              $this->call(ProveedorSeeder::class);
     }
 }
