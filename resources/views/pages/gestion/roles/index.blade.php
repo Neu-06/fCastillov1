@@ -11,7 +11,7 @@
     <!-- ENVOLTORIO Alpine.js -->
     <div class="mt-6">
 
-        <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
+        <div class="table-container">
 
             <x-gestion.roles.header_tabla />
 

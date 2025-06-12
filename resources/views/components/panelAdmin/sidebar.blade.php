@@ -39,21 +39,36 @@
 
                 <!-- Opciones de gestión -->
                 <x-header.elementosNav.optionNav texto="Gestionar" display="static">
-                    <x-header.elementosNav.optionSecundario link="{{ route('usuario.index') }}"
-                        texto="Gestionar Usuarios" />
-                    <x-header.elementosNav.optionSecundario link="{{ route('rol.index') }}" texto="Gestionar Roles" />
-                    <x-header.elementosNav.optionSecundario link="{{ route('permiso.index') }}" texto="Gestionar Permiso" />
-                    
-                    
-                    
+
+                    @if (auth()->user()->tienePermiso('Ver Usuarios'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('usuario.index') }}"
+                            texto="Gestionar Usuarios" />
+                    @endif
+
+                    @if (auth()->user()->tienePermiso('Ver Roles'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('rol.index') }}"
+                            texto="Gestionar Roles" />
+                    @endif
+
+                    @if (auth()->user()->tienePermiso('Ver Permisos'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('permiso.index') }}"
+                            texto="Gestionar Permiso" />
+                    @endif
+
                 </x-header.elementosNav.optionNav>
 
-                <x-header.elementosNav.optionNav texto="Compras" display="static" >
-                    <x-header.elementosNav.optionSecundario link="{{ route('proveedor.index') }}" texto="Gestionar Proveedores" />
+                <x-header.elementosNav.optionNav texto="Compras" display="static">
+                     @if (auth()->user()->tienePermiso('Ver Proveedores'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('proveedor.index') }}"
+                            texto="Gestionar Proveedores" />
+                    @endif
                 </x-header.elementosNav.optionNav>
                 <!-- Ventas -->
-                <x-header.elementosNav.optionNav texto="Ventas" display="static" >
-                    <x-header.elementosNav.optionSecundario link="{{ route('cliente.index') }}" texto="Gestionar Clientes" />
+                <x-header.elementosNav.optionNav texto="Ventas" display="static">
+                    @if (auth()->user()->tienePermiso('Ver Clientes'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('cliente.index') }}"
+                            texto="Gestionar Clientes" />
+                    @endif
                 </x-header.elementosNav.optionNav>
 
                 <x-header.elementosNav.optionNav texto="Inventario" display="static">

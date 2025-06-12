@@ -14,7 +14,7 @@
             {!! $question !!} <br>
             <span class="font-semibold">{{ $itemName }}</span>
         </p>
-        <div class="flex justify-end gap-4">
+        <div class="flex justify-center gap-4">
             <button onclick="closeRestoreModal('{{ $modalId }}')"
                 class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition">
                 Cancelar

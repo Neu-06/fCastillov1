@@ -26,12 +26,12 @@ use App\Http\Controllers\ProductoController;
 */
 
 // ==================== Rutas de Inicio ====================
+
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
 
 // ==================== Rutas de Logout (fuera del middleware) ====================
-Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
 Route::post('/cliente/logout', [ClienteController::class, 'logout'])->name('cliente.logout');
-
+Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
 // ==================== Rutas de Autenticación ====================
 Route::get('/login', [AccessController::class, 'showLogin'])->name('login');
@@ -41,7 +41,7 @@ Route::post('/registro', [ClienteController::class, 'store'])->name('cliente.pub
 
 
 //// rutas protegidas para administradores
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     Route::get('/admin/home', [HomeController::class, 'homeAdmin'])->name('admin.home');
 
@@ -56,8 +56,7 @@ Route::middleware(['auth:web'])->group(function () {
 
         Route::get('/eliminados', [UsuarioController::class, 'eliminados'])->name('eliminados');
         Route::put('/{id}/restaurar', [UsuarioController::class, 'restore'])->name('restore');
-
-        //Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+        Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
     });
 
     // ==================== Rutas de Roles ===================C
@@ -131,7 +130,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/create', [CategoriaController::class, 'store'])->name('store'); // Guardar categoría
         Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy'); // Eliminar categoría
     });
-     // ==================== Rutas de Marcas ====================
+    // ==================== Rutas de Marcas ====================
     Route::prefix('admin/marca')->name('marca.')->group(function () {
         Route::get('/', [MarcaController::class, 'index'])->name('index'); // Listar marca
         Route::get('/create', [MarcaController::class, 'create'])->name('create'); // Formulario para registrar marca
