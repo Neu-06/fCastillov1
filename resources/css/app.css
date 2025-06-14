@@ -1,6 +1,8 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';/*esto agregue*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /* Chrome, Safari, Edge, Opera */
 input[type=number]::-webkit-outer-spin-button,
@@ -12,4 +14,18 @@ input[type=number]::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* Estilos para Headroom.js Esto tambien agregue*/
+.headroom {
+  transition: all 0.3s ease-in-out;
+  will-change: max-height;
+}
+
+.headroom--unpinned {
+  max-height: 0px !important;
+}
+
+.headroom--pinned {
+  max-height: 40px !important;
 }

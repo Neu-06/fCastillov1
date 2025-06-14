@@ -49,4 +49,16 @@ class CategoriaController extends Controller
 
         return redirect()->route('categoria.index')->with('success', 'Categoría eliminada correctamente.');
     }
+    /////////-----------------------------------------------------------------------------------------------
+
+
+public function show($id)
+{
+    $categoria = \App\Models\Categoria::findOrFail($id);
+    $productos = $categoria->productos; // Asumiendo que tienes la relación definida
+    return view('pages.gestion.categorias.show', compact('categoria', 'productos'));
 }
+
+}
+
+

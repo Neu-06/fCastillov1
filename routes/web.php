@@ -25,8 +25,11 @@ use App\Http\Controllers\ProductoController;
 |
 */
 
+
 // ==================== Rutas de Inicio ====================
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
+
+Route::get('/categoria/{id}', [CategoriaController::class, 'show'])->name('categoria.show'); // Vista pública de categoría
 
 // ==================== Rutas de Logout (fuera del middleware) ====================
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
@@ -130,7 +133,9 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/create', [CategoriaController::class, 'create'])->name('create'); // Formulario para registrar categoría
         Route::post('/create', [CategoriaController::class, 'store'])->name('store'); // Guardar categoría
         Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy'); // Eliminar categoría
+
     });
+
      // ==================== Rutas de Marcas ====================
     Route::prefix('admin/marca')->name('marca.')->group(function () {
         Route::get('/', [MarcaController::class, 'index'])->name('index'); // Listar marca
