@@ -11,6 +11,10 @@ use App\Models\Usuario;
 use App\Models\Rol;
 use App\Models\Proveedor;
 use App\Models\Cliente;
+use App\Models\DetalleProducto;
+use App\Models\Marca;
+use App\Models\Categoria;
+use App\Models\ImagenProducto;
 
 
 // Importar las policies asociadas
@@ -19,6 +23,11 @@ use App\Policies\RolPolicy;
 use App\Policies\PermisoPolicy;
 use App\Policies\ClientePolicy;
 use App\Policies\ProveedorPolicy;
+use App\Policies\CategoriaPolicy;
+use App\Policies\DetalleProductoPolicy;
+use App\Policies\ImagenProductoPolicy;
+use App\Policies\MarcaPolicy;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -40,6 +49,8 @@ class AuthServiceProvider extends ServiceProvider
         Permiso::class => PermisoPolicy::class,
         Proveedor::class => ProveedorPolicy::class,
         Cliente::class => ClientePolicy::class,
+        Categoria::class => CategoriaPolicy::class,
+        Marca::class => MarcaPolicy::class,
     ];
 
     /**

@@ -136,7 +136,7 @@ class ClienteController extends Controller
         $cliente = Cliente::withTrashed()->findOrFail($id_cliente);
         $this->authorize('restore', $cliente);
         $cliente->restore();
-
+        
         return redirect()->route('cliente.index')->with('success', 'Cliente restaurado correctamente.');
     }
 

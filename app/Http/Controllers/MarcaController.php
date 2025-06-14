@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
+
 class MarcaController extends Controller
 {
     /**
@@ -11,7 +12,7 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        $marcas= Marca::all();
+        $marcas = Marca::all();
         return view('pages.gestion.marcas.index', compact('marcas'));
     }
 
@@ -20,7 +21,7 @@ class MarcaController extends Controller
      */
     public function create()
     {
-            return view('pages.gestion.marcas.create');
+        return view('pages.gestion.marcas.create');
     }
 
     /**
@@ -38,13 +39,13 @@ class MarcaController extends Controller
 
         return redirect()->route('marca.index')->with('success', 'Marca creada correctamente.');
     }
-      
+
     public function destroy($id_marca)
     {
-        $marcas= Marca::findOrFail($id_marca);
+        $marcas = Marca::findOrFail($id_marca);
 
-        
-        if ($marcas->productos()->count() > 0) {
+
+        if ($marcas->detalleProductos()->count() > 0) {
             return redirect()->route('marca.index')
                 ->with('error', 'No se puede eliminar la Marca porque tiene productos asociados.');
         }

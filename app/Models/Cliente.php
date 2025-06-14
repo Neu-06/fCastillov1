@@ -46,4 +46,8 @@ class Cliente extends Authenticatable
     {
         return 'correo_cliente';
     }
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class, 'id_cliente', 'id_cliente');
+    }
 }

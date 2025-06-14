@@ -71,7 +71,7 @@ class Usuario extends Authenticatable
      */    
     public function getAuthIdentifierName()
     {
-        return 'correo_usuario'; // Cambia esto si usas otro campo para la autenticación
+        return 'id_usuario'; // Cambia esto si usas otro campo para la autenticación
     }
 
 
@@ -90,5 +90,8 @@ class Usuario extends Authenticatable
     {
         return $this->permisos()->contains('nombre_permiso', $permiso);
     }
-
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class, 'id_usuario', 'id_usuario');
+    }
 }

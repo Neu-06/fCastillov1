@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MarcaController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\VentaController;
+
 
 
 /*
@@ -50,6 +53,7 @@ Route::middleware(['auth:web'])->group(function () {
 
     // ==================== Rutas de Usuarios ===================r
     Route::prefix('admin/usuario')->name('usuario.')->group(function () {
+        Route::get('/bitacora', [UsuarioController::class, 'index2'])->name('bitacora.index');
         Route::get('/', [UsuarioController::class, 'index'])->name('index'); // Listar usuarios
         Route::get('/registro', [UsuarioController::class, 'create'])->name('create'); //formulario para registrar usuario
         Route::post('/registro', [UsuarioController::class, 'store'])->name('store'); //guardar usuario
@@ -72,9 +76,6 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/{id}/permisos', [RolController::class, 'verPermisos'])->name('permisos');
         Route::get('/{id}/edit', [RolController::class, 'edit'])->name('edit');
         Route::put('/{id}', [RolController::class, 'update'])->name('update');
-
-
-
     });
 
 
@@ -125,6 +126,9 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/{id}/edit', [ProductoController::class, 'edit'])->name('edit'); // Formulario para editar producto
         Route::put('/{id}', [ProductoController::class, 'update'])->name('update'); // Actualizar producto
         Route::delete('/{id}', [ProductoController::class, 'destroy'])->name('destroy'); // Eliminar producto
+        // Rutas adicionales
+        Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados'); // Mostrar productos eliminados
+        Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');    // Restaurar producto eliminado
     });
 
     // ==================== Rutas de Categorías ====================
@@ -143,6 +147,25 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/create', [MarcaController::class, 'store'])->name('store'); // Guardar marca
         Route::delete('/{id}', [MarcaController::class, 'destroy'])->name('destroy'); // Eliminar marca
     });
+
+     // ==================== Rutas de Marcas ====================
+    Route::prefix('admin/compra')->name('compra.')->group(function () {
+        Route::get('/', [CompraController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/create', [CompraController::class, 'create'])->name('create'); // Formulario para registrar marca
+        Route::post('/create', [CompraController::class, 'store'])->name('store'); // Guardar marca
+        Route::delete('/{id}', [CompraController::class, 'destroy'])->name('destroy'); // Eliminar marca
+        Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('admin/venta')->name('venta.')->group(function () {
+        
+        Route::get('/', [VentaController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/create', [VentaController::class, 'create'])->name('create'); // Formulario para registrar marca
+        Route::post('/create', [VentaController::class, 'store'])->name('store'); // Guardar marca
+        Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy'); // Eliminar marca
+         Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
+    });
+    
 });
 
 /// rutas protegidas para clientes

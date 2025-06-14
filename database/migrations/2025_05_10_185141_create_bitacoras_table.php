@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bitacoras', function (Blueprint $table) {
             $table->id('id_bitacora'); // ID de la bitácora
+            $table->unsignedBigInteger('id_usuario');
             $table->string('accion', 100); // Acción realizada (crear, actualizar, eliminar, etc.)
             $table->string('tabla_afectada', 100)->nullable(); // Nombre de la tabla afectada
             $table->text('descripcion')->nullable(); // Descripción de la acción
@@ -22,10 +23,9 @@ return new class extends Migration
             $table->timestamps(); // Campos created_at y updated_at
 
             //llave foranea
-            $table->foreignId('id_usuario')
-                ->constrained('usuarios', 'id_usuario')
-                ->nullable()
-                ->onDelete('set null');
+            $table->foreign('id_usuario')
+             ->references('id_usuario')
+            ->on('usuarios');
         });
     }
 
