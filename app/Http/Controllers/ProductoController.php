@@ -2,30 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Models\Producto;
-use App\Models\DetalleProducto;
 use App\Models\ImagenProducto;
 use App\Models\Categoria;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use Cloudinary\Cloudinary;
-
 class ProductoController extends Controller
 {
-
     public function index()
     {
-        $productos = Producto::with(['detalle', 'detalle.marca', 'detalle.imagenes', 'categoria'])->get();
-
+        $productos = Producto::with(['marca', 'imagenes', 'categoria'])->get();
+        //dd($productos->first()); // inspecciona solo el primer producto
         return view('pages.gestion.productos.index', [
             'productos' => $productos,
             'eliminados' => false
         ]);
     }
 
-    // ✅ Mostrar formulario de creación
     public function create()
     {
         $categorias = Categoria::all();
@@ -33,84 +29,56 @@ class ProductoController extends Controller
         return view('pages.gestion.productos.create', compact('categorias', 'marcas'));
     }
 
-    // ✅ Guardar producto en las tablas respectivas
-
-
-
     public function store(Request $request)
     {
         $request->validate([
-            // … tus reglas …
             'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         // 1) Crear producto y detalle en transacción
-        DB::transaction(function () use ($request, &$detalle) {
+        DB::transaction(function () use ($request) {
             $producto = Producto::create([
                 'codigo_producto' => $request->codigo_producto,
                 'nombre_producto' => $request->nombre_producto,
-                'id_categoria'    => $request->id_categoria,
-            ]);
-            $detalle = DetalleProducto::create([
-                'id_producto'   => $producto->id_producto,
                 'descripcion'   => $request->descripcion,
+                'id_categoria'    => $request->id_categoria,
                 'id_marca'      => $request->id_marca,
                 'precio_venta'  => 0,
+                'stock'        => 0,
                 'precio_compra' => 0,
                 'costo_promedio' => 0,
             ]);
         });
 
-        // 2) Configurar SDK oficial de Cloudinary
-        // Instancia principal 
+        // 3) Subir imágenes y guardar en BD
         if ($request->hasFile('imagenes')) {
-            $cloudinary = new Cloudinary(
-                [
-                    'cloud' => [
-                        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                        'api_key'    => env('CLOUDINARY_API_KEY'),
-                        'api_secret' => env('CLOUDINARY_API_SECRET'),
-                    ],
-                    'url' => [
-                        'secure' => true,
-                    ]
-                ]
-            );
-
-            // 3) Subir imágenes y guardar en BD
-
             foreach ($request->file('imagenes') as $imagen) {
                 if ($imagen->isValid()) {
-                    $result = $cloudinary->uploadApi()->upload(
-                        $imagen->getRealPath(),
-                        [
-                            'folder'        => 'ferreteria/' . $request->id_categoria . '/' . $request->id_marca,
-                            'quality'       => 'auto',
-                            'fetch_format'  => 'auto',
-                        ]
-                    );
+                    $uploaded = Cloudinary::upload($imagen->getRealPath(), [
+                        'folder' => 'ferreteria/' . $request->id_categoria . '/' . $request->id_marca,
+                    ]);
+
+                    $uploadedFileUrl = $uploaded->getSecurePath();
+                    $publicId = $uploaded->getPublicId();
 
                     ImagenProducto::create([
-                        'id_dproducto' => $detalle->id_dproducto,
-                        'ruta_imagen'  => $result['secure_url'],
-                        'public_id'    => $result['public_id'],
+                        'id_producto' => $request->codigo_producto,
+                        'ruta_imagen'  => $uploadedFileUrl,
+                        'public_id'    => $publicId,
                     ]);
                 }
             }
+
+            return redirect()->route('producto.index')
+                ->with('success', 'Producto registrado correctamente.');
         }
-
-        return redirect()->route('producto.index')
-            ->with('success', 'Producto registrado correctamente.');
     }
-
-
-
 
 
     // ✅ Mostrar formulario de edición
     public function edit($id_producto)
     {
-        $producto = Producto::with(['detalle', 'detalle.imagenes'])->findOrFail($id_producto);
+        $producto = Producto::with(['imagenes'])->findOrFail($id_producto);
         $categorias = Categoria::all();
         $marcas = Marca::all();
         return view('pages.gestion.productos.edit', compact('producto', 'categorias', 'marcas'));
@@ -130,38 +98,24 @@ class ProductoController extends Controller
             'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Instancia del SDK v2 de Cloudinary
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                'api_key'    => env('CLOUDINARY_API_KEY'),
-                'api_secret' => env('CLOUDINARY_API_SECRET'),
-            ],
-            'url' => ['secure' => true],
-        ]);
 
-        DB::transaction(function () use ($request, $id_producto, $cloudinary) {
-            $producto = Producto::with('detalle.imagenes')->findOrFail($id_producto);
+        DB::transaction(function () use ($request, $id_producto) {
+            $producto = Producto::with('imagenes')->findOrFail($id_producto);
 
             // ✅ Actualizar datos del producto
             $producto->update([
                 'codigo_producto' => $request->codigo_producto,
                 'nombre_producto' => $request->nombre_producto,
-                'id_categoria'    => $request->id_categoria,
-            ]);
-
-            // ✅ Actualizar detalle del producto
-            $detalle = $producto->detalle;
-            $detalle->update([
                 'descripcion' => $request->descripcion,
-                'id_marca'    => $request->id_marca,
+                'id_categoria'    => $request->id_categoria,
+                'id_marca'  => $request->marca,
             ]);
 
             // ✅ Eliminar imágenes seleccionadas
             if ($request->has('imagenes_eliminar')) {
-                foreach ($detalle->imagenes as $imagen) {
+                foreach ($producto->imagenes as $imagen) {
                     if (in_array($imagen->id_imagen, $request->imagenes_eliminar)) {
-                        $cloudinary->uploadApi()->destroy($imagen->public_id); // elimina de Cloudinary
+                        cloudinary::destroy($imagen->public_id); // elimina de Cloudinary
                         $imagen->delete(); // elimina de la base de datos
                     }
                 }
@@ -171,7 +125,7 @@ class ProductoController extends Controller
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagenNueva) {
                     if ($imagenNueva->isValid()) {
-                        $upload = $cloudinary->uploadApi()->upload(
+                        $upload = cloudinary::upload(
                             $imagenNueva->getRealPath(),
                             [
                                 'folder'        => 'ferreteria/' . $request->id_categoria . '/' . $request->id_marca,
@@ -181,9 +135,9 @@ class ProductoController extends Controller
                         );
 
                         ImagenProducto::create([
-                            'id_dproducto' => $detalle->id_dproducto,
-                            'ruta_imagen'  => $upload['secure_url'],
-                            'public_id'    => $upload['public_id'],
+                            'id_dproducto' => $producto->id_producto,
+                            'ruta_imagen'  => $upload->getSecurePath(),
+                            'public_id'    => $upload->getPublicId(),
                         ]);
                     }
                 }
@@ -201,22 +155,12 @@ class ProductoController extends Controller
     public function destroy($id_producto)
     {
         // Buscar el producto con detalle e imágenes
-        $producto = Producto::with('detalle.imagenes')->findOrFail($id_producto);
+        $producto = Producto::with('imagenes')->findOrFail($id_producto);
 
-        // Instancia de Cloudinary
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                'api_key'    => env('CLOUDINARY_API_KEY'),
-                'api_secret' => env('CLOUDINARY_API_SECRET'),
-            ],
-            'url' => ['secure' => true],
-        ]);
-
-        // Eliminar imágenes de Cloudinary (pero aún no de la BD)
-        if ($producto->detalle && $producto->detalle->imagenes) {
-            foreach ($producto->detalle->imagenes as $imagen) {
-                $cloudinary->uploadApi()->destroy($imagen->public_id);
+        // Eliminar imágenes de Cloudinary (pero no de la base de datos aún)
+        if ($producto->imagenes) {
+            foreach ($producto->imagenes as $imagen) {
+                Cloudinary::destroy($imagen->public_id);
                 // Nota: no eliminamos la fila de BD porque es soft delete del producto
             }
         }
@@ -232,7 +176,7 @@ class ProductoController extends Controller
     public function eliminados()
     {
         $productos = Producto::onlyTrashed()
-            ->with(['detalle', 'detalle.marca', 'detalle.imagenes', 'categoria'])
+            ->with(['marca', 'imagenes', 'categoria'])
             ->get();
 
         return view('pages.gestion.productos.index', [

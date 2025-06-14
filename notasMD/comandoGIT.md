@@ -15,3 +15,6 @@ git push origin nombre-de-la-rama
 `git checkout nombre-de-la-rama`
 ### crear y moverse a una rama
 `git checkout -b nombre-de-la-rama`
+### ver ramas remotas
+`git fetch --all
+git branch -a `

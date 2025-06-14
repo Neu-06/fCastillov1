@@ -23,13 +23,13 @@ class ImagenProducto extends Model
     protected $fillable = [
         'ruta_imagen', // Aquí se guarda la ruta del archivo de imagen (por ejemplo: 'storage/imagenes/producto1.jpg')
         'public_id',
-        'id_dproducto',// Esta es la clave foránea que conecta la imagen con un producto específico
+        'id_producto',// Esta es la clave foránea que conecta la imagen con un producto específico
          
     ];
 
     // Cada imagen pertenece a un producto_detalle
     public function productoDetalle()
     {
-        return $this->belongsTo(DetalleProducto::class, 'id_dproducto', 'id_dproducto');
+        return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
     }
 }

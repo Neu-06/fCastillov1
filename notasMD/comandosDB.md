@@ -16,3 +16,5 @@
 `php artisan make:migration create_nombreDeTabla_table`
 ## crear un model
 `php artisan make:model Marca`
+##
+`php artisan db:wipe`

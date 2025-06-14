@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Permiso;
 
@@ -23,6 +22,9 @@ class PermisosSeeder extends Seeder
             'Productos' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
             'Marcas' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
             'Categorias' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
+            'Compras' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
+            'Ventas' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
+            'Bitacora' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
         ];
 
         foreach ($permisosPorCu as $cu => $acciones) {

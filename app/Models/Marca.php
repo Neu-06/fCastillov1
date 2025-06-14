@@ -31,8 +31,8 @@ class Marca extends Model
         'nombre_marca'
     ];
         // Relación con DetalleProducto
-    public function detalleProductos()
+    public function Productos()
     {
-        return $this->hasMany(DetalleProducto::class, 'id_marca', 'id_marca');
+        return $this->hasMany(Producto::class, 'id_marca', 'id_marca');
     }
 }

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreignId('id_compra')
                 ->constrained('compras', 'id_compra')
                 ->onDelete('cascade');
-            $table->foreignId('id_detalle_producto')
-                ->constrained('detalle_productos', 'id_dproducto')
+            $table->foreignId('id_producto')
+                ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
         });
     }

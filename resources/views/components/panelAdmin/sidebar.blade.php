@@ -62,6 +62,10 @@
                         <x-header.elementosNav.optionSecundario link="{{ route('proveedor.index') }}"
                             texto="Gestionar Proveedores" />
                     @endif
+                    @if (auth()->user()->tienePermiso('Ver Compras'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('compra.index') }}"
+                            texto="Gestionar Compras" />
+                    @endif
                 </x-header.elementosNav.optionNav>
                 <!-- Ventas -->
                 <x-header.elementosNav.optionNav texto="Ventas" display="static">
@@ -69,9 +73,19 @@
                         <x-header.elementosNav.optionSecundario link="{{ route('cliente.index') }}"
                             texto="Gestionar Clientes" />
                     @endif
+
+                    @if (auth()->user()->tienePermiso('Ver Ventas'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('venta.index') }}"
+                            texto="Gestionar Ventas"/>
+                    @endif
+
                 </x-header.elementosNav.optionNav>
 
                 <x-header.elementosNav.optionNav texto="Inventario" display="static">
+                     @if (auth()->user()->tienePermiso('ver Bitacora'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('bitacora.index') }}"
+                            texto="Bitacora" />
+                    @endif
                     @if (auth()->user()->tienePermiso('Ver Productos'))
                         <x-header.elementosNav.optionSecundario link="{{ route('producto.index') }}"
                             texto="Gestionar Productos" />

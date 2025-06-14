@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('id_estante')
                 ->constrained('estantes', 'id_estante')
                 ->onDelete('cascade');
-            $table->foreignId('id_dproducto')
-                ->constrained('detalle_productos', 'id_dproducto')
+            $table->foreignId('id_producto')
+                ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
         });
     }

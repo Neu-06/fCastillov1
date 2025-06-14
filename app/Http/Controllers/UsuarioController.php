@@ -20,7 +20,16 @@ class UsuarioController extends Controller
             'eliminados' => false
         ]);
     }
-
+      //vista principal de gestión de usuarios
+    public function index2()
+    {   
+        $this->authorize('viewAny', Usuario::class); // Solo si tiene permiso 'Ver Usuarios'
+        $usuarios = Usuario::all(); // relacionar con el rol
+        return view('pages.gestion.bitacora.index', [
+            'usuarios' => $usuarios,
+            'eliminados' => false
+        ]);
+    }
     //vista formulario de registro de usuario
     public function create()
     {   $this->authorize('create', Usuario::class); // Solo si tiene permiso 'Agregar Usuarios'

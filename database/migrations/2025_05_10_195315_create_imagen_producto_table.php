@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_imagen');
             $table->string('ruta_imagen', 255);
             $table->string('public_id')->nullable(); // ✅ Nuevo campo
-            $table->foreignId('id_dproducto')
-                ->constrained('detalle_productos', 'id_dproducto')
+            $table->foreignId('id_producto')
+                ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
         });
     }

@@ -39,7 +39,7 @@
             <div>
                 <label for="descripcion" class="block mb-1 text-gray-600 font-semibold">Descripción</label>
                 <input type="text" name="descripcion" id="descripcion"
-                    value="{{ old('descripcion', $producto->detalle->descripcion ?? '') }}"
+                    value="{{ old('descripcion', $producto->descripcion ?? '') }}"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
             </div>
 
@@ -66,7 +66,7 @@
                     <option value="">Seleccione una marca</option>
                     @foreach ($marcas as $marca)
                         <option value="{{ $marca->id_marca }}"
-                            {{ old('id_marca', $producto->detalle->id_marca ?? '') == $marca->id_marca ? 'selected' : '' }}>
+                            {{ old('id_marca', $producto->id_marca ?? '') == $marca->id_marca ? 'selected' : '' }}>
                             {{ $marca->nombre_marca }}
                         </option>
                     @endforeach
@@ -74,11 +74,11 @@
             </div>
 
             <!-- 🖼 Imágenes actuales con opción para eliminar -->
-            @if ($producto->detalle && $producto->detalle->imagenes->count())
+            @if ($producto->imagenes->count())
                 <div class="mt-6">
                     <label class="block mb-1 text-gray-600 font-semibold">Imágenes Actuales</label>
                     <div class="flex flex-wrap gap-4">
-                        @foreach ($producto->detalle->imagenes as $imagen)
+                        @foreach ($producto->imagenes as $imagen)
                             <div class="relative group" id="imagen-{{ $imagen->id_imagen }}">
                                 <img src="{{ $imagen->ruta_imagen }}"
                                     class="w-28 h-28 object-cover rounded shadow border border-gray-300">
