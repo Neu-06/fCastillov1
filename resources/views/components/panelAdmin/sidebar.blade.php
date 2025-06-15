@@ -88,10 +88,10 @@
                 </x-header.elementosNav.optionNav>
 
                 <x-header.elementosNav.optionNav texto="Inventario" display="static">
-                     @if (auth()->user()->tienePermiso('ver Bitacora'))
+                     {{-- @if (auth()->user()->tienePermiso('Ver Bitacora'))
                         <x-header.elementosNav.optionSecundario link="{{ route('bitacora.index') }}"
                             texto="Bitacora" />
-                    @endif
+                    @endif --}}
                     @if (auth()->user()->tienePermiso('Ver Productos'))
                         <x-header.elementosNav.optionSecundario link="{{ route('producto.index') }}"
                             texto="Gestionar Productos" />
