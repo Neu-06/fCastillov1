@@ -160,6 +160,12 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy'); // Eliminar marca
          Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
     });
+
+        // ==================== Rutas de Bitacora ====================
+        Route::prefix('admin/bitacora')->name('bitacora.')->group(function () {
+        Route::get('/', [BitacoraController::class, 'index'])->name('index'); // Listar marca
+    });
+
     
 });
 

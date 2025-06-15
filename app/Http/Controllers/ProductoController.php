@@ -76,7 +76,7 @@ class ProductoController extends Controller
                 ]);
             }
           }
-
+            
            return redirect()->route('producto.index')
             ->with('success', 'Producto registrado correctamente.');
         }
