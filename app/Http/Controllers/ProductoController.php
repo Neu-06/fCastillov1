@@ -38,7 +38,8 @@ class ProductoController extends Controller
             'descripcion'     => 'nullable|string|max:255',
             'id_categoria'    => 'required|exists:categorias,id_categoria',
             'id_marca'        => 'required|exists:marcas,id_marca',
-            'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'imagenes'        => 'nullable|array|max:5',
+            'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:5120', //5mb maximo por imagen
         ]);
 
 
@@ -105,7 +106,8 @@ class ProductoController extends Controller
             'descripcion'     => 'nullable|string|max:255',
             'id_categoria'    => 'required|exists:categorias,id_categoria',
             'id_marca'        => 'required|exists:marcas,id_marca',
-            'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'imagenes'        => 'nullable|array|max:5',
+            'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:5120', //5mb maximo por imagen
         ]);
 
         DB::transaction(function () use ($request, $id_producto) {

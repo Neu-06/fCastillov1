@@ -36,8 +36,7 @@
             <!-- Descripción -->
             <div>
                 <label for="descripcion" class="block mb-1 text-gray-600 font-semibold">Descripción</label>
-                <input type="text" name="descripcion" id="descripcion"
-                    value="{{ old('descripcion') }}"
+                <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion') }}"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
             </div>
 
@@ -48,7 +47,8 @@
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
                     <option value="">Seleccione una categoría</option>
                     @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id_categoria }}" {{ old('id_categoria') == $categoria->id_categoria ? 'selected' : '' }}>
+                        <option value="{{ $categoria->id_categoria }}"
+                            {{ old('id_categoria') == $categoria->id_categoria ? 'selected' : '' }}>
                             {{ $categoria->nombre_categoria }}
                         </option>
                     @endforeach
@@ -61,20 +61,22 @@
                     class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
                     <option value="">Seleccione una Marca</option>
                     @foreach ($marcas as $marca)
-                        <option value="{{ $marca->id_marca }}" {{ old('id_marca') == $marca->id_marca ? 'selected' : '' }}>
+                        <option value="{{ $marca->id_marca }}"
+                            {{ old('id_marca') == $marca->id_marca ? 'selected' : '' }}>
                             {{ $marca->nombre_marca }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- Imágenes -->
+
             <div>
                 <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Imágenes del Producto</label>
                 <input type="file" name="imagenes[]" multiple
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
                 <small class="text-xs text-gray-500">Puede subir varias imágenes (jpg, png)</small>
             </div>
+
         </div>
 
         <!-- Botones -->
@@ -84,11 +86,9 @@
                 Registrar
             </button>
             <a href="{{ route('producto.index') }}"
-               class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition shadow">
+                class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition shadow">
                 Cancelar
             </a>
         </div>
     </div>
 </form>
-
-
