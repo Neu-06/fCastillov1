@@ -164,29 +164,32 @@
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
                     @foreach ($categorias as $categoria)
-                        @php
-                            $producto = $categoria->productos->first();
-                            $imagen = $producto?->imagenes->first()?->ruta_imagen ?? asset('imagenes/default.jpg');
-                        @endphp
+    @php
+        $producto = $categoria->productos->first();
+        $imagen = $producto?->imagenes->first()?->ruta_imagen;
+    @endphp
 
-                        <a
-                            href="{{ route('categoria.productos', $categoria->id_categoria) }}"class="flex flex-col items-center justify-between bg-white p-4 rounded-xl shadow-sm hover:scale-105 transition h-[250px]">
+    @if ($producto && $imagen)
+        <a
+            href="{{ route('categoria.productos', $categoria->id_categoria) }}"
+            class="flex flex-col items-center justify-between bg-white p-4 rounded-xl shadow-sm hover:scale-105 transition h-[250px]">
 
-                            <div class="mt-4 flex items-center justify-center h-[140px] w-full">
-                                <img src="{{ $imagen }}" alt="{{ $categoria->nombre_categoria }}"
-                                    class="h-[150px] w-[150px] object-contain" />
-                            </div>
+            <div class="mt-4 flex items-center justify-center h-[140px] w-full">
+                <img src="{{ $imagen }}" alt="{{ $categoria->nombre_categoria }}"
+                    class="h-[150px] w-[150px] object-contain" />
+            </div>
 
-                            <div class="mt-auto">
-                                <span class="font-semibold text-sm sm:text-base text-gray-700 block">
-                                    {{ $categoria->nombre_categoria }}
-                                </span>
-                                <span class="text-xs text-gray-500 block">
-                                    ({{ $categoria->productos_count ?? $categoria->productos->count() }})
-                                </span>
-                            </div>
-                        </a>
-                    @endforeach
+            <div class="mt-auto">
+                <span class="font-semibold text-sm sm:text-base text-gray-700 block">
+                    {{ $categoria->nombre_categoria }}
+                </span>
+                <span class="text-xs text-gray-500 block">
+                    ({{ $categoria->productos_count ?? $categoria->productos->count() }})
+                </span>
+            </div>
+        </a>
+    @endif
+@endforeach
                 </div>
             </div>
         </section>

@@ -24,7 +24,7 @@ class PermisosSeeder extends Seeder
             'Categorias' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
             'Compras' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
             'Ventas' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
-            'Bitacora' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
+            'Bitacoras' => ['Agregar', 'Editar', 'Eliminar', 'Ver'],
         ];
 
         foreach ($permisosPorCu as $cu => $acciones) {

@@ -76,6 +76,7 @@
             @else
                 <!-- Botón Restaurar -->
                 @if (auth()->user()->tienePermiso('Eliminar Productos'))
+<<<<<<< HEAD
                 <form action="{{ route('producto.restore', $id_producto) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -91,6 +92,19 @@
     :itemName="$nombre_producto"
     question="¿Estás seguro de restaurar al producto?"
 /> 
+=======
+                    <form action="{{ route('producto.restore', $id_producto) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="text-green-600 hover:underline" title="Restaurar">
+                            Restaurar
+                        </button>
+                    </form>
+                @endif
+
+                <x-ventanaFlotante.restore :modalId="'restore-modal-' . $id_producto" :action="route('producto.restore', $id_producto)" :itemName="$nombre_producto"
+                    question="¿Estás seguro de restaurar al producto?" />
+>>>>>>> b9d46be73149d0defb18fbf5f71b8f97895af70e
 
                 <!-- Botón Restaurar (si está eliminado) -->
                 {{-- @if (auth()->user()->tienePermiso('Eliminar Proveedores') && $estado === 'Inactivo')

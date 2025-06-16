@@ -10,8 +10,7 @@
                         d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
                 </svg>
             </p>
-        </th>
-
+        </th> 
 
         <th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
             <p

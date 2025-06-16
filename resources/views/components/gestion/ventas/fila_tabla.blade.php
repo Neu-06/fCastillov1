@@ -26,12 +26,14 @@
             {{ $nombre_cliente }}
         </p>
     </td>
+   
     <!-- Total de la Compra -->
-    <td class="p-4 border-b border-slate-200">
-        <p class="text-sm font-semibold text-slate-700">
-            ${{ number_format($total_venta, 2) }}
-        </p>
-    </td>
+<td class="p-4 border-b border-slate-200">
+    <p class="text-sm font-semibold text-slate-700">
+        ${{ number_format((float) $total_venta, 2) }}
+    </p>
+</td>
+
 
     <!-- Fecha de la Compra -->
     <td class="p-4 border-b border-slate-200">

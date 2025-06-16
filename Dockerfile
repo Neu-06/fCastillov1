@@ -1,31 +1,45 @@
-# Usa la imagen oficial de PHP con Apache
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
-# Instala dependencias necesarias
+# Instalar dependencias del sistema incluyendo Node.js 20
 RUN apt-get update && apt-get install -y \
-    git unzip curl libpq-dev libzip-dev zip \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    build-essential \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    libpq-dev \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@10.8.2 \
+    && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Habilita mod_rewrite de Apache
-RUN a2enmod rewrite
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia todos los archivos del proyecto al contenedor
-COPY . /var/www/html
+WORKDIR /app
 
-# Establece el directorio de trabajo
-WORKDIR /var/www/html
+# Copiar solo composer para cache eficiente
+COPY composer.json composer.lock ./
 
-# Instala Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
-# Instala dependencias de Laravel
-RUN composer install --no-dev --optimize-autoloader
+# Copiar todo el código, INCLUYENDO public/build
+COPY . .
 
-# Permisos para Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Asegurarte de que los permisos sean correctos
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app/storage /app/bootstrap/cache /app/public
 
-# Expone el puerto 80
-EXPOSE 80
+# ✅ Descargar wait-for-it.sh directamente desde GitHub y dar permisos
+RUN curl -o /usr/local/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
+    && chmod +x /usr/local/bin/wait-for-it.sh
 
-# Comando por defecto
-CMD ["apache2-foreground"]
+EXPOSE 9000
+
+# CMD robusto usando wait-for-it
+#CMD sh -c "wait-for-it.sh postgres:5432 -- php artisan migrate --force && php artisan db:seed && php-fpm"
+
+CMD sh -c "chown -R www-data:www-data /app/storage /app/bootstrap/cache && chmod -R 775 /app/storage /app/bootstrap/cache && wait-for-it.sh postgres:5432 -- php artisan migrate --force && php artisan db:seed && php-fpm"

@@ -1,15 +1,5 @@
 @props(['producto', 'categorias', 'marcas'])
 
-@if ($errors->any())
-    <div class="mb-4 rounded bg-red-100 text-red-800 px-4 py-2">
-        <ul class="list-disc pl-5">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <form action="{{ route('producto.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data"
     class="space-y-6">
     @csrf
@@ -25,6 +15,11 @@
                 <input type="text" name="codigo_producto" id="codigo_producto" required
                     value="{{ old('codigo_producto', $producto->codigo_producto) }}"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                @error('codigo_producto')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Nombre -->
@@ -33,6 +28,11 @@
                 <input type="text" name="nombre_producto" id="nombre_producto" required
                     value="{{ old('nombre_producto', $producto->nombre_producto) }}"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                @error('nombre_producto')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Descripción -->
@@ -41,6 +41,11 @@
                 <input type="text" name="descripcion" id="descripcion"
                     value="{{ old('descripcion', $producto->descripcion ?? '') }}"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                @error('descripcion')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Categoría -->
@@ -56,6 +61,11 @@
                         </option>
                     @endforeach
                 </select>
+                @error('id_categoria')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Marca -->
@@ -71,9 +81,14 @@
                         </option>
                     @endforeach
                 </select>
+                @error('id_marca')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
-            <!-- 🖼 Imágenes actuales con opción para eliminar -->
+            <!-- Imágenes actuales -->
             @if ($producto->imagenes->count())
                 <div class="mt-6">
                     <label class="block mb-1 text-gray-600 font-semibold">Imágenes Actuales</label>
@@ -82,15 +97,9 @@
                             <div class="relative group" id="imagen-{{ $imagen->id_imagen }}">
                                 <img src="{{ $imagen->ruta_imagen }}"
                                     class="w-28 h-28 object-cover rounded shadow border border-gray-300">
-
-                                <!-- Botón X para eliminar visualmente -->
                                 <button type="button" onclick="eliminarImagen('{{ $imagen->id_imagen }}')"
                                     class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 py-0.5 rounded-full cursor-pointer"
-                                    title="Eliminar imagen">
-                                    ❌
-                                </button>
-
-                                <!-- Checkbox oculto que será enviado al backend -->
+                                    title="Eliminar imagen">❌</button>
                                 <input type="checkbox" name="imagenes_eliminar[]" value="{{ $imagen->id_imagen }}"
                                     id="check-{{ $imagen->id_imagen }}" class="hidden">
                             </div>
@@ -99,14 +108,34 @@
                     <small class="text-xs text-gray-500 mt-1 block">Marca las imágenes que deseas eliminar.</small>
                 </div>
             @endif
-            <!-- 📤 Nuevas imágenes -->
+
+            <!-- Subir nuevas imágenes -->
             <div class="mt-6">
                 <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Subir nuevas imágenes
                     (opcional)</label>
-                <input type="file" name="imagenes[]" multiple
+                <input type="file" name="imagenes[]" multiple accept=".jpeg, .jpg, .png, image/jpeg, image/png"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
                 <small class="text-xs text-gray-500">Puedes subir nuevas imágenes para agregar o reemplazar las
                     actuales.</small>
+
+                {{-- Error general --}}
+                @error('imagenes')
+                    <div class="mt-2 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+                {{-- Errores individuales --}}
+                <div id="errores-imagenes">
+                    @foreach ($errors->get('imagenes.*') as $imagenErrores)
+                        @foreach ($imagenErrores as $mensaje)
+                            <div
+                                class="mt-2 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                                {{ $mensaje }}
+                            </div>
+                        @endforeach
+                    @endforeach
+                </div>
             </div>
 
             <!-- Botones -->
@@ -121,4 +150,19 @@
                 </a>
             </div>
         </div>
+    </div>
 </form>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const primerError = document.querySelector(
+            '.bg-red-100, .text-red-800, .is-invalid'
+        );
+        if (primerError) {
+            primerError.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    });
+</script>
+

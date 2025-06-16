@@ -11,7 +11,22 @@
 
     <div class="mt-6">
 
-        <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
+                <!-- Filtro por Categoría -->
+        <form method="GET" action="{{ route('producto.index') }}" class="mx-4 mt-4">
+            <label for="categoria" class="font-semibold text-slate-700 mr-2">Filtrar por Categoría:</label>
+            <select name="categoria_id" id="categoria" onchange="this.form.submit()"
+                class="border border-gray-300 rounded px-2 py-1">
+                <option value="">   Todas las Categorías   </option>
+                @foreach ($categorias as $categoria)
+                    <option value="{{ $categoria->id_categoria }}"
+                        {{ request('categoria_id') == $categoria->id_categoria ? 'selected' : '' }}>
+                        {{ $categoria->nombre_categoria }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
+
+        <div class="table-container">
 
               <x-gestion.productos.header_tabla :eliminados="$eliminados ?? false" />
 

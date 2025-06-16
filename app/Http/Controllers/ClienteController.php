@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BitacoraController;
 
 class ClienteController extends Controller
 {
@@ -64,6 +66,12 @@ class ClienteController extends Controller
             'direccion_cliente' => $request->direccion_cliente,
         ]);
  // Si fue desde el formulario público, hacer login automático y redirigir
+
+        BitacoraController::registrar(
+            'CREAR',
+            'Se creó el cliente: ' . $cliente->nombre_cliente . ' ' . $cliente->apellido_cliente
+        );
+
         if ($request->has('registro_publico')) {
 
             // Login automático después de registrar
@@ -117,6 +125,11 @@ class ClienteController extends Controller
         $cliente->direccion_cliente = $request->direccion_cliente;
         $cliente->save();
 
+        BitacoraController::registrar(
+            'ACTUALIZAR',
+            'Se actualizó el cliente: ' . $cliente->nombre_cliente . ' ' . $cliente->apellido_cliente
+        );
+
         return redirect()->route('cliente.index')->with('success', 'Cliente actualizado correctamente.');
     }
 
@@ -126,7 +139,10 @@ class ClienteController extends Controller
         $cliente = Cliente::findOrFail($id_cliente);
         $this->authorize('delete', $cliente);
         $cliente->delete();
-
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el cliente: ' . $cliente->nombre_cliente . ' ' . $cliente->apellido_cliente
+        );
         return redirect()->route('cliente.index')->with('success', 'Cliente eliminado correctamente.');
     }
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
     @vite('resources/css/app.css')
 
@@ -22,7 +22,7 @@
     <x-panelAdmin.sidebar />
 
     <!-- Contenido principal -->
-    <main class="p-6 flex-1 lg:ml-64 bg-gray-100">
+    <main class="p-1 lg:p-6 flex-1 lg:ml-64 bg-gray-100">
 
 
         @yield('contenido')

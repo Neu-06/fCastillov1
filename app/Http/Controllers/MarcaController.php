@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Marca;
 use Illuminate\Http\Request;
+use app\Http\Controllers\BitacoraController;
 
 class MarcaController extends Controller
 {
@@ -37,6 +39,11 @@ class MarcaController extends Controller
             'nombre_marca' => $request->nombre_marca,
         ]);
 
+        BitacoraController::registrar(
+            'CREAR',
+            'Se creó la marca: ' . $request->nombre_marca
+        );
+
         return redirect()->route('marca.index')->with('success', 'Marca creada correctamente.');
     }
 
@@ -48,7 +55,10 @@ class MarcaController extends Controller
             return redirect()->route('marca.index')
                 ->with('error', 'No se puede eliminar la Marca porque tiene productos asociados.');
         }
-
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó la marca: ' . $marcas->nombre_marca
+        );
         $marcas->delete();
 
         return redirect()->route('marca.index')->with('success', 'Marca eliminada correctamente.');

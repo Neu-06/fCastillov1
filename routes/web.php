@@ -14,7 +14,12 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\BajaProductoController;
+use App\Http\Controllers\GestionPreciosController;
+use App\Http\Controllers\EstanteController;
 use App\Http\Controllers\AreaController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,12 +29,15 @@ use App\Http\Controllers\AreaController;
 | cargadas por el RouteServiceProvider y todas están asignadas al grupo "web".
 */
 
+// ==================== Rutas de Inicio ====================
+
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
 Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('producto.show');
 Route::get('/marca/{id}', [MarcaController::class, 'show'])->name('marca.show');
 Route::get('/categoria/{id}', [CategoriaController::class, 'productosPorCategoria'])->name('categoria.productos');
 
 // ==================== Rutas de Logout ====================
+// ==================== Rutas de Logout (fuera del middleware) ====================
 Route::post('/cliente/logout', [ClienteController::class, 'logout'])->name('cliente.logout');
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
@@ -40,6 +48,8 @@ Route::get('/registro', [ClienteController::class, 'publicRegister'])->name('cli
 Route::post('/registro', [ClienteController::class, 'store'])->name('cliente.public.store');
 
 // ==================== Rutas de Administración (Protegidas) ====================
+
+//// rutas protegidas para administradores
 Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     Route::get('/admin/home', [HomeController::class, 'homeAdmin'])->name('admin.home');
@@ -48,6 +58,16 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     Route::prefix('admin/usuario')->name('usuario.')->group(function () {
         Route::get('/bitacora', [UsuarioController::class, 'index2'])->name('bitacora.index');
         Route::resource('/', UsuarioController::class)->except(['show']);
+        Route::get('/', [UsuarioController::class, 'index'])->name('index'); // Listar usuarios
+        Route::get('/registro', [UsuarioController::class, 'create'])->name('create'); //formulario para registrar usuario
+        Route::post('/registro', [UsuarioController::class, 'store'])->name('store'); //guardar usuario
+        Route::get('/{id}/edit', [UsuarioController::class, 'edit'])->name('edit'); //formulario para editar usuario
+        Route::put('/{id}', [UsuarioController::class, 'update'])->name('update'); //actualizar usuario
+        Route::delete('/{id}', [UsuarioController::class, 'destroy'])->name('destroy'); //eliminar usuario
+
+        Route::get('/eliminados', [UsuarioController::class, 'eliminados'])->name('eliminados');
+        Route::put('/{id}/restaurar', [UsuarioController::class, 'restore'])->name('restore');
+        Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
     });
 
     // ==================== Roles ====================
@@ -87,6 +107,17 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     // ==================== Categorías ====================
     Route::prefix('admin/categoria')->name('categoria.')->group(function () {
         Route::resource('/', CategoriaController::class)->except(['show']);
+        Route::get('/', [CategoriaController::class, 'index'])->name('index'); // Listar categorías
+        Route::get('/create', [CategoriaController::class, 'create'])->name('create'); // Formulario para registrar categoría
+        Route::post('/create', [CategoriaController::class, 'store'])->name('store'); // Guardar categoría
+        Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy'); // Eliminar categoría
+    });
+    // ==================== Rutas de Marcas ====================
+    Route::prefix('admin/marca')->name('marca.')->group(function () {
+        Route::get('/', [MarcaController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/create', [MarcaController::class, 'create'])->name('create'); // Formulario para registrar marca
+        Route::post('/create', [MarcaController::class, 'store'])->name('store'); // Guardar marca
+        Route::delete('/{id}', [MarcaController::class, 'destroy'])->name('destroy'); // Eliminar marca
     });
 
     // ==================== Marcas ====================
@@ -115,6 +146,50 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     Route::prefix('admin/bitacora')->name('bitacora.')->group(function () {
        // Route::get('/', [BitacoraController::class, 'index'])->name('index');
     });
+    // ==================== Rutas de Baja de Productos ====================
+     Route::prefix('admin/baja-producto')->name('bajaproducto.')->group(function () {
+         Route::get('/', [BajaProductoController::class, 'index'])->name('index');
+        Route::get('/create', [BajaProductoController::class, 'create'])->name('create'); // Formulario para registrar baja
+        Route::post('/create', [BajaProductoController::class, 'store'])->name('store');   // guardar formulario
+    });
+// ==================== Rutas de Gestionar Precios ====================
+Route::prefix('admin/gestionprecios')->name('gestionprecios.')->group(function () {
+    Route::get('/', [GestionPreciosController::class, 'index'])->name('index'); // Listar productos con precios
+    Route::get('/{id}/edit', [GestionPreciosController::class, 'edit'])->name('edit'); // Formulario para editar precio
+    Route::put('/{id}', [GestionPreciosController::class, 'update'])->name('update'); // Actualizar precio
+});
+
+// ==================== Rutas de Bajas de Productos ====================
+Route::prefix('admin/bajaproducto')->name('bajaproducto.')->group(function () {
+    Route::get('/', [BajaProductoController::class, 'index'])->name('index');
+    Route::get('/create', [BajaProductoController::class, 'create'])->name('create');
+    Route::post('/buscar', [BajaProductoController::class, 'buscarProducto'])->name('buscar'); 
+    Route::post('/create', [BajaProductoController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [BajaProductoController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [BajaProductoController::class, 'update'])->name('update');
+     Route::get('/realizadas', [BajaProductoController::class, 'realizadas'])->name('realizadas');
+});
+
+
+
+
+// ==================== Rutas de Ventas ====================
+Route::prefix('admin/venta')->name('venta.')->group(function () {
+    Route::get('/', [VentaController::class, 'index'])->name('index');
+    Route::get('/create', [VentaController::class, 'create'])->name('create');
+    Route::post('/create', [VentaController::class, 'store'])->name('store');
+    Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy');
+    Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
+});
+
+// ==================== Rutas de Bitacora ====================
+Route::prefix('admin/bitacora')->name('bitacora.')->group(function () {
+    Route::get('/', [BitacoraController::class, 'index'])->name('index'); // Listar marca
+});
+
+
+    
+
 });
 
 // ==================== Rutas protegidas para clientes (vacías por ahora) ====================

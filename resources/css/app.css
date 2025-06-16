@@ -1,5 +1,6 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';/*esto agregue*/
 /*@import './globalStyles.css';*/
+@import './globalStyles.css';
 
 @tailwind base;
 @tailwind components;

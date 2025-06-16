@@ -9,12 +9,15 @@
         "cloudinary-labs/cloudinary-laravel": "^2.3",
         "cloudinary/cloudinary_php": "^2.14",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel-lang/common": "^6.7",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "nesbot/carbon": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "laravel-lang/lang": "^14.8",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
