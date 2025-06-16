@@ -236,4 +236,5 @@ class ProductoController extends Controller
         $producto = Producto::with('categoria')->findOrFail($id);
         return view('pages.productos.detalle', compact('producto'));
     }
+
 }
