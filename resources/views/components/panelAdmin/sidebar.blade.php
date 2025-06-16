@@ -50,6 +50,11 @@
                             texto="Gestionar Roles" />
                     @endif
 
+                    @if (auth()->user()->tienePermiso('Ver Bitacoras'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('bitacora.index') }}"
+                            texto="Gestionar Bitacora" />
+                    @endif
+
                     @if (auth()->user()->tienePermiso('Ver Permisos'))
                         <x-header.elementosNav.optionSecundario link="{{ route('permiso.index') }}"
                             texto="Gestionar Permiso" />

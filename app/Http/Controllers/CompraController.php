@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Bitacora;
 use App\Models\DetalleProducto;
 use Illuminate\Http\Request;
 use App\Models\Compra;
@@ -8,6 +10,8 @@ use App\Models\DetalleCompra;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Support\Facades\DB;
+use app\Http\Controllers\BitacoraController;
+
 class CompraController extends Controller
 {
     //
@@ -87,6 +91,10 @@ class CompraController extends Controller
         
         DB::commit();
 
+        BitacoraController::registrar(
+            'CREAR',
+            'Se registró una compra con ID: ' . $compra->id_compra . ' del proveedor: ' . $compra->proveedor->nombre_proveedor
+        );
         return redirect()->route('compra.index')->with('success', 'Compra registrada correctamente.');
     } catch (\Exception $e) {
         DB::rollBack();
