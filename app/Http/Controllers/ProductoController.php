@@ -24,65 +24,70 @@ class ProductoController extends Controller
     }
 
     // ✅ Mostrar formulario de creación
-    public function create()
-    {
-        $categorias = Categoria::all();
-        $marcas = Marca::all();
-        return view('pages.gestion.productos.create', compact('categorias', 'marcas'));
-    }
+public function create()
+{
+    $categorias = Categoria::all();
+    $marcas = Marca::all();
+    
+
+    return view('pages.gestion.productos.create', compact('categorias', 'marcas'));
+}
+
+
+
 
     // ✅ Guardar producto en las tablas respectivas
 
 
+public function store(Request $request)
+{
+    $request->validate([
+        'codigo_producto' => 'required|string|max:50|unique:productos,codigo_producto',
+        'nombre_producto' => 'required|string|max:100',
+        'descripcion'     => 'nullable|string|max:255',
+        'id_categoria'    => 'required|exists:categorias,id_categoria',
+        'id_marca'        => 'required|exists:marcas,id_marca',
+        'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            // … tus reglas …
-            'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    DB::transaction(function () use ($request) {
+        // Crear el producto con el estante elegido manualmente
+        $producto = Producto::create([
+            'codigo_producto' => $request->codigo_producto,
+            'nombre_producto' => $request->nombre_producto,
+            'descripcion'     => $request->descripcion,
+            'id_categoria'    => $request->id_categoria,
+            'id_marca'        => $request->id_marca,
+            'precio_venta'    => 0,
+            'stock'           => 0,
+            'precio_compra'   => 0,
+            'costo_promedio'  => 0,
         ]);
 
-        // 1) Crear producto y detalle en transacción
-        DB::transaction(function () use ($request) {
-            $producto = Producto::create([
-                'codigo_producto' => $request->codigo_producto,
-                'nombre_producto' => $request->nombre_producto,
-                'descripcion'   => $request->descripcion,
-                'id_categoria'    => $request->id_categoria,
-                 'id_marca'      => $request->id_marca,
-                'precio_venta'  => 0,
-                 'stock'        => 0,
-                'precio_compra' => 0,
-                'costo_promedio' => 0,
-            ]);
-            
-        });
+        // Subir imágenes si existen
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                if ($imagen->isValid()) {
+                    $uploaded = \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::upload(
+                        $imagen->getRealPath(),
+                        [
+                            'folder' => 'ferreteria/' . $request->id_categoria . '/' . $request->id_marca,
+                        ]
+                    );
 
-        // 3) Subir imágenes y guardar en BD
-       if ($request->hasFile('imagenes')) {
-         foreach ($request->file('imagenes') as $imagen) {
-          if ($imagen->isValid()) {
-              $uploaded = Cloudinary::upload($imagen->getRealPath(), [
-                'folder' => 'ferreteria/' . $request->id_categoria . '/' . $request->id_marca,
-              ]);
-                
-                $uploadedFileUrl = $uploaded->getSecurePath();
-                $publicId = $uploaded->getPublicId();
-
-             ImagenProducto::create([
-                    'id_producto' => $request->codigo_producto,
-                    'ruta_imagen'  => $uploadedFileUrl,
-                    'public_id'    => $publicId,
-                ]);
+                    ImagenProducto::create([
+                        'id_producto' => $producto->id_producto,
+                        'ruta_imagen' => $uploaded->getSecurePath(),
+                        'public_id'   => $uploaded->getPublicId(),
+                    ]);
+                }
             }
-          }
-
-           return redirect()->route('producto.index')
-            ->with('success', 'Producto registrado correctamente.');
         }
-    }
+    });
 
-
+    return redirect()->route('producto.index')
+        ->with('success', 'Producto registrado correctamente.');
+}
 
 
 

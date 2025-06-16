@@ -14,6 +14,10 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\BajaProductoController;
+use App\Http\Controllers\GestionPreciosController;
+use App\Http\Controllers\EstanteController;
+use App\Http\Controllers\AreaController;
 
 
 
@@ -151,7 +155,34 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('/{id}', [CompraController::class, 'destroy'])->name('destroy'); // Eliminar marca
         Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
     });
+    // ==================== Rutas de Baja de Productos ====================
+     Route::prefix('admin/baja-producto')->name('bajaproducto.')->group(function () {
+         Route::get('/', [BajaProductoController::class, 'index'])->name('index');
+        Route::get('/create', [BajaProductoController::class, 'create'])->name('create'); // Formulario para registrar baja
+        Route::post('/create', [BajaProductoController::class, 'store'])->name('store');   // guardar formulario
+    });
+// ==================== Rutas de Gestionar Precios ====================
+Route::prefix('admin/gestionprecios')->name('gestionprecios.')->group(function () {
+    Route::get('/', [GestionPreciosController::class, 'index'])->name('index'); // Listar productos con precios
+    Route::get('/{id}/edit', [GestionPreciosController::class, 'edit'])->name('edit'); // Formulario para editar precio
+    Route::put('/{id}', [GestionPreciosController::class, 'update'])->name('update'); // Actualizar precio
+});
 
+// ==================== Rutas de Bajas de Productos ====================
+Route::prefix('admin/bajaproducto')->name('bajaproducto.')->group(function () {
+    Route::get('/', [BajaProductoController::class, 'index'])->name('index');
+    Route::get('/create', [BajaProductoController::class, 'create'])->name('create');
+    Route::post('/buscar', [BajaProductoController::class, 'buscarProducto'])->name('buscar'); 
+    Route::post('/create', [BajaProductoController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [BajaProductoController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [BajaProductoController::class, 'update'])->name('update');
+     Route::get('/realizadas', [BajaProductoController::class, 'realizadas'])->name('realizadas');
+});
+
+
+
+
+// ==================== Rutas de Ventas ====================
     Route::prefix('admin/venta')->name('venta.')->group(function () {
         
         Route::get('/', [VentaController::class, 'index'])->name('index'); // Listar marca
@@ -160,7 +191,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy'); // Eliminar marca
          Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
     });
-    
+ 
+  
 });
 
 /// rutas protegidas para clientes

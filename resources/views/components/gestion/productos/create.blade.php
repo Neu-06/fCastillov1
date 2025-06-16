@@ -68,6 +68,7 @@
                 </select>
             </div>
 
+
             <!-- Imágenes -->
             <div>
                 <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Imágenes del Producto</label>

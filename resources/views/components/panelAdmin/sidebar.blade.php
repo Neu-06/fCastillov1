@@ -55,6 +55,7 @@
                     @endif
                 </x-header.elementosNav.optionNav>
 
+                <!-- Compras -->
                 <x-header.elementosNav.optionNav texto="Compras" display="static">
 
                     @if (auth()->user()->tienePermiso('Ver Proveedores'))
@@ -66,10 +67,9 @@
                             texto="Gestionar Compras" />
                     @endif
                 </x-header.elementosNav.optionNav>
+                
                 <!-- Ventas -->
                 <x-header.elementosNav.optionNav texto="Ventas" display="static">
-
-
                     @if (auth()->user()->tienePermiso('Ver Clientes'))
                         <x-header.elementosNav.optionSecundario link="{{ route('cliente.index') }}"
                             texto="Gestionar Clientes" />
@@ -82,6 +82,7 @@
 
                 </x-header.elementosNav.optionNav>
 
+                <!--Inventario -->
                 <x-header.elementosNav.optionNav texto="Inventario" display="static">
                      @if (auth()->user()->tienePermiso('ver Bitacora'))
                         <x-header.elementosNav.optionSecundario link="{{ route('bitacora.index') }}"
@@ -99,8 +100,21 @@
                         <x-header.elementosNav.optionSecundario link="{{ route('marca.index') }}"
                             texto="Gestionar Marcas" />
                     @endif
-                </x-header.elementosNav.optionNav>
 
+                     @if (auth()->user()->tienePermiso('Ver Marcas'))
+                    <x-header.elementosNav.optionSecundario link="{{ route('gestionprecios.index') }}"
+                     texto="Precios y Stock" />
+                     @endif
+
+                   @if (auth()->user()->tienePermiso('Ver Marcas'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('bajaproducto.index') }}"
+                            texto="Bajas de Productos" />
+                   @endif
+
+                     
+
+                </x-header.elementosNav.optionNav>
+        
             </nav>
         </div>
 
