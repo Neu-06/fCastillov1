@@ -64,7 +64,7 @@ class ProductoController extends Controller
                 if ($imagen->isValid()) {
 
                     $categoria = Categoria::findOrFail($request->id_categoria);
-                    $nombreCategoria = Str::slug($categoria->nombre); 
+                    $nombreCategoria = Str::slug($categoria->nombre);
 
                     $uploaded = Cloudinary::upload(
                         $imagen->getRealPath(),
@@ -109,6 +109,20 @@ class ProductoController extends Controller
             'imagenes'        => 'nullable|array|max:5',
             'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:5120', //5mb maximo por imagen
         ]);
+        $producto = Producto::with('imagenes')->findOrFail($id_producto);
+
+        $imagenesActuales = $producto->imagenes->count();
+        $imagenesAEliminar = is_array($request->imagenes_eliminar) ? count($request->imagenes_eliminar) : 0;
+        $nuevasImagenes = is_array($request->imagenes) ? count($request->imagenes) : 0;
+
+        $totalFinal = $imagenesActuales - $imagenesAEliminar + $nuevasImagenes;
+
+        if ($totalFinal > 5) {
+            return back()
+                ->withErrors(['imagenes' => 'Solo puedes tener un máximo de 5 imágenes por producto.'])
+                ->withInput();
+        }
+
 
         DB::transaction(function () use ($request, $id_producto) {
             $producto = Producto::with('imagenes')->findOrFail($id_producto);

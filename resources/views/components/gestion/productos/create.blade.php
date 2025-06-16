@@ -1,16 +1,5 @@
 @props(['categorias', 'marcas'])
 
-@if ($errors->any())
-    <div class="mb-4 rounded bg-red-100 text-red-800 px-4 py-2">
-        <ul class="list-disc pl-5">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-
 <form action="{{ route('producto.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
     @csrf
     <div class="bg-white px-10 py-8 rounded-xl shadow-md max-w-md mx-auto">
@@ -22,7 +11,12 @@
                 <label for="codigo_producto" class="block mb-1 text-gray-600 font-semibold">Código del Producto</label>
                 <input type="text" name="codigo_producto" id="codigo_producto" required
                     value="{{ old('codigo_producto') }}"
-                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition @error('codigo_producto') border-red-500 @enderror" />
+                @error('codigo_producto')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Nombre -->
@@ -30,21 +24,31 @@
                 <label for="nombre_producto" class="block mb-1 text-gray-600 font-semibold">Nombre del Producto</label>
                 <input type="text" name="nombre_producto" id="nombre_producto" required
                     value="{{ old('nombre_producto') }}"
-                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition @error('nombre_producto') border-red-500 @enderror" />
+                @error('nombre_producto')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Descripción -->
             <div>
                 <label for="descripcion" class="block mb-1 text-gray-600 font-semibold">Descripción</label>
                 <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion') }}"
-                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition @error('descripcion') border-red-500 @enderror" />
+                @error('descripcion')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Categoría -->
             <div>
                 <label for="id_categoria" class="block mb-1 text-gray-600 font-semibold">Categoría</label>
                 <select name="id_categoria" id="id_categoria" required
-                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition @error('id_categoria') border-red-500 @enderror">
                     <option value="">Seleccione una categoría</option>
                     @foreach ($categorias as $categoria)
                         <option value="{{ $categoria->id_categoria }}"
@@ -53,12 +57,18 @@
                         </option>
                     @endforeach
                 </select>
+                @error('id_categoria')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            {{-- marca --}}
+
+            <!-- Marca -->
             <div>
                 <label for="id_marca" class="block mb-1 text-gray-600 font-semibold">Marca</label>
                 <select name="id_marca" id="id_marca" required
-                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition @error('id_marca') border-red-500 @enderror">
                     <option value="">Seleccione una Marca</option>
                     @foreach ($marcas as $marca)
                         <option value="{{ $marca->id_marca }}"
@@ -67,16 +77,38 @@
                         </option>
                     @endforeach
                 </select>
+                @error('id_marca')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
-
-            <div>
+            <!-- Imágenes -->
+            <div class="mt-6">
                 <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Imágenes del Producto</label>
                 <input type="file" name="imagenes[]" multiple
+    accept=".jpeg, .jpg, .png, image/jpeg, image/png"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
-                <small class="text-xs text-gray-500">Puede subir varias imágenes (jpg, png)</small>
-            </div>
+                <small class="text-xs text-gray-500">Puedes subir hasta 5 imágenes (JPG, PNG)</small>
 
+                {{-- Errores de validación --}}
+                <div id="errores-imagenes">
+                    @error('imagenes')
+                        <div class="mt-2 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
+                    @foreach ($errors->get('imagenes.*') as $imagenErrores)
+                        @foreach ($imagenErrores as $mensaje)
+                            <div class="mt-2 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                                {{ $mensaje }}
+                            </div>
+                        @endforeach
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         <!-- Botones -->
@@ -92,3 +124,14 @@
         </div>
     </div>
 </form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const errores = document.getElementById('errores-imagenes');
+        if (errores) {
+            errores.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+</script>
+
