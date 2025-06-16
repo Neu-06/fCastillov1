@@ -1,14 +1,5 @@
 @props(['rol', 'permisos', 'casosDeUso'])
 
-@if ($errors->any())
-    <div class="mb-4 rounded bg-red-100 text-red-800 px-4 py-2">
-        <ul class="list-disc pl-5">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
 <form method="POST" action="{{ route('rol.update', $rol->id_rol) }}">
     @csrf
@@ -20,9 +11,14 @@
             <!-- Nombre del Rol -->
             <div>
                 <label for="nombre_rol" class="block mb-1 text-gray-600 font-semibold">Nombre del Rol</label>
-                <input type="text" name="nombre_rol" id="nombre_rol" required
-                    value="{{ old('nombre_rol', $rol->nombre_rol) }}"
-                    class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition" />
+                <input type="text" name="nombre_rol" id="nombre_rol" value="{{ old('nombre_rol', $rol->nombre_rol) }}"
+                    required
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border 
+    {{ $errors->has('nombre_rol') ? 'border-red-400' : 'border-blue-200' }} 
+    focus:ring-2 focus:ring-blue-400 transition" />
+                @error('nombre_rol')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Lista de permisos -->
@@ -48,7 +44,8 @@
                                 @foreach (['Agregar', 'Editar', 'Eliminar', 'Ver'] as $accion)
                                     @php
                                         $permiso = $permisos->firstWhere('nombre_permiso', "$accion $modulo");
-                                        $tienePermiso = $permiso && $rol->permisos->contains('id_permiso', $permiso->id_permiso);
+                                        $tienePermiso =
+                                            $permiso && $rol->permisos->contains('id_permiso', $permiso->id_permiso);
                                     @endphp
                                     <td class="text-center">
                                         @if ($permiso)
@@ -61,8 +58,15 @@
                                 @endforeach
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
+
+                @error('permisos')
+                    <div class="mt-2 px-4 py-2 bg-red-100 border border-red-300 text-red-700 text-sm rounded-md">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Botones -->

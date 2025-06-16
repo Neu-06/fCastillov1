@@ -8,8 +8,13 @@
             {{-- Campo: Nombre de Rol --}}
             <div>
                 <label for="nombre_rol" class="block mb-1 text-gray-600 font-semibold">Nombre de Rol</label>
-                <input type="text" name="nombre_rol" id="nombre_rol" required
-                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
+                <input type="text" name="nombre_rol" id="nombre_rol" value="{{ old('nombre_rol') }}" required
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border 
+            {{ $errors->has('nombre_rol') ? 'border-red-400' : 'border-blue-200' }} 
+            focus:ring-2 focus:ring-blue-400 transition" />
+                @error('nombre_rol')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- Tabla de Permisos --}}
@@ -29,6 +34,12 @@
                         'permisos' => $permisos,
                         'casosDeUso' => $casosDeUso,
                     ])
+                    @error('permisos')
+                        <div class="mt-2 px-4 py-2 bg-red-100 border border-red-300 text-red-700 text-sm rounded-md">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
                     {{-- o <x-gestion.roles.tabla-permisos /> --}}
                 </div>
             </div>

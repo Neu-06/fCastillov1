@@ -154,12 +154,15 @@
 </form>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const errores = document.getElementById('errores-imagenes');
-        if (errores) {
-            errores.scrollIntoView({
+        const primerError = document.querySelector(
+            '.bg-red-100, .text-red-800, .is-invalid'
+        );
+        if (primerError) {
+            primerError.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center'
             });
         }
     });
 </script>
+
