@@ -27,8 +27,8 @@ class ImagenProducto extends Model
          
     ];
 
-    // Cada imagen pertenece a un producto_detalle
-    public function productoDetalle()
+    // Relación: cada imagen pertenece a un producto
+    public function producto()
     {
         return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
     }

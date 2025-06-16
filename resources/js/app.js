@@ -1,5 +1,5 @@
 import './bootstrap';
-//----solo agregue esto----
+//--------
 import Headroom from "headroom.js";
 
 document.addEventListener("DOMContentLoaded", function () {

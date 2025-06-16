@@ -14,8 +14,7 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\VentaController;
-
-
+use App\Http\Controllers\AreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +30,16 @@ use App\Http\Controllers\VentaController;
 
 // ==================== Rutas de Inicio ====================
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
+Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('producto.show');
+Route::get('/marca/{id}', [MarcaController::class, 'show'])->name('marca.show');
+Route::get('/categoria/{id}', [CategoriaController::class, 'productosPorCategoria'])->name('categoria.productos');
 
-Route::get('/categoria/{id}', [CategoriaController::class, 'show'])->name('categoria.show'); // Vista pública de categoría
+
+
+// Vistas públicas 
+/*Route::get('/como-comprar', function () {return view('paginas.como-comprar');})->name('como.comprar');
+Route::get('/ofertas', function () {return view('paginas.ofertas');})->name('ofertas');
+Route::get('/contacto', function () {return view('paginas.contacto');})->name('contacto');*/
 
 // ==================== Rutas de Logout (fuera del middleware) ====================
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
@@ -147,8 +154,15 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/create', [MarcaController::class, 'store'])->name('store'); // Guardar marca
         Route::delete('/{id}', [MarcaController::class, 'destroy'])->name('destroy'); // Eliminar marca
     });
+ // ==================== Rutas de Areas ====================
+    Route::prefix('admin/area')->name('area.')->group(function () {
+        Route::get('/', [AreaController::class, 'index'])->name('index'); // Listar Area
+        Route::get('/create', [AreaController::class, 'create'])->name('create'); // Formulario para registrar Area
+        Route::post('/create', [AreaController::class, 'store'])->name('store'); // Guardar Area
+        Route::delete('/{id}', [AreaController::class, 'destroy'])->name('destroy'); // Eliminar Area
+    });
 
-     // ==================== Rutas de Marcas ====================
+     // ==================== Rutas de Compras ====================
     Route::prefix('admin/compra')->name('compra.')->group(function () {
         Route::get('/', [CompraController::class, 'index'])->name('index'); // Listar marca
         Route::get('/create', [CompraController::class, 'create'])->name('create'); // Formulario para registrar marca
@@ -159,10 +173,10 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::prefix('admin/venta')->name('venta.')->group(function () {
         
-        Route::get('/', [VentaController::class, 'index'])->name('index'); // Listar marca
-        Route::get('/create', [VentaController::class, 'create'])->name('create'); // Formulario para registrar marca
-        Route::post('/create', [VentaController::class, 'store'])->name('store'); // Guardar marca
-        Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy'); // Eliminar marca
+        Route::get('/', [VentaController::class, 'index'])->name('index'); // Listar  ventas
+        Route::get('/create', [VentaController::class, 'create'])->name('create'); // Formulario para registrar ventas
+        Route::post('/create', [VentaController::class, 'store'])->name('store'); // Guardar venta
+        Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy'); // Eliminar venta
          Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
     });
     

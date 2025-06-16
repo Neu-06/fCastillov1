@@ -8,8 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     @vite('resources/css/app.css')
-    <!-- Agrega esto dentro del <head> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-yHqYw8uL70MSOJLMbj1IpWQd3KdPSLgWRPzyyZy1mN4cHgqt5MGs5PRAgHEVzT0p6XCTO8aBkAK6Dof2KQ+fgw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-yHqYw8uL70MSOJLMbj1IpWQd3KdPSLgWRPzyyZy1mN4cHgqt5MGs5PRAgHEVzT0p6XCTO8aBkAK6Dof2KQ+fgw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="//unpkg.com/alpinejs" defer></script>
     @stack('styles')
@@ -25,8 +27,8 @@
 
         @yield('contenido')
     </main>
-<script src="{{ asset('js/producto-edit.js') }}"></script>
-@stack('scripts')
+    <script src="{{ asset('js/producto-edit.js') }}"></script>
+    @stack('scripts')
 
 
 </body>
