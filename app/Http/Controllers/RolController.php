@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rol;
 use Illuminate\Http\Request;
 use App\Models\Permiso;
+use App\Http\Controllers\BitacoraController;
 
 class RolController extends Controller
 {
@@ -83,6 +84,11 @@ class RolController extends Controller
         $rol = Rol::create([
             'nombre_rol' => $request->nombre_rol,
         ]);
+        BitacoraController::registrar(
+                    'CREAR',
+                    'Se creó el rol: ' . $rol->nombre_rol
+                );
+
         // Si vienen permisos marcados, se sincronizan con el nuevo rol
         if ($request->has('permisos')) {
             // Esto inserta en la tabla permiso_rol: (id_rol, id_permiso) por cada uno
@@ -104,7 +110,10 @@ class RolController extends Controller
             return redirect()->route('rol.index')
                 ->with('error', 'No se puede eliminar el rol porque tiene usuarios asociados.');
         }
-
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el rol: ' . $rol->nombre_rol
+        );
         $rol->delete();
 
         return redirect()->route('rol.index')->with('success', 'Rol eliminado correctamente.');
@@ -128,7 +137,10 @@ public function update(Request $request, $id_rol)
     // 📝 4. Actualizar el nombre del rol
     $rol->nombre_rol = $request->nombre_rol;
     $rol->save();
-
+    BitacoraController::registrar(
+        'EDITAR',
+        'Se actualizó el rol: ' . $rol->nombre_rol
+    );
     // 🔗 5. Sincronizar los permisos del rol (actualiza la tabla pivote permiso_rol)
     $rol->permisos()->sync($request->permisos ?? []);
 

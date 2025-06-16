@@ -183,16 +183,22 @@ Route::prefix('admin/bajaproducto')->name('bajaproducto.')->group(function () {
 
 
 // ==================== Rutas de Ventas ====================
-    Route::prefix('admin/venta')->name('venta.')->group(function () {
-        
-        Route::get('/', [VentaController::class, 'index'])->name('index'); // Listar marca
-        Route::get('/create', [VentaController::class, 'create'])->name('create'); // Formulario para registrar marca
-        Route::post('/create', [VentaController::class, 'store'])->name('store'); // Guardar marca
-        Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy'); // Eliminar marca
-         Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
-    });
- 
-  
+Route::prefix('admin/venta')->name('venta.')->group(function () {
+    Route::get('/', [VentaController::class, 'index'])->name('index');
+    Route::get('/create', [VentaController::class, 'create'])->name('create');
+    Route::post('/create', [VentaController::class, 'store'])->name('store');
+    Route::delete('/{id}', [VentaController::class, 'destroy'])->name('destroy');
+    Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
+});
+
+// ==================== Rutas de Bitacora ====================
+Route::prefix('admin/bitacora')->name('bitacora.')->group(function () {
+    Route::get('/', [BitacoraController::class, 'index'])->name('index'); // Listar marca
+});
+
+
+    
+
 });
 
 /// rutas protegidas para clientes

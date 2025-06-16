@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Permiso;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BitacoraController;
 
 class PermisoController extends Controller
 {
@@ -36,6 +38,7 @@ class PermisoController extends Controller
     {
         $this->authorize('create', Permiso::class);
         // Validación de los datos
+
         $request->validate([
             'nombre_permiso' => 'required|string|max:50|unique:permisos,nombre_permiso',
         ]);
@@ -44,7 +47,10 @@ class PermisoController extends Controller
         Permiso::create([
             'nombre_permiso' => $request->nombre_permiso,
         ]);
-
+        BitacoraController::registrar(
+            'CREAR',
+            'Se registró un nuevo permiso: ' . $request->nombre_permiso
+        );
         return redirect()->route('permiso.index')->with('success', 'Permiso registrado correctamente.');
     }
     /*
@@ -65,6 +71,10 @@ class PermisoController extends Controller
         // Eliminar el permiso
 
         $permiso->delete();
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el permiso: ' . $permiso->nombre_permiso
+        );
 
         return redirect()->route('permiso.index')->with('success', 'Permiso eliminado correctamente.');
     }
