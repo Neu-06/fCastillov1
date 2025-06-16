@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use App\Models\Producto;
+//use Cloudinary\Laravel\Facades\Cloudinary;
 
+use App\Models\Producto;
 use App\Models\ImagenProducto;
 use App\Models\Categoria;
 use App\Models\Marca;
@@ -36,8 +37,13 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::all();
         $marcas = Marca::all();
+
         return view('pages.gestion.productos.create', compact('categorias', 'marcas'));
     }
+
+    // ✅ Guardar producto en las tablas respectivas
+
+
 
     public function store(Request $request)
 {
@@ -95,6 +101,10 @@ class ProductoController extends Controller
 }
 
 
+
+
+
+    // ✅ Mostrar formulario de edición
     public function edit($id_producto)
     {
         $producto = Producto::with(['imagenes'])->findOrFail($id_producto);
@@ -102,6 +112,8 @@ class ProductoController extends Controller
         $marcas = Marca::all();
         return view('pages.gestion.productos.edit', compact('producto', 'categorias', 'marcas'));
     }
+
+    // ✅ Actualizar producto
 
 
     public function update(Request $request, $id_producto)
@@ -112,84 +124,78 @@ class ProductoController extends Controller
         'descripcion'     => 'nullable|string|max:255',
         'id_categoria'    => 'required|exists:categorias,id_categoria',
         'id_marca'        => 'required|exists:marcas,id_marca',
-        'imagenes'        => 'nullable|array|max:5',
-        'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+        'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     ]);
 
-    $producto = Producto::with('imagenes')->findOrFail($id_producto);
-    $imagenesActuales = $producto->imagenes->count();
-    $imagenesAEliminar = collect($request->imagenes_eliminar)->count();
-    $nuevasImagenes = collect($request->imagenes)->count();
-    $totalFinal = $imagenesActuales - $imagenesAEliminar + $nuevasImagenes;
+    DB::transaction(function () use ($request, $id_producto) {
+        $producto = Producto::with('imagenes')->findOrFail($id_producto);
 
-    if ($totalFinal > 5) {
-        return back()->withErrors(['imagenes' => 'Solo puedes tener un máximo de 5 imágenes por producto.'])->withInput();
-    }
-
-    DB::transaction(function () use ($request, $producto) {
+        // Actualizar producto
         $producto->update([
-            'codigo_producto' => $request->input('codigo_producto'),
-            'nombre_producto' => $request->input('nombre_producto'),
-            'descripcion'     => $request->input('descripcion'),
-            'id_categoria'    => $request->input('id_categoria'),
-            'id_marca'        => $request->input('id_marca'),
+            'codigo_producto' => $request->codigo_producto,
+            'nombre_producto' => $request->nombre_producto,
+            'descripcion'     => $request->descripcion,
+            'id_categoria'    => $request->id_categoria,
+            'id_marca'        => $request->id_marca, // CORREGIDO
         ]);
 
-        if ($request->filled('imagenes_eliminar')) {
+        // Eliminar imágenes seleccionadas
+        if ($request->filled('imagenes_eliminar') && is_array($request->imagenes_eliminar)) {
             foreach ($producto->imagenes as $imagen) {
                 if (in_array($imagen->id_imagen, $request->imagenes_eliminar)) {
-                    Cloudinary::destroy($imagen->public_id);
+                    Cloudinary::destroy($imagen->public_id); // CORREGIDO
                     $imagen->delete();
                 }
             }
         }
 
+        // Subir nuevas imágenes
         if ($request->hasFile('imagenes')) {
-            $categoria = Categoria::findOrFail($request->input('id_categoria'));
-            $nombreCategoria = Str::slug($categoria->nombre_categoria);
-
             foreach ($request->file('imagenes') as $imagenNueva) {
                 if ($imagenNueva->isValid()) {
-                    try {
-                        $upload = Cloudinary::upload($imagenNueva->getRealPath(), [
-                            'folder' => 'ferreteria/' . $nombreCategoria,
-                            'quality' => 'auto',
-                            'fetch_format' => 'auto',
-                        ]);
+                    $upload = Cloudinary::upload(
+                        $imagenNueva->getRealPath(),
+                        [
+                            'folder'        => 'ferreteria/' . $request->id_categoria . '/' . $request->id_marca,
+                            'quality'       => 'auto',
+                            'fetch_format'  => 'auto',
+                        ]
+                    );
 
-                        ImagenProducto::create([
-                            'id_producto' => $producto->id_producto,
-                            'ruta_imagen' => $upload->getSecurePath(),
-                            'public_id'   => $upload->getPublicId(),
-                        ]);
-                    } catch (\Exception $e) {
-                        continue;
-                    }
+                    ImagenProducto::create([
+                        'id_producto'  => $producto->id_producto, // CORREGIDO
+                        'ruta_imagen'  => $upload->getSecurePath(),
+                        'public_id'    => $upload->getPublicId(),
+                    ]);
                 }
             }
         }
     });
 
-    return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
-}
+        return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
+    }
 
-
+    // ✅ Eliminar producto (Soft delete real con deleted_at)
 
 
     public function destroy($id_producto)
     {
-        $producto = Producto::findOrFail($id_producto);
+        // Buscar el producto con detalle e imágenes
+        $producto = Producto::with('imagenes')->findOrFail($id_producto);
 
-        // Validar que el stock sea 0
-        if ($producto->stock > 0) {
-            return redirect()->back()->with('error', 'No se puede eliminar un producto con stock mayor a 0.');
+        // Eliminar imágenes de Cloudinary (pero no de la base de datos aún)
+        if ($producto->imagenes) {
+            foreach ($producto->imagenes as $imagen) {
+                Cloudinary::destroy($imagen->public_id);
+                // Nota: no eliminamos la fila de BD porque es soft delete del producto
+            }
         }
 
+        // Soft delete del producto (se guarda en la papelera)
         $producto->delete();
 
         return redirect()->route('producto.index')->with('success', 'Producto eliminado correctamente.');
     }
-
 
  
     public function eliminados(Request $request)
@@ -205,7 +211,6 @@ class ProductoController extends Controller
             'eliminados' => true
         ]);
     }
-
     //restaurar un producto eliminado
     public function restore($id_producto)
     {

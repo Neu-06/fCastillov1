@@ -9,9 +9,11 @@
     ])
 
     {{-- <x-gestion.productos.create :categorias="$categorias":marcas="$marcas"/> --}}
-    @include('components.gestion.productos.create', [
-        'categorias' => $categorias,
-        'marcas' => $marcas
-    ])
+@include('components.gestion.productos.create', [
+    'categorias' => $categorias,
+    'marcas' => $marcas
+])
+
+
 
 @endsection

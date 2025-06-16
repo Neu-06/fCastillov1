@@ -84,6 +84,7 @@
                 @enderror
             </div>
 
+
             <!-- Imágenes -->
             <div class="mt-6">
                 <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Imágenes del Producto</label>
