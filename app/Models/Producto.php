@@ -37,7 +37,6 @@ class Producto extends Model
         'stock',               // Cantidad en inventario
         'id_categoria',        // ID de la categoría a la que pertenece
         'id_marca',            // ID de la marca
-        'id_area',            // ID de la area
     ];
 
     // ======================= RELACIONES ==========================
@@ -72,10 +71,10 @@ class Producto extends Model
         return $this->belongsTo(Marca::class, 'id_marca');
     }
     
-    // Relación : un producto pertenece a una Estante
-    public function areas()
+    // Relación: un producto pertenece a un área (antes estaba mal con "Marca")
+    public function area()
     {
-        return $this->belongsTo(Marca::class, 'id_area');
+        return $this->belongsTo(Area::class, 'id_area');
     }
 
 }

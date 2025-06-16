@@ -42,7 +42,7 @@
 
     <!-- Zona principal: Logo, buscador, carrito -->
     <div class="bg-white py-4 px-6 grid grid-cols-3 items-center gap-4 max-w-7xl mx-auto">
-        
+
         <!-- Logo -->
         <a href="/" class="flex items-center">
             <img src="/ruta-del-logo.png" alt="Logo Ferretería Castillo" class="h-20 w-auto object-contain" />
@@ -52,8 +52,7 @@
         <form action="/buscar" method="GET" class="w-full">
             <div class="flex border border-blue-900 rounded-full overflow-hidden shadow-sm">
                 <input type="text" name="q" placeholder="Buscar"
-                    class="px-4 py-2 w-full focus:outline-none text-sm text-gray-700"
-                />
+                    class="px-4 py-2 w-full focus:outline-none text-sm text-gray-700" />
                 <button type="submit" class="bg-blue-900 px-4 text-white flex items-center justify-center">
                     <i class="fas fa-search"></i>
                 </button>
@@ -61,16 +60,17 @@
         </form>
 
         <!-- Mi cuenta + Carrito -->
-      <!--  <div class="flex justify-end items-center gap-6">
+        <!--  <div class="flex justify-end items-center gap-6">
             <a href="/mi-cuenta" class="text-blue-700 flex items-center gap-2 hover:underline">
                 <i class="fas fa-user text-xl"></i> Mi cuenta
             </a>-->
-            <a href="/carrito" class="relative text-gray-700 flex items-center gap-1 hover:text-blue-600">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="text-sm">Bs. 0</span>
-                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
-            </a>
-        </div>
+        <a href="/carrito" class="relative text-gray-700 flex items-center gap-1 hover:text-blue-600">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-sm">Bs. 0</span>
+            <span
+                class="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+        </a>
+    </div>
     </div>
 
     <!-- Menú principal -->

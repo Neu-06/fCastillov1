@@ -1,7 +1,11 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';/*esto agregue*/
+/*@import './globalStyles.css';*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 
 /* Chrome, Safari, Edge, Opera */
