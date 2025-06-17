@@ -10,9 +10,11 @@
 `composer install`
 ###  Dependencias de Node.js
 `npm install`
-### copiar el .env
+### copiar el .env configurar el .env para la base de datos
+
 `copy .env.example .env`
-### configurar el .env para la base de datos
+### cloudinary
+
 ### Genera la clave de la aplicación
 `php artisan key:generate`
 ### segir en *comandosDB.md*

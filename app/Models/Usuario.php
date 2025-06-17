@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Notifiable;
 
     // Definimos la tabla que se va a utilizar
     //en este caso la tabla se llama 'usuarios'
@@ -42,7 +43,7 @@ class Usuario extends Authenticatable
 
     /**
      * Oculta el campo de contraseña al serializar.
-     */    
+     */
     protected $hidden = [
         'password_usuario',
     ];
@@ -68,7 +69,7 @@ class Usuario extends Authenticatable
 
     /**
      * Define qué campo se usará para el login (correo personalizado).
-     */    
+     */
     public function getAuthIdentifierName()
     {
         return 'id_usuario'; // Cambia esto si usas otro campo para la autenticación
@@ -77,7 +78,7 @@ class Usuario extends Authenticatable
 
     /**
      * Devuelve todos los permisos asociados al usuario a través de su rol.
-     */    
+     */
     public function permisos()
     {
         return $this->rol ? $this->rol->permisos : collect([]);
@@ -85,7 +86,7 @@ class Usuario extends Authenticatable
 
     /**
      * Verifica si el usuario tiene un permiso específico.
-     */    
+     */
     public function tienePermiso($permiso)
     {
         return $this->permisos()->contains('nombre_permiso', $permiso);
@@ -93,5 +94,15 @@ class Usuario extends Authenticatable
     public function ventas()
     {
         return $this->hasMany(Venta::class, 'id_usuario', 'id_usuario');
+    }
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->correo_usuario;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->correo_usuario;
     }
 }

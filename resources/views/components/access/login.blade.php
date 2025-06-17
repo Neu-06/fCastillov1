@@ -93,7 +93,7 @@
 
                     <!-- Opciones adicionales -->
                     <div class="flex flex-col justify-center items-center mt-4 min-w-max gap-2">
-                        <a href="#"
+                        <a href="{{ route('password.request') }}"
                             class="text-sm text-tLink cursor-pointer hover:-translate-y-1 duration-500 transition-all">
                             ¿Olvidaste tu contraseña?
                         </a>
