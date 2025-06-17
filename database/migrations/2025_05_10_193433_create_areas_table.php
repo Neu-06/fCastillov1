@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id('id_area');
             $table->string('nombre_area', 50)->unique();
-            $table->string('descripcion_area', 255)->nullable();
+          /*  $table->string('descripcion_area', 255)->nullable();*/
         });
     }
 

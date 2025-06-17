@@ -8,7 +8,7 @@ export default {
     ],
     theme: {
         extend: {
-            colors: {
+            colors: { 
                 //colors for text
                 tWhite: "#D9D9D9",
                 tHover: "#A9C6D9", 
@@ -16,8 +16,9 @@ export default {
                 tLink:'#3C05FF',
 
                 //colors for backgrounds
-                NavBar1: "#1F2937",           //"#BF6B04",
+                NavBar1: "#ffffff",           //"#BF6B04",
                 NavBar2: "#BF7E04",
+                navBlue: '#253464',         //solo aumente esto
 
 
                 btn1: "#BF3706",

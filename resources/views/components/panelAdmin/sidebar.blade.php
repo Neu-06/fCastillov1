@@ -83,7 +83,7 @@
 
                     @if (auth()->user()->tienePermiso('Ver Ventas'))
                         <x-header.elementosNav.optionSecundario link="{{ route('venta.index') }}"
-                            texto="Gestionar Ventas"/>
+                            texto="Gestionar Ventas" />
                     @endif
 
                 </x-header.elementosNav.optionNav>
@@ -105,6 +105,10 @@
                     @if (auth()->user()->tienePermiso('Ver Marcas'))
                         <x-header.elementosNav.optionSecundario link="{{ route('marca.index') }}"
                             texto="Gestionar Marcas" />
+                    @endif                            {{-- Area --}}
+                    @if (auth()->user()->tienePermiso('Ver Marcas'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('area.index') }}"
+                            texto="Gestionar Areas" />
                     @endif
 
                      @if (auth()->user()->tienePermiso('Ver Marcas'))

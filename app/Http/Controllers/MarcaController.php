@@ -51,8 +51,7 @@ class MarcaController extends Controller
     {
         $marcas = Marca::findOrFail($id_marca);
 
-
-        if ($marcas->detalleProductos()->count() > 0) {
+        if ($marcas->Productos()->count() > 0) {
             return redirect()->route('marca.index')
                 ->with('error', 'No se puede eliminar la Marca porque tiene productos asociados.');
         }

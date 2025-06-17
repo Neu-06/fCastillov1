@@ -2,8 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Models\Bitacora;
+
 use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Compra;
@@ -18,9 +17,9 @@ use App\Models\Rol;
 use App\Models\User;
 use App\Models\Usuario;
 use App\Models\Venta;
-
-
-
+use App\Models\Bitacora;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Aquí puedes registrar servicios personalizados si los necesitas.
     }
 
     /**
@@ -38,7 +37,12 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-
+        View::composer('components.header.navs.navMenu', function ($view) {
+            $view->with([
+                'categorias' => Categoria::with('productos')->get(),
+                'marcas' => Marca::all(),
+            ]);
+        });
     }
 }
 

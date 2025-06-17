@@ -58,4 +58,20 @@ class CategoriaController extends Controller
         );
         return redirect()->route('categoria.index')->with('success', 'Categoría eliminada correctamente.');
     }
+    public function productosPorCategoria($id)
+    {
+        $categoria = Categoria::with('productos.imagenes')->findOrFail($id);
+        return view('pages.productos.index', compact('categoria'));
+    }
+
+
+
+    //  Mostrar una categoría específica con sus productos
+    /*public function show($id)
+    {
+       $categoria = \App\Models\Categoria::findOrFail($id);
+       $productos = $categoria->productos; 
+      return view('pages.gestion.categorias.show', compact('categoria', 'productos'));
+    }*/
+    //-----------------------------------
 }

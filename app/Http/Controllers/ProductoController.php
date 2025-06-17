@@ -6,6 +6,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 //use Cloudinary\Laravel\Facades\Cloudinary;
 
 use App\Models\Producto;
+
 use App\Models\ImagenProducto;
 use App\Models\Categoria;
 use App\Models\Marca;
@@ -17,6 +18,8 @@ class ProductoController extends Controller
 {
     public function index(Request $request)
     {
+       // $productos = Producto::with(['marca', 'imagenes', 'categoria'])->get();
+        //dd($productos->first()); // inspecciona solo el primer producto
         $categorias = Categoria::all();
 
         // Traer productos con o sin filtro
@@ -94,6 +97,8 @@ class ProductoController extends Controller
                 }
             }
         }
+        return redirect()->route('producto.index')
+            ->with('success', 'Producto registrado correctamente.');
     }
 
     return redirect()->route('producto.index')
@@ -147,7 +152,6 @@ class ProductoController extends Controller
                     $imagen->delete();
                 }
             }
-        }
 
         // Subir nuevas imágenes
         if ($request->hasFile('imagenes')) {
@@ -169,8 +173,7 @@ class ProductoController extends Controller
                     ]);
                 }
             }
-        }
-    });
+        });
 
         return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
     }

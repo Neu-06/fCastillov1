@@ -26,17 +26,18 @@ use App\Http\Controllers\Auth\PasswordResetController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
 | Aquí se registran las rutas web para la aplicación. Estas rutas están
-| cargadas por el RouteServiceProvider y todas están asignadas al grupo
-| "web".
-|
+| cargadas por el RouteServiceProvider y todas están asignadas al grupo "web".
 */
 
 // ==================== Rutas de Inicio ====================
 
 Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista principal
+Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('producto.show');
+Route::get('/marca/{id}', [MarcaController::class, 'show'])->name('marca.show');
+Route::get('/categoria/{id}', [CategoriaController::class, 'productosPorCategoria'])->name('categoria.productos');
 
+// ==================== Rutas de Logout ====================
 // ==================== Rutas de Logout (fuera del middleware) ====================
 Route::post('/cliente/logout', [ClienteController::class, 'logout'])->name('cliente.logout');
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
@@ -47,15 +48,17 @@ Route::post('/login', [AccessController::class, 'login'])->name('login.post');
 Route::get('/registro', [ClienteController::class, 'publicRegister'])->name('cliente.registro');
 Route::post('/registro', [ClienteController::class, 'store'])->name('cliente.public.store');
 
+// ==================== Rutas de Administración (Protegidas) ====================
 
 //// rutas protegidas para administradores
 Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     Route::get('/admin/home', [HomeController::class, 'homeAdmin'])->name('admin.home');
 
-    // ==================== Rutas de Usuarios ===================r
+    // ==================== Usuarios ====================
     Route::prefix('admin/usuario')->name('usuario.')->group(function () {
         Route::get('/bitacora', [UsuarioController::class, 'index2'])->name('bitacora.index');
+        Route::resource('/', UsuarioController::class)->except(['show']);
         Route::get('/', [UsuarioController::class, 'index'])->name('index'); // Listar usuarios
         Route::get('/registro', [UsuarioController::class, 'create'])->name('create'); //formulario para registrar usuario
         Route::post('/registro', [UsuarioController::class, 'store'])->name('store'); //guardar usuario
@@ -68,69 +71,51 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
         Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
     });
 
-    // ==================== Rutas de Roles ===================C
+    // ==================== Roles ====================
     Route::prefix('admin/rol')->name('rol.')->group(function () {
-        Route::get('/', [RolController::class, 'index'])->name('index'); // Listar roles
-        Route::get('/create', [RolController::class, 'create'])->name('create');
-        Route::post('/create', [RolController::class, 'store'])->name('store');
-        Route::delete('/{id}', [RolController::class, 'destroy'])->name('destroy');
+        Route::resource('/', RolController::class)->except(['show']);
         Route::get('/{id}/permisos', [RolController::class, 'verPermisos'])->name('permisos');
         Route::get('/{id}/edit', [RolController::class, 'edit'])->name('edit');
         Route::put('/{id}', [RolController::class, 'update'])->name('update');
     });
 
-    // ==================== Rutas de Clientes ====================
+    // ==================== Clientes ====================
 
     Route::prefix('admin/cliente')->name('cliente.')->group(function () {
-        Route::get('/', [ClienteController::class, 'index'])->name('index'); // Listar clientes activos
-        Route::get('/registro', [ClienteController::class, 'create'])->name('create'); // Formulario para registrar cliente
-        Route::post('/registro', [ClienteController::class, 'store'])->name('store'); // Guardar cliente
-        Route::get('/{id}/edit', [ClienteController::class, 'edit'])->name('edit'); // Formulario para editar cliente
-        Route::put('/{id}', [ClienteController::class, 'update'])->name('update'); // Actualizar cliente
-        Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('destroy'); // Eliminar cliente (soft delete)
+        Route::resource('/', ClienteController::class)->except(['show']);
+        Route::get('/', [ClienteController::class, 'index'])->name('index'); 
+        Route::get('/registro', [ClienteController::class, 'create'])->name('create'); 
+        Route::post('/registro', [ClienteController::class, 'store'])->name('store'); 
+        Route::get('/{id}/edit', [ClienteController::class, 'edit'])->name('edit'); 
+        Route::put('/{id}', [ClienteController::class, 'update'])->name('update'); 
+        Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('destroy'); 
 
         Route::get('/eliminados', [ClienteController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
         Route::put('/{id}/restaurar', [ClienteController::class, 'restore'])->name('restore'); // Restaurar cliente
-
     });
 
-    // ==================== Rutas de Proveedores ====================
+    // ==================== Proveedores ====================
     Route::prefix('admin/proveedor')->name('proveedor.')->group(function () {
-        Route::get('/', [ProveedorController::class, 'index'])->name('index'); // Listar proveedores
-        Route::get('/registro', [ProveedorController::class, 'create'])->name('create'); // Formulario para registrar proveedor
-        Route::post('/registro', [ProveedorController::class, 'store'])->name('store'); // Guardar proveedor
-        Route::get('/{id}/edit', [ProveedorController::class, 'edit'])->name('edit'); // Formulario para editar proveedor
-        Route::put('/{id}', [ProveedorController::class, 'update'])->name('update'); // Actualizar proveedor
-        Route::delete('/{id}', [ProveedorController::class, 'destroy'])->name('destroy'); // Eliminar proveedor
-
-        // Opcionales para SoftDeletes
-        Route::get('/eliminados', [ProveedorController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
-        Route::put('/{id}/restaurar', [ProveedorController::class, 'restore'])->name('restore'); // Restaurar proveedor
+        Route::resource('/', ProveedorController::class)->except(['show']);
+        Route::get('/eliminados', [ProveedorController::class, 'eliminados'])->name('eliminados');
+        Route::put('/{id}/restaurar', [ProveedorController::class, 'restore'])->name('restore');
     });
 
-    // ==================== Rutas de Permisos ====================
+    // ==================== Permisos ====================
     Route::prefix('admin/permiso')->name('permiso.')->group(function () {
-        Route::get('/', [PermisoController::class, 'index'])->name('index'); // Listar permisos
-        Route::get('/create', [PermisoController::class, 'create'])->name('create'); // Formulario para registrar permiso
-        Route::post('/create', [PermisoController::class, 'store'])->name('store'); // Guardar permiso
-        Route::delete('/{id}', [PermisoController::class, 'destroy'])->name('destroy'); // Eliminar permiso
+        Route::resource('/', PermisoController::class)->except(['show']);
     });
 
-    // ==================== Rutas de Productos ====================
+    // ==================== Productos ====================
     Route::prefix('admin/producto')->name('producto.')->group(function () {
-        Route::get('/', [ProductoController::class, 'index'])->name('index'); // Listar productos
-        Route::get('/create', [ProductoController::class, 'create'])->name('create'); // Formulario para registrar producto
-        Route::post('/create', [ProductoController::class, 'store'])->name('store'); // Guardar producto
-        Route::get('/{id}/edit', [ProductoController::class, 'edit'])->name('edit'); // Formulario para editar producto
-        Route::put('/{id}', [ProductoController::class, 'update'])->name('update'); // Actualizar producto
-        Route::delete('/{id}', [ProductoController::class, 'destroy'])->name('destroy'); // Eliminar producto
-        // Rutas adicionales
-        Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados'); // Mostrar productos eliminados
-        Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');    // Restaurar producto eliminado
+        Route::resource('/', ProductoController::class)->except(['show']);
+        Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados');
+        Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');
     });
 
-    // ==================== Rutas de Categorías ====================
+    // ==================== Categorías ====================
     Route::prefix('admin/categoria')->name('categoria.')->group(function () {
+        Route::resource('/', CategoriaController::class)->except(['show']);
         Route::get('/', [CategoriaController::class, 'index'])->name('index'); // Listar categorías
         Route::get('/create', [CategoriaController::class, 'create'])->name('create'); // Formulario para registrar categoría
         Route::post('/create', [CategoriaController::class, 'store'])->name('store'); // Guardar categoría
@@ -144,14 +129,29 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
         Route::delete('/{id}', [MarcaController::class, 'destroy'])->name('destroy'); // Eliminar marca
     });
 
+    // ==================== Marcas ====================
+    Route::prefix('admin/marca')->name('marca.')->group(function () {
+        Route::resource('/', MarcaController::class)->except(['show']);
+    });
+
+    // ==================== Áreas ====================
+    Route::prefix('admin/area')->name('area.')->group(function () {
+        Route::resource('/', AreaController::class)->except(['show']);
+    });
+
+    // ==================== Compras ====================
     // ==================== Rutas de Marcas ====================
     Route::prefix('admin/compra')->name('compra.')->group(function () {
-        Route::get('/', [CompraController::class, 'index'])->name('index'); // Listar marca
-        Route::get('/create', [CompraController::class, 'create'])->name('create'); // Formulario para registrar marca
-        Route::post('/create', [CompraController::class, 'store'])->name('store'); // Guardar marca
-        Route::delete('/{id}', [CompraController::class, 'destroy'])->name('destroy'); // Eliminar marca
+        Route::resource('/', CompraController::class)->except(['show']);
         Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
     });
+
+    // ==================== Ventas ====================
+    Route::prefix('admin/venta')->name('venta.')->group(function () {
+        Route::resource('/', VentaController::class)->except(['show']);
+        Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
+    });
+
     // ==================== Rutas de Baja de Productos ====================
     Route::prefix('admin/baja-producto')->name('bajaproducto.')->group(function () {
         Route::get('/', [BajaProductoController::class, 'index'])->name('index');
@@ -176,9 +176,6 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
         Route::get('/realizadas', [BajaProductoController::class, 'realizadas'])->name('realizadas');
     });
 
-
-
-
     // ==================== Rutas de Ventas ====================
     Route::prefix('admin/venta')->name('venta.')->group(function () {
         Route::get('/', [VentaController::class, 'index'])->name('index');
@@ -194,10 +191,8 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     });
 });
 
-/// rutas protegidas para clientes
 Route::middleware(['auth:cliente'])->group(function () {});
 
-// Rutas unificadas para restablecer contraseña
 Route::get('forgot-password', [PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');

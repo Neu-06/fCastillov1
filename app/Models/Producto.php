@@ -70,7 +70,12 @@ class Producto extends Model
     {
         return $this->belongsTo(Marca::class, 'id_marca');
     }
-
+    
+    // Relación: un producto pertenece a un área (antes estaba mal con "Marca")
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'id_area');
+    }
 
 }
 
