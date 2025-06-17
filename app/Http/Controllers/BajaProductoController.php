@@ -35,15 +35,19 @@ public function store(Request $request)
     // Validar campos
     $request->validate([
         'cantidad_baja' => 'required|integer|min:1',
-        'motivo_baja' => 'required|string|max:255',
+        'motivo_baja' => 'required|string|max:100',
         'id_producto' => 'required|exists:productos,id_producto',
     ]);
 
     $producto = Producto::findOrFail($request->id_producto);
 
     // Verificar si hay suficiente stock
-    if ($producto->stock < $request->cantidad_baja) {
-        return redirect()->back()->withErrors(['cantidad_baja' => 'La cantidad supera el stock disponible.']);
+       if ($request->cantidad_baja > $producto->stock) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors([
+                'cantidad_baja' => 'La cantidad de baja no puede ser mayor al stock disponible.'
+            ]);
     }
 
     // Registrar la baja
