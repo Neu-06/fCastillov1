@@ -30,12 +30,58 @@
     <div class="mb-4">
         <label for="cantidad_baja" class="block text-sm font-medium text-gray-700">Cantidad del Producto a dar de Baja</label>
         <input type="number" name="cantidad_baja" class="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ej: 5 o 12" required min="1">
+        @error('cantidad_baja')
+        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+        @enderror
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.querySelector('input[name="cantidad_baja"]');
+
+        input.addEventListener('keypress', function (e) {
+            // Permitir solo dígitos del 0 al 9
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        input.addEventListener('paste', function (e) {
+            // Evitar pegar contenido que no sea número
+            const pasted = e.clipboardData.getData('text');
+            if (!/^\d+$/.test(pasted)) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
     </div>
 
     {{-- Campo editable: Motivo de la baja --}}
     <div class="mb-6">
         <label for="motivo_baja" class="block text-sm font-medium text-gray-700">Motivo</label>
-        <textarea name="motivo_baja" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ej: Producto dañado - 3 bolsas de cemento" required></textarea>
+        <textarea name="motivo_baja" id="motivo_baja" maxlength="100" rows="3"
+        class="w-full px-3 py-2 border border-gray-300 rounded"
+        placeholder="Ej: Producto dañado - 3 bolsas de cemento" required>{{ old('motivo_baja') }}</textarea>
+
+       <div class="text-sm text-gray-500 mt-1 text-right">
+       <span id="contador">0</span>/100 caracteres
+       </div>
+
+       <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const textarea = document.getElementById('motivo_baja');
+        const contador = document.getElementById('contador');
+
+        function actualizarContador() {
+            contador.textContent = textarea.value.length;
+        }
+
+        textarea.addEventListener('input', actualizarContador);
+
+        // Contar caracteres si ya hay texto (por ejemplo al volver con errores)
+        actualizarContador();
+       });
+      </script>
     </div>
 
     {{-- Botones: Cancelar y Confirmar baja --}}
