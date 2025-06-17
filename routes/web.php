@@ -83,12 +83,12 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     Route::prefix('admin/cliente')->name('cliente.')->group(function () {
         Route::resource('/', ClienteController::class)->except(['show']);
-        Route::get('/', [ClienteController::class, 'index'])->name('index'); 
-        Route::get('/registro', [ClienteController::class, 'create'])->name('create'); 
-        Route::post('/registro', [ClienteController::class, 'store'])->name('store'); 
-        Route::get('/{id}/edit', [ClienteController::class, 'edit'])->name('edit'); 
-        Route::put('/{id}', [ClienteController::class, 'update'])->name('update'); 
-        Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('destroy'); 
+        Route::get('/', [ClienteController::class, 'index'])->name('index');
+        Route::get('/registro', [ClienteController::class, 'create'])->name('create');
+        Route::post('/registro', [ClienteController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ClienteController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ClienteController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('destroy');
 
         Route::get('/eliminados', [ClienteController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
         Route::put('/{id}/restaurar', [ClienteController::class, 'restore'])->name('restore'); // Restaurar cliente
@@ -109,8 +109,17 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     // ==================== Productos ====================
     Route::prefix('admin/producto')->name('producto.')->group(function () {
         Route::resource('/', ProductoController::class)->except(['show']);
-        Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados');
-        Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');
+
+        Route::get('/', [ProductoController::class, 'index'])->name('index'); // Listar productos
+        Route::get('/create', [ProductoController::class, 'create'])->name('create'); // Formulario para registrar producto
+        Route::post('/create', [ProductoController::class, 'store'])->name('store'); // Guardar producto
+        Route::get('/{id}/edit', [ProductoController::class, 'edit'])->name('edit'); // Formulario para editar producto
+        Route::put('/{id}', [ProductoController::class, 'update'])->name('update'); // Actualizar producto
+        Route::delete('/{id}', [ProductoController::class, 'destroy'])->name('destroy'); // Eliminar producto
+        // Rutas adicionales
+        Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados'); // Mostrar productos eliminados
+        Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');    // Restaurar producto eliminado
+
     });
 
     // ==================== Categorías ====================
@@ -138,7 +147,13 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     Route::prefix('admin/area')->name('area.')->group(function () {
         Route::resource('/', AreaController::class)->except(['show']);
     });
-
+    // ==================== Rutas de Marcas ====================
+    Route::prefix('admin/area')->name('area.')->group(function () {
+        Route::get('/', [AreaController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/create', [AreaController::class, 'create'])->name('create'); // Formulario para registrar marca
+        Route::post('/create', [AreaController::class, 'store'])->name('store'); // Guardar marca
+        Route::delete('/{id}', [AreaController::class, 'destroy'])->name('destroy'); // Eliminar marca
+    });
     // ==================== Compras ====================
     // ==================== Rutas de Marcas ====================
     Route::prefix('admin/compra')->name('compra.')->group(function () {

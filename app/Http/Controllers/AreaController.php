@@ -47,14 +47,6 @@ class AreaController extends Controller
     {
 
         $Areas = Area::findOrFail($id_area);
-        //  $this->authorize('delete', $Areas);
-
-        //Estantes
-        if ($Areas->Producto()->count() > 0) {
-            return redirect()->route('area.index')
-                ->with('error', 'No se puede eliminar la Area porque tiene Estantes asociados.');
-        }
-
         $Areas->delete();
 
         return redirect()->route('area.index')->with('success', 'Area eliminada correctamente.');
