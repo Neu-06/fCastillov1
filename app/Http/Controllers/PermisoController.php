@@ -16,7 +16,7 @@ class PermisoController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Permiso::class);
-        $permisos = Permiso::all(); // Obtener todos los permisos
+        $permisos = Permiso::paginate(10); // Obtener todos los permisos
         return view('pages.gestion.permisos.index', compact('permisos'));
     }
 

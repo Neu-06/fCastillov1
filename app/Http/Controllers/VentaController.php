@@ -17,7 +17,7 @@ class VentaController extends Controller
         public function index()
     {
         $this->authorize('viewAny', Venta::class);
-        $ventas = Venta::all();
+        $ventas = Venta::paginate(10);
         return view('pages.gestion.ventas.index', [
             'ventas' => $ventas
         ]);
@@ -99,6 +99,11 @@ $venta->save();
         }
 
         DB::commit();
+        // Registrar en bitácora
+        BitacoraController::registrar(
+            'CREAR',
+            'Se registró la venta N°: ' . $venta->id_venta
+        );
 
         return redirect()->route('venta.index')->with('success', 'Venta registrada correctamente.');
     } catch (\Exception $e) {

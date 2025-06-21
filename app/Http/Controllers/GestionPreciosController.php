@@ -12,7 +12,7 @@ class GestionPreciosController extends Controller
 {
     $productos = Producto::select('id_producto', 'codigo_producto', 'nombre_producto', 'stock', 'precio_venta', 'precio_compra')
     ->orderBy('nombre_producto', 'asc')
-    ->get();
+    ->paginate(10);
 
 
     return view('pages.gestion.gestion-precios.index', compact('productos'));

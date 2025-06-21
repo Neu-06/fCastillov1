@@ -26,7 +26,7 @@ class BitacoraController extends Controller
             $query->where('fecha_hora', 'like', "%{$request->fecha}%");
         }
 
-        $bitacoras = $query->orderByDesc('id_bitacora')->paginate(20);
+        $bitacoras = $query->orderByDesc('id_bitacora')->paginate(10);
 
         return view('pages.gestion.bitacoras.index', compact('bitacoras'));
         }

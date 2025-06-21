@@ -30,6 +30,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-6 px-4 pb-6">
+                    {{ $permisos->links() }}
+                </div>
             </div>
         </div>
     </div>

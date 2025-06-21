@@ -13,7 +13,7 @@ class BajaProductoController extends Controller
 public function index()
 {
     // Obtener todos los productos ordenados alfabéticamente
-    $productos = Producto::orderBy('nombre_producto', 'asc')->get();
+    $productos = Producto::orderBy('nombre_producto', 'asc')->paginate(10);
 
     // Enviar a la vista, y agregamos 'eliminados' en false
     return view('pages.gestion.baja-producto.index', [

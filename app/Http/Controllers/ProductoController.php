@@ -21,7 +21,7 @@ class ProductoController extends Controller
             ->when($request->categoria_id, function ($query, $categoriaId) {
                 return $query->where('id_categoria', $categoriaId);
             })
-            ->get();
+            ->paginate(10);
 
         return view('pages.gestion.productos.index', [
             'productos' => $productos,
@@ -89,6 +89,13 @@ class ProductoController extends Controller
                     }
                 }
             }
+
+                    // Registrar en bitácora
+        BitacoraController::registrar(
+            'CREAR',
+            'Se creó el producto: ' . $request->nombre_producto
+        );
+
             return redirect()->route('producto.index')
                 ->with('success', 'Producto registrado correctamente.');
         }
@@ -163,7 +170,11 @@ class ProductoController extends Controller
                 }
             }
         });
-
+        // Registrar en bitácora
+        BitacoraController::registrar(
+            'ACTUALIZAR',
+            'Se actualizó el producto: ' . $request->nombre_producto
+        );
         return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
     }
 
@@ -179,6 +190,12 @@ class ProductoController extends Controller
 
         $producto->delete();
 
+
+                // Registrar en bitácora
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el producto: ' . $producto->nombre_producto
+        );
         return redirect()->route('producto.index')->with('success', 'Producto eliminado correctamente.');
     }
 
@@ -187,7 +204,7 @@ class ProductoController extends Controller
         $categorias = Categoria::all();
         $productos = Producto::onlyTrashed()
             ->with(['marca', 'imagenes', 'categoria'])
-            ->get();
+            ->paginate(10);
 
         return view('pages.gestion.productos.index', [
             'productos' => $productos,

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BitacoraController;
+
 
 class AreaController extends Controller
 {
@@ -13,7 +15,7 @@ class AreaController extends Controller
     public function index()
     {
         //$this->authorize('viewAny', Area::class);
-        $Areas = Area::all();
+        $Areas = Area::paginate(10);
         return view('pages.gestion.Area.index', compact('Areas'));
     }
 
@@ -40,6 +42,11 @@ class AreaController extends Controller
             'nombre_area' => $request->nombre_area,
         ]);
 
+            BitacoraController::registrar(
+            'CREAR',
+            'Se creó el área: ' . $request->nombre_area
+            );
+
         return redirect()->route('area.index')->with('success', 'Area creada correctamente.');
     }
 
@@ -47,8 +54,12 @@ class AreaController extends Controller
     {
 
         $Areas = Area::findOrFail($id_area);
+        $nombre = $Areas->nombre_area;
         $Areas->delete();
-
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el área: ' . $nombre
+        );
         return redirect()->route('area.index')->with('success', 'Area eliminada correctamente.');
     }
 }

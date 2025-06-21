@@ -16,7 +16,7 @@ class CompraController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Compra::class);
-        $compras = Compra::all();
+        $compras = Compra::paginate(10);
         return view('pages.gestion.compras.index', [
             'compras' => $compras
         ]);
