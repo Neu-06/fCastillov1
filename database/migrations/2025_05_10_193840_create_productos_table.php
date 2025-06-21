@@ -21,9 +21,9 @@ return new class extends Migration
             $table->decimal('precio_compra', 10, 2);
             $table->integer('stock')->default(0);
             // llaves foráneas
-            $table->foreignId('id_area')
+            $table->foreignId('id_estante')
                 ->nullable()
-                ->constrained('areas', 'id_area')
+                ->constrained('estantes', 'id_estante')
                 ->onDelete('set null');
             $table->foreignId('id_categoria')
                 ->nullable()

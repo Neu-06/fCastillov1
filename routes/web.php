@@ -147,15 +147,23 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     Route::prefix('admin/area')->name('area.')->group(function () {
         Route::resource('/', AreaController::class)->except(['show']);
     });
-    // ==================== Rutas de Marcas ====================
+    // ==================== Rutas de areas ====================
     Route::prefix('admin/area')->name('area.')->group(function () {
         Route::get('/', [AreaController::class, 'index'])->name('index'); // Listar marca
         Route::get('/create', [AreaController::class, 'create'])->name('create'); // Formulario para registrar marca
         Route::post('/create', [AreaController::class, 'store'])->name('store'); // Guardar marca
         Route::delete('/{id}', [AreaController::class, 'destroy'])->name('destroy'); // Eliminar marca
     });
+
+    // ==================== Rutas de estantes ====================
+    Route::prefix('admin/estante')->name('estante.')->group(function () {
+        Route::get('/', [EstanteController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/create', [EstanteController::class, 'create'])->name('create'); // Formulario para registrar marca
+        Route::post('/create', [EstanteController::class, 'store'])->name('store'); // Guardar marca
+        Route::delete('/{id}', [EstanteController::class, 'destroy'])->name('destroy'); // Eliminar marca
+        Route::resource('/', EstanteController::class)->except(['show']);
+    });
     // ==================== Compras ====================
-    // ==================== Rutas de Marcas ====================
     Route::prefix('admin/compra')->name('compra.')->group(function () {
         Route::resource('/', CompraController::class)->except(['show']);
         Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
