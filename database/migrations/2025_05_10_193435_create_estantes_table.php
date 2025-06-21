@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('estantes', function (Blueprint $table) {
             $table->id('id_estante');
-            $table->string('codigo_estante', 50)->unique();
             $table->string('nombre_estante', 50);
             //llave foranea
             $table->foreignId('id_area')

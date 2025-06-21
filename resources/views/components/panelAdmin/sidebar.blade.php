@@ -112,6 +112,11 @@
                     @endif
 
                      @if (auth()->user()->tienePermiso('Ver Marcas'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('estante.index') }}"
+                            texto="Gestionar Estante" />
+                    @endif
+
+                     @if (auth()->user()->tienePermiso('Ver Marcas'))
                     <x-header.elementosNav.optionSecundario link="{{ route('gestionprecios.index') }}"
                      texto="Precios y Stock" />
                      @endif
