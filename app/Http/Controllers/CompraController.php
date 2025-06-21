@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Compra;
 use App\Models\DetalleCompra;
@@ -13,12 +14,30 @@ use App\Http\Controllers\BitacoraController;
 class CompraController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Compra::class);
-        $compras = Compra::all();
+
+        $proveedorId = $request->input('proveedor_id');
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+
+        $Proveedores = Proveedor::all();
+
+        $compras = Compra::when($proveedorId, function ($query) use ($proveedorId) {
+            return $query->where('id_proveedor', $proveedorId);
+        })
+            ->when($fechaInicio, function ($query) use ($fechaInicio) {
+                return $query->whereDate('created_at', '>=', $fechaInicio);
+            })
+            ->when($fechaFin, function ($query) use ($fechaFin) {
+                return $query->whereDate('created_at', '<=', $fechaFin);
+            })
+            ->get();
+
         return view('pages.gestion.compras.index', [
-            'compras' => $compras
+            'compras' => $compras,
+            'Proveedores' => $Proveedores
         ]);
     }
 
@@ -47,7 +66,7 @@ class CompraController extends Controller
             'productos.*.precio' => 'required|numeric|min:1',
             'total' => 'required|numeric|min:0'
         ]);
-
+        //dd($request->productos);
         try {
             DB::beginTransaction();
 
@@ -84,7 +103,7 @@ class CompraController extends Controller
                 }
 
                 // ✅ Actualizar precio_venta (por ejemplo, 30% más que el costo promedio)
-                $ProductoActualizar->precio_venta = $ProductoActualizar->costo_promedio * 1.3;
+                //$ProductoActualizar->precio_venta = $ProductoActualizar->costo_promedio * 1.3;
                 $ProductoActualizar->save();
             }
 
@@ -92,8 +111,8 @@ class CompraController extends Controller
 
             BitacoraController::registrar(
                 'CREAR',
-                'Se registró una compra con ID: ' . $compra->id_compra . ' del proveedor: ' . $compra->proveedor->nombre_proveedor
-            );
+                 'Se registró una compra con ID: ' . $compra->id_compra . ' del proveedor: ' . $compra->proveedor->nombreC_proveedor
+             );
 
             return redirect()->route('compra.index')->with('success', 'Compra registrada correctamente.');
         } catch (\Exception $e) {
@@ -107,7 +126,19 @@ class CompraController extends Controller
         $compras = collect([
             Compra::with(['proveedor', 'detalles.producto'])->findOrFail($id)
         ]);
-
+            
         return view('pages.gestion.compras.show', compact('compras'));
+    }
+    public function generarReporte(Request $request)
+    {
+        $compras = Compra::with(['proveedor', 'detalles.producto'])
+            ->when($request->proveedor_id, fn($q) => $q->where('id_proveedor', $request->proveedor_id))
+            ->when($request->fecha_inicio, fn($q) => $q->whereDate('created_at', '>=', $request->fecha_inicio))
+            ->when($request->fecha_fin, fn($q) => $q->whereDate('created_at', '<=', $request->fecha_fin))
+            ->get();
+
+        $pdf = PDF::loadView('pages.gestion.reportes.compras', compact('compras'));
+
+        return $pdf->download('reporte_compras.pdf');
     }
 }

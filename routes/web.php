@@ -159,12 +159,14 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     Route::prefix('admin/compra')->name('compra.')->group(function () {
         Route::resource('/', CompraController::class)->except(['show']);
         Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
+        Route::get('/compras', [CompraController::class, 'generarReporte'])->name('reporte');
     });
 
     // ==================== Ventas ====================
     Route::prefix('admin/venta')->name('venta.')->group(function () {
         Route::resource('/', VentaController::class)->except(['show']);
-        Route::get('/compras/{id}', [VentaController::class, 'show'])->name('show');
+        Route::get('/venta/{id}', [VentaController::class, 'show'])->name('show');
+        Route::get('/venta', [VentaController::class, 'generarReporte'])->name('reporte');
     });
 
     // ==================== Rutas de Baja de Productos ====================
