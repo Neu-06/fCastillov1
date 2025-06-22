@@ -116,8 +116,8 @@
             allowClear: true
         });
 
-        const productos = JSON.parse(@json($productos));
-        const proveedores = JSON.parse(@json($proveedores));
+        const productos = JSON.parse('@json($productos)');
+        const proveedores = JSON.parse('@json($proveedores)');
         let contador = 0;
         $('#btn-agregar-producto').off('click').on('click', function () {
             console.log('Botón clickeado'); // debug
@@ -127,7 +127,7 @@
             <td class="p-2 border">
                 <select name="productos[${index}][id_producto]" class="select2-producto w-full">
                     <option value="">Seleccione</option>
-                    ${productos.map(p => <option value="${p.id_producto}">${p.nombre_producto} - ${p.descripcion}</option>).join('')}
+                   ${productos.map(p => <option value="${p.id_producto}">${p.nombre_producto} - ${p.descripcion}</option>).join('')}
                 </select>
             </td>
             <td class="p-2 border">

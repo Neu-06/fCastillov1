@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('costo_promedio', 10, 2);
             $table->decimal('precio_compra', 10, 2);
             $table->integer('stock')->default(0);
+            $table->timestamps(); // crea created_at y updated_at
             // llaves foráneas
             $table->foreignId('id_estante')
                 ->nullable()
