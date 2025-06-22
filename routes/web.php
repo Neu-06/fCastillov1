@@ -19,7 +19,7 @@ use App\Http\Controllers\GestionPreciosController;
 use App\Http\Controllers\EstanteController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\Auth\PasswordResetController;
-
+use App\Http\Controllers\ReporteInventarioController;
 
 
 /*
@@ -36,6 +36,7 @@ Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista princi
 Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('producto.show');
 Route::get('/marca/{id}', [MarcaController::class, 'show'])->name('marca.show');
 Route::get('/categoria/{id}', [CategoriaController::class, 'productosPorCategoria'])->name('categoria.productos');
+
 
 // ==================== Rutas de Logout ====================
 // ==================== Rutas de Logout (fuera del middleware) ====================
