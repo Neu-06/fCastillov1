@@ -122,7 +122,7 @@
             $('#btn-agregar-producto').off('click').on('click', function () {
                 let index = Date.now(); // índice único
                 
-                console.log(productos); // para confirmar que está accesible aquí
+                
                 let fila = `
                     
                     <tr>
