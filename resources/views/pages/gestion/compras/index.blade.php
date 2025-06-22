@@ -50,17 +50,21 @@
 
                 <x-gestion.compras.nombre_columna />
 
-                <tbody class="text-gray-700 divide-y">
-                    @foreach ($compras as $compra)
-                    <x-gestion.compras.fila_tabla
-                        id_compra="{{ $compra->id_compra }}"
-                        nombre_proveedor="{{ $compra->proveedor->nombreC_proveedor ?? 'Sin proveedor' }}"
-                        total_compra="{{ number_format($compra->total_compra, 2) }}"
-                        fecha_compra="{{ $compra->created_at->format('d/m/Y') }}" />
-                    @endforeach
-                </tbody>
-            </table>
+                    <tbody class="text-gray-700 divide-y">
+                        @foreach ($compras as $compra)
+                            <x-gestion.compras.fila_tabla 
+                               id_compra="{{ $compra->id_compra }}"
+                                 nombre_proveedor="{{ $compra->proveedor->nombreC_proveedor ?? 'Sin proveedor' }}"
+                                total_compra="{{ number_format($compra->total_compra, 2) }}"
+                                  fecha_compra="{{ $compra->created_at->format('d/m/Y') }}"
+                                  />
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="mt-6 px-4 pb-6">
+                    {{ $compras->links() }}
+                </div>
+            </div>
         </div>
     </div>
-</div>
 @endsection

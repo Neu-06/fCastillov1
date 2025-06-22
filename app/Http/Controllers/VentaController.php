@@ -18,8 +18,8 @@ class VentaController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Venta::class); // Asegura política si usás Gate/Policy
-
+        $this->authorize('viewAny', Venta::class);
+        
         $clienteId = $request->input('cliente_id');
         $fechaInicio = $request->input('fecha_inicio');
         $fechaFin = $request->input('fecha_fin');
@@ -36,8 +36,7 @@ class VentaController extends Controller
             ->when($fechaFin, function ($query) use ($fechaFin) {
                 return $query->whereDate('created_at', '<=', $fechaFin);
             })
-            ->get();
-
+            ->paginate(10);
         return view('pages.gestion.ventas.index', [
             'ventas' => $ventas,
             'Clientes' => $Clientes
@@ -119,7 +118,12 @@ class VentaController extends Controller
                 $Producto->save();
             }
 
-            DB::commit();
+        DB::commit();
+                // Registrar en bitácora
+        BitacoraController::registrar(
+            'CREAR',
+            'Se registró la venta N°: ' . $venta->id_venta
+        );
 
             return redirect()->route('venta.index')->with('success', 'Venta registrada correctamente.');
         } catch (\Exception $e) {

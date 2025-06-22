@@ -29,6 +29,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-6 px-4 pb-6">
+                    {{ $Estantes->links() }}
+                </div>
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@ class RolController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Rol::class);
-        $roles = Rol::all(); // Obtener todos los roles
+        $roles = Rol::paginate(10); // Obtener todos los roles
         return view('pages.gestion.roles.index', compact('roles'));
     }
 

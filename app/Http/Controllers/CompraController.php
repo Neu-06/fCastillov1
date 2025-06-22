@@ -33,7 +33,7 @@ class CompraController extends Controller
             ->when($fechaFin, function ($query) use ($fechaFin) {
                 return $query->whereDate('created_at', '<=', $fechaFin);
             })
-            ->get();
+            ->paginate(10);
 
         return view('pages.gestion.compras.index', [
             'compras' => $compras,

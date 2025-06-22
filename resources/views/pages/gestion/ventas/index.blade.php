@@ -50,18 +50,23 @@
 
                 <x-gestion.ventas.nombre_columna />
 
-                <tbody class="text-gray-700 divide-y">
-                    @foreach ($ventas as $venta)
-                    <x-gestion.ventas.fila_tabla
-                        id_venta="{{ $venta->id_venta }}"
-                        nombre_usuario="{{ $venta->usuario->nombre_usuario ?? 'Sin usuario' }}"
-                        nombre_cliente="{{ $venta->cliente->nombre_cliente ?? 'Sin cliente' }}"
-                        total_venta="{{ number_format($venta->total_venta, 2) }}"
-                        fecha_venta="{{ $venta->created_at->format('d/m/Y') }}" />
-                    @endforeach
-                </tbody>
-            </table>
+                    <tbody class="text-gray-700 divide-y">
+                        @foreach ($ventas as $venta)
+                            <x-gestion.ventas.fila_tabla 
+                                 id_venta="{{ $venta->id_venta }}"
+                                 nombre_usuario="{{ $venta->usuario->nombre_usuario ?? 'Sin usuario' }}"
+                                 nombre_cliente="{{ $venta->cliente->nombre_cliente ?? 'Sin cliente' }}"
+                                 total_venta="{{ number_format($venta->total_venta, 2) }}"
+                                  fecha_venta="{{ $venta->created_at->format('d/m/Y') }}"
+                                  />
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="mt-6 px-4 pb-6">
+                    {{ $ventas->links() }}
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    
 @endsection

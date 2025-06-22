@@ -22,7 +22,7 @@ class ClienteController extends Controller
     // Vista principal de gestión de clientes
     public function index()
     {   $this->authorize('viewAny', Cliente::class);
-        $clientes = Cliente::all();
+        $clientes = Cliente::paginate(10);
         return view('pages.gestion.clientes.index', [
             'clientes' => $clientes,
             'eliminados' => false
@@ -88,7 +88,7 @@ class ClienteController extends Controller
     // Mostrar clientes eliminados (soloTrashed)
     public function eliminados()
     {   $this->authorize('viewAny', Cliente::class);
-        $clientes = Cliente::onlyTrashed()->get();
+        $clientes = Cliente::onlyTrashed()->paginate(10);
         return view('pages.gestion.clientes.index', [
             'clientes' => $clientes,
             'eliminados' => true

@@ -11,7 +11,7 @@ class ProveedorController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Proveedor::class);
-        $proveedores = Proveedor::all();
+        $proveedores = Proveedor::paginate(10);
         return view('pages.gestion.proveedores.index', [
             'proveedores' => $proveedores,
             'eliminados' => false
@@ -41,6 +41,12 @@ class ProveedorController extends Controller
             'telefono_proveedor',
             'direccion_proveedor',
         ]));
+
+        // Registrar en bitácora
+        BitacoraController::registrar(
+            'CREAR',
+            'Se creó el proveedor: ' . $request->nombreC_proveedor
+        );
 
         return redirect()->route('proveedor.index')->with('success', 'Proveedor registrado correctamente.');
     }
@@ -73,6 +79,12 @@ class ProveedorController extends Controller
             'direccion_proveedor',
         ]));
 
+        // Registrar en bitácora
+        BitacoraController::registrar(
+            'ACTUALIZAR',
+            'Se actualizó el proveedor: ' . $request->nombreC_proveedor
+        );
+
         return redirect()->route('proveedor.index')->with('success', 'Proveedor actualizado correctamente.');
     }
 
@@ -83,6 +95,12 @@ class ProveedorController extends Controller
         $this->authorize('delete', $proveedor);
         $proveedor->delete();
 
+        // Registrar en bitácora
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el proveedor: ' . $proveedor->nombreC_proveedor
+        );
+
         return redirect()->route('proveedor.index')->with('success', 'Proveedor eliminado correctamente.');
     }
 
@@ -90,7 +108,7 @@ class ProveedorController extends Controller
     public function eliminados()
     {
         $this->authorize('viewAny', Proveedor::class);
-        $proveedores = Proveedor::onlyTrashed()->get();
+        $proveedores = Proveedor::onlyTrashed()->paginate(10);
         return view('pages.gestion.proveedores.index', [
             'proveedores' => $proveedores,
             'eliminados' => true

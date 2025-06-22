@@ -16,7 +16,7 @@ class UsuarioController extends Controller
     public function index()
     {   
         $this->authorize('viewAny', Usuario::class); // Solo si tiene permiso 'Ver Usuarios'
-        $usuarios = Usuario::with('rol')->get(); // relacionar con el rol
+        $usuarios = Usuario::with('rol')->paginate(10); // relacionar con el rol
         return view('pages.gestion.usuarios.index', [
             'usuarios' => $usuarios,
             'eliminados' => false
@@ -26,7 +26,7 @@ class UsuarioController extends Controller
     public function index2()
     {   
         $this->authorize('viewAny', Usuario::class); // Solo si tiene permiso 'Ver Usuarios'
-        $usuarios = Usuario::all(); // relacionar con el rol
+        $usuarios = Usuario::paginate(10); // relacionar con el rol
         return view('pages.gestion.bitacora.index', [
             'usuarios' => $usuarios,
             'eliminados' => false
@@ -67,7 +67,7 @@ class UsuarioController extends Controller
 
     public function eliminados()
     {   $this->authorize('viewAny', Usuario::class); // Protege ver eliminados también
-        $usuarios = Usuario::onlyTrashed()->with('rol')->get();
+        $usuarios = Usuario::onlyTrashed()->with('rol')->paginate(10);
         return view('pages.gestion.usuarios.index', [
             'usuarios' => $usuarios,
             'eliminados' => true

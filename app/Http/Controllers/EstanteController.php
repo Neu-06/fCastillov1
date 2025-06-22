@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Estante;
 use App\Models\Area;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BitacoraController;
 
 class EstanteController extends Controller
 {
     public function index()
     {
         //$this->authorize('viewAny', Area::class);
-        $Estantes = Estante::all();
+        $Estantes = Estante::paginate(10);
         return view('pages.gestion.estante.index', compact('Estantes'));
     }
 
@@ -40,6 +41,13 @@ class EstanteController extends Controller
              'id_area' => $request->id_area,
         ]);
 
+                // Registrar en bitácora
+        BitacoraController::registrar(
+            'CREAR',
+            'Se creó el estante: ' . $request->nombre_estante
+        );
+
+
         return redirect()->route('estante.index')->with('success', 'Estante creado correctamente.');
     }
 
@@ -48,7 +56,11 @@ class EstanteController extends Controller
 
         $Estantes = Estante::findOrFail($id_estante);
         $Estantes->delete();
-
+        // Registrar en bitácora
+        BitacoraController::registrar(
+            'ELIMINAR',
+            'Se eliminó el estante: ' . $Estantes->nombre_estante
+        );
         return redirect()->route('estante.index')->with('success', 'Estante eliminado correctamente.');
     }
 }
