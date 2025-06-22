@@ -26,14 +26,8 @@ class BajaProducto extends Model
     {
         return $this->belongsTo(User::class, 'id_usuario');
     }
-
-    public function inventario()
+    public function producto()
     {
-        return $this->belongsTo(Producto::class, 'id_inventario'); // Asegúrate que coincida con tu modelo de productos
+        return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
     }
-public function producto()
-{
-    return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
-}
-
 }

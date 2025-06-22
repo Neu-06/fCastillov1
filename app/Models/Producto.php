@@ -64,7 +64,10 @@ class Producto extends Model
     {
         return $this->hasMany(DetalleVenta::class, 'id_producto', 'id_producto');
     }
-
+    public function bajas()
+    {
+        return $this->hasMany(BajaProducto::class, 'id_producto', 'id_producto');
+    }
     // Relación: un producto pertenece a una marca
     public function marca()
     {

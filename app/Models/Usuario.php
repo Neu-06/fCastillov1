@@ -95,7 +95,10 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(Venta::class, 'id_usuario', 'id_usuario');
     }
-
+     public function bajas()
+    {
+        return $this->hasMany(BajaProducto::class, 'id_usuario', 'id_usuario');
+    }
     public function getEmailForPasswordReset()
     {
         return $this->correo_usuario;
