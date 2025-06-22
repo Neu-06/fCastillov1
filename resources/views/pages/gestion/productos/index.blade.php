@@ -45,6 +45,7 @@
                             :descripcion_producto="$producto->descripcion ?? 'Sin descripción'"
                             :categoria="$producto->categoria? $producto->categoria->nombre_categoria: 'Sin categoría'" 
                             :marca="$producto->marca?->nombre_marca ?? 'Sin Marca'"
+                            :estante="$producto->estante?->nombre_estante ?? 'Sin Estante'"
                             :id_producto="$producto->id_producto"
                             :eliminados="$eliminados ?? false" />
                             

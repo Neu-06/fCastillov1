@@ -1,4 +1,4 @@
-@props(['producto', 'categorias', 'marcas'])
+@props(['producto', 'categorias', 'marcas','estantes'])
 
 <form action="{{ route('producto.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data"
     class="space-y-6">
@@ -87,7 +87,25 @@
                     </div>
                 @enderror
             </div>
-
+        <!-- Estante -->
+            <div>
+                <label for="id_estante" class="block mb-1 text-gray-600 font-semibold">Estante</label>
+                <select name="id_estante" id="id_estante" required
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
+                    <option value="">Seleccione un Estante</option>
+                    @foreach ($estantes as $estante)
+                        <option value="{{ $estante->id_estante }}"
+                            {{ old('id_estante', $producto->id_estante ?? '') == $estante->id_estante ? 'selected' : '' }}>
+                            {{ $estante->nombre_estante }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_estante')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
             <!-- Imágenes actuales -->
             @if ($producto->imagenes->count())
                 <div class="mt-6">

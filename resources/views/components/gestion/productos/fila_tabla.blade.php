@@ -4,6 +4,7 @@
     'descripcion_producto',
     'categoria',
     'marca',
+    'estante',
     'id_producto',
     'eliminados' => false, // por defecto falso si no se pasa
 ])
@@ -35,7 +36,12 @@
             {{ $marca }}
         </p>
     </td>
-
+    <!-- Estante -->
+    <td class="p-4 border-b border-slate-200">
+        <p class="text-sm text-slate-700">
+            {{ $estante}}
+        </p>
+    </td>
     <!-- Descripción -->
     <td class="p-4 border-b border-slate-200">
         <p class="text-sm text-slate-700">

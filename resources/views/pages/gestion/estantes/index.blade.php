@@ -22,7 +22,7 @@
                     <x-gestion.estantes.nombre_columna />
 
                     <tbody class="text-gray-700 divide-y">
-                        @foreach ($Estantes as $estante)
+                        @foreach ($estantes as $estante)
                             <x-gestion.estantes.fila_tabla 
                                 id_estante="{{ $estante->id_estante }}"
                                 nombre_estante="{{ $estante->nombre_estante }}" />
@@ -30,7 +30,7 @@
                     </tbody>
                 </table>
                 <div class="mt-6 px-4 pb-6">
-                    {{ $Estantes->links() }}
+                    {{ $estantes->links() }}
                 </div>
             </div>
         </div>

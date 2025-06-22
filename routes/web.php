@@ -36,6 +36,9 @@ Route::get('/', [HomeController::class, 'home'])->name('index'); // Vista princi
 Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('producto.show');
 Route::get('/marca/{id}', [MarcaController::class, 'show'])->name('marca.show');
 Route::get('/categoria/{id}', [CategoriaController::class, 'productosPorCategoria'])->name('categoria.productos');
+Route::get('/reporte-inventario', [ReporteInventarioController::class, 'index'])->name('reporte.inventario');
+Route::get('/reporte-inventario/pdf', [ReporteInventarioController::class, 'exportarPDF'])->name('reporte-inventario.pdf');
+
 
 
 // ==================== Rutas de Logout ====================

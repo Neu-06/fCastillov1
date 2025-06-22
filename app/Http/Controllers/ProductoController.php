@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\ImagenProducto;
 use App\Models\Categoria;
 use App\Models\Marca;
+use  App\Models\Estante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::all();
 
-        $productos = Producto::with(['marca', 'imagenes', 'categoria'])
+        $productos = Producto::with(['marca', 'imagenes', 'categoria','estante'])
             ->when($request->categoria_id, function ($query, $categoriaId) {
                 return $query->where('id_categoria', $categoriaId);
             })
@@ -34,8 +35,8 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::all();
         $marcas = Marca::all();
-
-        return view('pages.gestion.productos.create', compact('categorias', 'marcas'));
+        $estantes = Estante::all();
+        return view('pages.gestion.productos.create', compact('categorias', 'marcas', 'estantes'));
     }
 
     // ✅ Guardar producto en las tablas respectivas
@@ -47,6 +48,7 @@ class ProductoController extends Controller
             'descripcion'     => 'nullable|string|max:255',
             'id_categoria'    => 'required|exists:categorias,id_categoria',
             'id_marca'        => 'required|exists:marcas,id_marca',
+            'id_estante'        => 'required|exists:estantes,id_estante',
             'imagenes'        => 'nullable|array|max:5',
             'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ]);
@@ -62,6 +64,7 @@ class ProductoController extends Controller
                 'stock'           => 0,
                 'id_categoria'    => $request->input('id_categoria'),
                 'id_marca'        => $request->input('id_marca'),
+                'id_estante'        => $request->input('id_estante'),
             ]);
         });
 
@@ -109,7 +112,8 @@ class ProductoController extends Controller
         $producto = Producto::with(['imagenes'])->findOrFail($id_producto);
         $categorias = Categoria::all();
         $marcas = Marca::all();
-        return view('pages.gestion.productos.edit', compact('producto', 'categorias', 'marcas'));
+        $estantes = Estante::all();
+        return view('pages.gestion.productos.edit', compact('producto', 'categorias', 'marcas', 'estantes'));
     }
 
     // ✅ Actualizar producto
@@ -121,6 +125,7 @@ class ProductoController extends Controller
             'descripcion'     => 'nullable|string|max:255',
             'id_categoria'    => 'required|exists:categorias,id_categoria',
             'id_marca'        => 'required|exists:marcas,id_marca',
+            'id_estante'        => 'required|exists:estantes,id_estante',
             'imagenes.*'      => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
@@ -134,6 +139,7 @@ class ProductoController extends Controller
                 'descripcion'     => $request->descripcion,
                 'id_categoria'    => $request->id_categoria,
                 'id_marca'        => $request->id_marca,
+                'id_estante'      => $request->id_estante,
             ]);
 
             // Eliminar imágenes seleccionadas
@@ -203,7 +209,7 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::all();
         $productos = Producto::onlyTrashed()
-            ->with(['marca', 'imagenes', 'categoria'])
+            ->with(['marca', 'imagenes', 'categoria','estante'])
             ->paginate(10);
 
         return view('pages.gestion.productos.index', [

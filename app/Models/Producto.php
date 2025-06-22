@@ -37,6 +37,7 @@ class Producto extends Model
         'stock',               // Cantidad en inventario
         'id_categoria',        // ID de la categoría a la que pertenece
         'id_marca',            // ID de la marca
+        'id_estante',            // ID de la estante
     ];
 
     // ======================= RELACIONES ==========================

@@ -125,7 +125,10 @@
                         <x-header.elementosNav.optionSecundario link="{{ route('bajaproducto.index') }}"
                             texto="Bajas de Productos" />
                    @endif
-
+                     @if (auth()->user()->tienePermiso('Ver Marcas'))
+                        <x-header.elementosNav.optionSecundario link="{{ route('reporte.inventario') }}"
+                            texto="Gestion Reportes de Inventario" />
+                   @endif
                      
 
                 </x-header.elementosNav.optionNav>

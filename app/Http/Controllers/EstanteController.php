@@ -12,8 +12,8 @@ class EstanteController extends Controller
     public function index()
     {
         //$this->authorize('viewAny', Area::class);
-        $Estantes = Estante::paginate(10);
-        return view('pages.gestion.estante.index', compact('Estantes'));
+        $estantes = Estante::paginate(10);
+        return view('pages.gestion.estantes.index', compact('estantes'));
     }
 
     /**
@@ -21,8 +21,8 @@ class EstanteController extends Controller
      */
     public function create()
     {
-        $Areas = Area::all();
-        return view('pages.gestion.estante.create', ['Areas' => $Areas]);
+        $areas = Area::all();
+        return view('pages.gestion.estantes.create', ['Areas' => $areas]);
     }
 
     /**
@@ -54,12 +54,12 @@ class EstanteController extends Controller
     public function destroy($id_estante)
     {
 
-        $Estantes = Estante::findOrFail($id_estante);
-        $Estantes->delete();
+        $estantes = Estante::findOrFail($id_estante);
+        $estantes->delete();
         // Registrar en bitácora
         BitacoraController::registrar(
             'ELIMINAR',
-            'Se eliminó el estante: ' . $Estantes->nombre_estante
+            'Se eliminó el estante: ' . $estantes->nombre_estante
         );
         return redirect()->route('estante.index')->with('success', 'Estante eliminado correctamente.');
     }

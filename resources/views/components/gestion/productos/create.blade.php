@@ -1,4 +1,6 @@
-@props(['categorias', 'marcas'])
+@props(['categorias', 'marcas', 'estantes'])
+
+{{-- Formulario para registrar un nuevo producto --}}
 
 <form action="{{ route('producto.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
     @csrf
@@ -83,13 +85,30 @@
                     </div>
                 @enderror
             </div>
-
+      <!-- Estante -->
+            <div>
+                <label for="id_estante" class="block mb-1 text-gray-600 font-semibold">Estantes</label>
+                <select name="id_estante" id="id_estante" required
+                    class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition @error('id_estante') border-red-500 @enderror">
+                    <option value="">Seleccione un Estante</option>
+                    @foreach ($estantes as $estante)
+                        <option value="{{ $estante->id_estante }}"
+                            {{ old('id_estante') == $estante->id_estante ? 'selected' : '' }}>
+                            {{ $estante->nombre_estante }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_estante')
+                    <div class="mt-1 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-md border border-red-300">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
             <!-- Imágenes -->
             <div class="mt-6">
                 <label for="imagenes" class="block mb-1 text-gray-600 font-semibold">Imágenes del Producto</label>
-                <input type="file" name="imagenes[]" multiple
-    accept=".jpeg, .jpg, .png, image/jpeg, image/png"
+                <input type="file" name="imagenes[]" multipleaccept=".jpeg, .jpg, .png, image/jpeg, image/png"
                     class="bg-indigo-50 px-4 py-2 rounded-md w-full border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" />
                 <small class="text-xs text-gray-500">Puedes subir hasta 5 imágenes (JPG, PNG)</small>
 
