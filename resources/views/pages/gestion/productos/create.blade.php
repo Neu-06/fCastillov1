@@ -8,11 +8,11 @@
         'subtitulo' => 'Administración de Productos.',
     ])
 
-    {{-- <x-gestion.productos.create :categorias="$categorias":marcas="$marcas"/> --}}
-@include('components.gestion.productos.create', [
-    'categorias' => $categorias,
-    'marcas' => $marcas
-])
+     <x-gestion.productos.create :categorias="$categorias" :marcas="$marcas" :estantes="$estantes" />
+    {{-- @include('components.gestion.productos.create', [
+        'categorias' => $categorias,
+        'marcas' => $marcas,
+    ]) --}}
 
 
 
