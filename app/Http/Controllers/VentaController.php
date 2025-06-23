@@ -11,6 +11,7 @@ use App\Models\Producto;
 use App\Models\DetalleProducto;
 use Illuminate\Support\Facades\DB;
 use App\Models\DetalleVenta;
+use PhpOffice\PhpWord\PhpWord;
 
 class VentaController extends Controller
 {
@@ -154,5 +155,49 @@ class VentaController extends Controller
         $pdf = PDF::loadView('pages.gestion.reportes.ventas', compact('ventas'));
 
         return $pdf->download('reporte_ventas.pdf');
+    }
+
+        public function generarReporteWord(Request $request)
+    {
+        $ventas = Venta::with(['cliente', 'detalle.producto'])
+            ->when($request->cliente_id, fn($q) => $q->where('id_cliente', $request->cliente_id))
+            ->when($request->fecha_inicio, fn($q) => $q->whereDate('created_at', '>=', $request->fecha_inicio))
+            ->when($request->fecha_fin, fn($q) => $q->whereDate('created_at', '<=', $request->fecha_fin))
+            ->get();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        $section->addText('Reporte de Ventas', ['bold' => true, 'size' => 16]);
+        $section->addText('');
+
+        foreach ($ventas as $venta) {
+            $section->addText("Venta N°: {$venta->id_venta}", ['bold' => true]);
+            $section->addText("Cliente: {$venta->cliente->nombre_cliente}");
+            $section->addText("Total: {$venta->total_venta}");
+            $section->addText("Fecha: {$venta->created_at}");
+            $section->addText("Detalles:");
+
+            $table = $section->addTable(['borderSize' => 6, 'borderColor' => '999999', 'cellMargin' => 50]);
+            $table->addRow();
+            $table->addCell(3000)->addText('Producto');
+            $table->addCell(1500)->addText('Cantidad');
+            $table->addCell(1500)->addText('Precio');
+            $table->addCell(1500)->addText('Subtotal');
+
+            foreach ($venta->detalle as $detalle) {
+                $table->addRow();
+                $table->addCell(3000)->addText($detalle->producto->nombre_producto ?? '');
+                $table->addCell(1500)->addText($detalle->cantidad);
+                $table->addCell(1500)->addText($detalle->precio);
+                $table->addCell(1500)->addText($detalle->subtotal);
+            }
+            $section->addText(""); // Espacio entre ventas
+        }
+
+        $fileName = 'reporte_ventas.docx';
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+        $phpWord->save($tempFile, 'Word2007');
+
+        return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
     }
 }

@@ -18,10 +18,12 @@
     <select name="tipo"
         class="rounded-md border border-gray-400 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 transition-all">
         <option value="">Tipo de acción</option>
-        <option value="crear" {{ request('tipo') == 'CREAR' ? 'selected' : '' }}>Crear</option>
-        <option value="actualizar" {{ request('tipo') == 'ACTUALIZAR' ? 'selected' : '' }}>Actualizar</option>
-        <option value="eliminar" {{ request('tipo') == 'ELIMINAR' ? 'selected' : '' }}>Eliminar</option>
+        <option value="CREAR" {{ request('tipo') == 'CREAR' ? 'selected' : '' }}>CREAR</option>
+        <option value="ACTUALIZAR" {{ request('tipo') == 'ACTUALIZAR' ? 'selected' : '' }}>ACTUALIZAR</option>
+        <option value="ELIMINAR" {{ request('tipo') == 'ELIMINAR' ? 'selected' : '' }}>ELIMINAR</option>
     </select>
+
+    {{-- IP --}}
 
     {{-- Botón Filtrar --}}
     <button type="submit"

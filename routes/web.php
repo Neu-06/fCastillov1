@@ -170,8 +170,9 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     // ==================== Compras ====================
     Route::prefix('admin/compra')->name('compra.')->group(function () {
         Route::resource('/', CompraController::class)->except(['show']);
-        Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
+        Route::get('/compras/word', [CompraController::class, 'generarReporteWord'])->name('reporte.word');
         Route::get('/compras', [CompraController::class, 'generarReporte'])->name('reporte');
+        Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
     });
 
     // ==================== Ventas ====================
@@ -207,6 +208,7 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     // ==================== Rutas de Ventas ====================
     Route::prefix('admin/venta')->name('venta.')->group(function () {
+        Route::get('/reporte/word', [VentaController::class, 'generarReporteWord'])->name('reporte.word'); 
         Route::get('/', [VentaController::class, 'index'])->name('index');
         Route::get('/create', [VentaController::class, 'create'])->name('create');
         Route::post('/create', [VentaController::class, 'store'])->name('store');

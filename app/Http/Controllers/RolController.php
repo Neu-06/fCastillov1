@@ -147,7 +147,7 @@ class RolController extends Controller
         $rol->nombre_rol = $request->nombre_rol;
         $rol->save();
         BitacoraController::registrar(
-            'EDITAR',
+            'ACTUALIZAR',
             'Se actualizó el rol: ' . $rol->nombre_rol
         );
         // 🔗 5. Sincronizar los permisos del rol (actualiza la tabla pivote permiso_rol)
