@@ -217,6 +217,7 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     // ==================== Rutas de Bitacora ====================
     Route::prefix('admin/bitacora')->name('bitacora.')->group(function () {
         Route::get('/', [BitacoraController::class, 'index'])->name('index'); // Listar marca
+        Route::get('/report', [BitacoraController::class, 'getReport'])->name('report');
     });
 });
 

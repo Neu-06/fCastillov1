@@ -9,32 +9,75 @@
     ])
 
     <div class="p-4 sm:p-6 lg:p-8">
-        <form method="GET" class="mb-6 bg-white p-4 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form method="GET" class="mb-6 bg-white p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Categoría -->
             <div>
-                <label for="fecha_desde" class="block text-sm font-medium text-gray-700">Desde fecha</label>
-                <input type="date" name="fecha_desde" id="fecha_desde" value="{{ request('fecha_desde') }}"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                <label for="categoria_id" class="block text-sm font-semibold text-gray-700 mb-1">Categoría</label>
+                <select name="categoria_id" id="categoria_id"
+                    class="block w-full border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 rounded-md shadow-sm text-sm">
+                    <option value="">Todas</option>
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->id_categoria }}"
+                            {{ request('categoria_id') == $categoria->id_categoria ? 'selected' : '' }}>
+                            {{ $categoria->nombre_categoria }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
+            <!-- Área -->
             <div>
-                <label for="fecha_hasta" class="block text-sm font-medium text-gray-700">Hasta fecha</label>
-                <input type="date" name="fecha_hasta" id="fecha_hasta" value="{{ request('fecha_hasta') }}"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                <label for="area_id" class="block text-sm font-semibold text-gray-700 mb-1">Área</label>
+                <select name="area_id" id="area_id"
+                    class="block w-full border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 rounded-md shadow-sm text-sm">
+                    <option value="">Todas</option>
+                    @foreach ($areas as $area)
+                        <option value="{{ $area->id_area }}" {{ request('area_id') == $area->id_area ? 'selected' : '' }}>
+                            {{ $area->nombre_area }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
-            <div class="md:col-span-4 flex justify-end space-x-2">
+            <!-- Marca -->
+            <div>
+                <label for="marca_id" class="block text-sm font-semibold text-gray-700 mb-1">Marca</label>
+                <select name="marca_id" id="marca_id"
+                    class="block w-full border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 rounded-md shadow-sm text-sm">
+                    <option value="">Todas</option>
+                    @foreach ($marcas as $marca)
+                        <option value="{{ $marca->id_marca }}"
+                            {{ request('marca_id') == $marca->id_marca ? 'selected' : '' }}>
+                            {{ $marca->nombre_marca }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Stock mínimo -->
+            <div>
+                <label for="stock_min" class="block text-sm font-semibold text-gray-700 mb-1">Stock mínimo</label>
+                <input type="number" name="stock_min" id="stock_min" min="0"
+                    class="block w-full border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 rounded-md shadow-sm text-sm"
+                    placeholder="Ej: 5" value="{{ request('stock_min') }}">
+            </div>
+            <!-- Botones -->
+            <div class="md:col-span-4 flex justify-end gap-3 mt-4">
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md shadow">
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md shadow text-sm">
                     Generar Reporte
                 </button>
                 <a href="{{ url()->current() }}?{{ http_build_query(array_merge(request()->all(), ['pdf' => 1])) }}"
-                   target="_blank"
-                   class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md shadow">
+                    target="_blank"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2 rounded-md shadow text-sm">
                     Exportar PDF
                 </a>
+                <button type="submit" name="excel" value="1"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2 rounded-md shadow text-sm">
+                    Exportar Excel
+                </button>
             </div>
         </form>
-
         <div class="overflow-auto rounded-lg shadow-md">
             <table class="min-w-full text-sm text-gray-700">
                 <thead class="bg-gray-200 text-xs uppercase tracking-wider text-gray-600">

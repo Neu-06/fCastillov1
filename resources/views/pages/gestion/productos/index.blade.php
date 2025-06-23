@@ -11,12 +11,12 @@
 
     <div class="mt-6">
 
-                <!-- Filtro por Categoría -->
+        <!-- Filtro por Categoría -->
         <form method="GET" action="{{ route('producto.index') }}" class="mx-4 mt-4">
             <label for="categoria" class="font-semibold text-slate-700 mr-2">Filtrar por Categoría:</label>
             <select name="categoria_id" id="categoria" onchange="this.form.submit()"
                 class="border border-gray-300 rounded px-2 py-1">
-                <option value="">   Todas las Categorías   </option>
+                <option value=""> Todas las Categorías </option>
                 @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->id_categoria }}"
                         {{ request('categoria_id') == $categoria->id_categoria ? 'selected' : '' }}>
@@ -28,7 +28,7 @@
 
         <div class="table-container">
 
-              <x-gestion.productos.header_tabla :eliminados="$eliminados ?? false" />
+            <x-gestion.productos.header_tabla :eliminados="$eliminados ?? false" />
 
 
             <!-- Tabla de usuarios -->
@@ -39,16 +39,10 @@
 
                     <tbody class="text-gray-700 divide-y">
                         @foreach ($productos as $producto)
-                            <x-gestion.productos.fila_tabla 
-                            :codigo_producto="$producto->codigo_producto" 
-                            :nombre_producto="$producto->nombre_producto" 
-                            :descripcion_producto="$producto->descripcion ?? 'Sin descripción'"
-                            :categoria="$producto->categoria? $producto->categoria->nombre_categoria: 'Sin categoría'" 
-                            :marca="$producto->marca?->nombre_marca ?? 'Sin Marca'"
-                            :estante="$producto->estante?->nombre_estante ?? 'Sin Estante'"
-                            :id_producto="$producto->id_producto"
-                            :eliminados="$eliminados ?? false" />
-                            
+                            <x-gestion.productos.fila_tabla :codigo_producto="$producto->codigo_producto" :nombre_producto="$producto->nombre_producto" :descripcion_producto="$producto->descripcion ?? 'Sin descripción'"
+                                :categoria="$producto->categoria
+                                    ? $producto->categoria->nombre_categoria
+                                    : 'Sin categoría'" :marca="$producto->marca?->nombre_marca ?? 'Sin Marca'" :estante="$producto->estante?->nombre_estante ?? 'Sin Estante'" :id_producto="$producto->id_producto" :eliminados="$eliminados ?? false" />
                         @endforeach
                     </tbody>
                 </table>

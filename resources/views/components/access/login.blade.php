@@ -21,11 +21,12 @@
     </div>
 @else
     <div class="h-auto flex justify-center mt-28">
-        <div class="hidden lg:flex w-full lg:w-1/2 justify-around items-center bg-gray-600">
-            <div class="w-full mx-auto px-20 flex-col items-center space-y-6">
-                <h1 class="text-white font-bold text-4xl font-sans">Ferreteria Castillo</h1>
-                <p class="text-white mt-1">Encuentra lo que necesites para construir.</p>
+        <div class="hidden lg:flex w-full lg:w-1/2 justify-around items-center " style="background-image: url('/imagenes/iamgenRem.png')">
+            <div class="bg-black/50 p-6 rounded-md">
+                <h1 class="text-white font-extrabold text-5xl tracking-wide uppercase">FERRETERIA CASTILLO</h1>
+                <p class="text-white mt-2 text-lg font-light">Encuentra lo que necesites para construir.</p>
             </div>
+
         </div>
 
         <div class="flex w-wLR">

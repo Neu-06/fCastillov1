@@ -13,7 +13,7 @@
 
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
 
-            <x-gestion.bitacoras.header_tabla />
+            <x-gestion.bitacoras.header_tabla :usuarios="$usuarios" />
 
             <!-- Tabla de categorías -->
             <div class="bg-white shadow rounded-lg overflow-x-auto">
