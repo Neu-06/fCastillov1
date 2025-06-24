@@ -1,7 +1,7 @@
 {{-- sin icono --}}
 
-<a class="items-start rounded-lg bg-transparent p-2  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-<a class="items-start rounded-lg bg-transparent p-2 
+
+<a class="items-start text-gray-900 rounded-lg bg-transparent p-2 
  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200
   focus:bg-gray-200 focus:outline-none focus:shadow-outline"
     href="{{$link}}">

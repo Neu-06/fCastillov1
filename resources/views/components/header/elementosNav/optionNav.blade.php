@@ -1,6 +1,6 @@
 @props([
     'texto',
-    'textColor'=>'text-text-tBlack',
+    'textColor'=>'text-tBlack',
     'display',
 ])
 

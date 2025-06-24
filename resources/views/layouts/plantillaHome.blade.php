@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full" data-theme="light">
 
 <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gray-200 h-full">
     <x-header.header />
 
     @yield('content')

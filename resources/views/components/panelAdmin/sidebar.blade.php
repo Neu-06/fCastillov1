@@ -33,7 +33,7 @@
             <nav class="flex flex-col mt-4 gap-1 mx-4 overflow-y-auto" style="max-height: calc(100vh - 200px);">
                 <!-- Inicio -->
                 <a href="{{ route('admin.home') }}"
-                    class="items-start rounded-lg bg-transparent p-2 font-semibold hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+                    class="items-start rounded-lg  p-2 text-gray-900 font-semibold hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
                     Inicio
                 </a>
 

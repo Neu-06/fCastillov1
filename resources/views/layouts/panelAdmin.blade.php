@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full" data-theme="light">
 
 <head>
     <meta charset="UTF-8" />
@@ -17,7 +17,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans h-full" data-theme="light">
     @stack('scripts')
     <x-panelAdmin.sidebar />
 
