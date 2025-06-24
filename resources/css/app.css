@@ -1,6 +1,13 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';/*esto agregue*/
+/*@import './globalStyles.css';*/
+@import './globalStyles.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
 
 /* Chrome, Safari, Edge, Opera */
 input[type=number]::-webkit-outer-spin-button,
@@ -13,3 +20,28 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+/* Estilos para Headroom.js Esto tambien agregue*/
+.headroom {
+  transition: all 0.3s ease-in-out;
+  will-change: max-height;
+}
+
+.headroom--unpinned {
+  max-height: 0px !important;
+}
+
+.headroom--pinned {
+  max-height: 40px !important;
+}
+/*-------------------------
+/* Ocultar scrollbar en móviles */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+

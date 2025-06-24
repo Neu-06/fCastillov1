@@ -16,12 +16,13 @@ return new class extends Migration
             $table->decimal('cantidad_baja', 10, 2);
             $table->string('motivo_baja', 255);
             $table->timestamps();
+            $table->softDeletes(); 
             //llave foranea
             $table->foreignId('id_usuario')
                 ->constrained('usuarios', 'id_usuario')
                 ->onDelete('cascade');
-            $table->foreignId('id_inventario')
-                ->constrained('inventarios', 'id_inventario')
+            $table->foreignId('id_producto')
+                ->constrained('productos', 'id_producto')
                 ->onDelete('cascade');
         });
     }

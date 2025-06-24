@@ -5,8 +5,8 @@
             <h2 class="text-lg font-bold mb-4 text-red-600">¡Atención!</h2>
             <p class="mb-6">Para iniciar sesión o registrar una nueva cuenta, primero debes cerrar sesión.
             </p>
-            <div class="flex justify-center gap-4">
-                <form method="POST" action="{{ $isCliente ? route('cliente.logout') : route('usuario.logout') }}">
+            <div class="flex justify-center gap-4">                               <!-- usuario.logout -->
+                <form method="POST" action="{{ $isCliente ? route('cliente.logout') : route('logout') }}">
                     @csrf
                     <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                         Cerrar sesión
@@ -21,11 +21,12 @@
     </div>
 @else
     <div class="h-auto flex justify-center mt-28">
-        <div class="hidden lg:flex w-full lg:w-1/2 justify-around items-center bg-gray-600">
-            <div class="w-full mx-auto px-20 flex-col items-center space-y-6">
-                <h1 class="text-white font-bold text-4xl font-sans">Ferreteria Castillo</h1>
-                <p class="text-white mt-1">Encuentra lo que necesites para construir.</p>
+        <div class="hidden lg:flex w-full lg:w-1/2 justify-around items-center " style="background-image: url('/imagenes/iamgenRem.png')">
+            <div class="bg-black/50 p-6 rounded-md">
+                <h1 class="text-white font-extrabold text-5xl tracking-wide uppercase">FERRETERIA CASTILLO</h1>
+                <p class="text-white mt-2 text-lg font-light">Encuentra lo que necesites para construir.</p>
             </div>
+
         </div>
 
         <div class="flex w-wLR">
@@ -93,7 +94,7 @@
 
                     <!-- Opciones adicionales -->
                     <div class="flex flex-col justify-center items-center mt-4 min-w-max gap-2">
-                        <a href="#"
+                        <a href="{{ route('password.request') }}"
                             class="text-sm text-tLink cursor-pointer hover:-translate-y-1 duration-500 transition-all">
                             ¿Olvidaste tu contraseña?
                         </a>

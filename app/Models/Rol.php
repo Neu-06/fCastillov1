@@ -22,4 +22,10 @@ class Rol extends Model
     {
         return $this->belongsToMany(Permiso::class, 'permiso_rol', 'id_rol', 'id_permiso');
     }
+
+
+    public function usuarios()
+    {
+        return $this->hasMany(Usuario::class, 'id_rol');
+    }
 }

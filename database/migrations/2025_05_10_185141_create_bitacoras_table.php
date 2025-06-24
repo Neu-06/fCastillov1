@@ -11,22 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bitacoras', function (Blueprint $table) {
-            $table->id('id_bitacora'); // ID de la bitácora
-            $table->string('accion', 100); // Acción realizada (crear, actualizar, eliminar, etc.)
-            $table->string('tabla_afectada', 100)->nullable(); // Nombre de la tabla afectada
-            $table->text('descripcion')->nullable(); // Descripción de la acción
-            $table->string('nombre_usuario', 100)->nullable(); // Nombre del usuario que realizó la acción
-            $table->string('correo_usuario', 100)->nullable(); // Nombre de la tabla afectada
-            $table->string('ip_origen', 45)->nullable(); // Dirección IP desde donde se realizó la acción
-            $table->timestamps(); // Campos created_at y updated_at
+            Schema::create('bitacoras', function (Blueprint $table) {
+                $table->id('id_bitacora');
 
-            //llave foranea
-            $table->foreignId('id_usuario')
-                ->constrained('usuarios', 'id_usuario')
-                ->nullable()
-                ->onDelete('set null');
-        });
+                $table->string('accion', 100);
+                $table->text('descripcion')->nullable();
+                $table->string('nombre_usuario', 100)->nullable();
+                $table->string('ip_origen', 45)->nullable();
+                $table->string('fecha_hora', 100)->nullable();
+
+                //  Llave foránea opcional
+                $table->foreignId('id_usuario')
+                    ->nullable()
+                    ->constrained('usuarios', 'id_usuario')
+                    ->onDelete('set null');
+            });
+
     }
 
     /**

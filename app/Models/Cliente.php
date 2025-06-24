@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Cliente extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Notifiable;
 
     protected $primaryKey = 'id_cliente';
     public $incrementing = true;
@@ -45,5 +46,18 @@ class Cliente extends Authenticatable
     public function getAuthIdentifierName()
     {
         return 'correo_cliente';
+    }
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class, 'id_cliente', 'id_cliente');
+    }
+    public function getEmailForPasswordReset()
+    {
+        return $this->correo_cliente;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->correo_cliente;
     }
 }

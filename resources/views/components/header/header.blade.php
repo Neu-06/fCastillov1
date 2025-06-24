@@ -1,53 +1,50 @@
-<header x-data="{ isOpen: false }" class="sticky top-0 z-50  bg-NavBar1">
+<header class="sticky top-0 z-50 bg-white">
+    {{-- Desktop: Topbar --}}
+    <div id="topbar"
+        class="hidden md:block overflow-hidden transition-[max-height] duration-300 ease-in-out bg-white border-b border-gray-300"
+        style="max-height: 40px;">
+        <x-header.navs.top-bar />
+    </div>
 
-    {{-- orden movil --}}
-    <div class="md:hidde">
-        <div class="px-6 py-1 mx-auto flex justify-between items-center md:hidden md:align-baseline">
-            <div>
-                <x-header.navs.navM />
-            </div>
-
-            <a class="text-2xl font-bold text-tWhite text-center md:hidden" href="/">
-                Ferreteria Castillo
-            </a>
-
-            <div>
-                <x-access.logoutBtt/>
-            </div>
-            
-        </div>
-
-        <div class="md:hidden">
+    {{-- Desktop: Logo, buscador, carrito --}}
+    <div class="hidden md:flex items-center justify-center gap-12 px-0 py-0 bg-white w-full">
+        <a href="/" class="flex items-center">
+            <img src="{{ asset('imagenes/LOGO_FERRETERIA1.png') }}" alt="Logo" class="h-24 object-contain" />
+        </a>
+        <div class="w-full max-w-4xl mx-4">
             <x-header.buscador />
         </div>
+        <a href="/carrito" class="flex items-center gap-2 text-gray-800 relative hover:text-blue-700 transition">
+            <i class="fas fa-shopping-cart text-4xl"></i>
+            <span class="text-sm font-semibold">Bs.0</span>
+            <span
+                class="absolute -top-1 -right-2 text-[10px] font-bold bg-red-500 text-white w-4 h-4 flex items-center justify-center rounded-full">
+                {{ session('cart_count', 0) }}
+            </span>
+        </a>
     </div>
 
-    {{-- orden computer --}}
-    <div class="hidden md:block md:align-baseline">
-        <div class="md:px-6 py-1 mx-auto flex justify-between items-center md:flex md:align-baseline">
+    {{-- Desktop: Menú de navegación --}}
+    <div class="hidden md:block">
+        @include('components.header.navs.navMenu')
+    </div>
 
-            <a class="text-2xl font-bold text-tWhite md:order-1 md:basis-52 lg:basis-60 justify-start" href="/">
-                Ferreteria Castillo
+    {{-- Móvil: Encabezado compacto --}}
+    <div class="md:hidden bg-white px-4 py-2 flex justify-between items-center border-b border-gray-200">
+        <x-header.navs.navM />
+        <a href="/" class="flex justify-center">
+            <img src="{{ asset('imagenes/LOGO_FERRETERIA1.png') }}" alt="Logo" class="h-8 object-contain" />
+        </a>
+        <div class="flex items-center space-x-4 text-gray-700">
+            <a href="#" class="text-xl"><i class="fas fa-search"></i></a>
+            <a href="{{ route('login') }}" class="text-xl"><i class="fas fa-user"></i></a>
+            <a href="/carrito" class="relative text-xl">
+                <i class="fas fa-shopping-cart"></i>
+                <span
+                    class="absolute -top-1 -right-2 text-[10px] font-bold bg-red-500 text-white w-4 h-4 flex items-center justify-center rounded-full">
+                    {{ session('cart_count', 0) }}
+                </span>
             </a>
-
-            <div class="hidden md:flex md:flex-grow md:order-2">
-                <x-header.buscador />
-            </div>
-
-            <div class="hidden md:flex md:order-3 md:basis-38 lg:basis-44 justify-end pr-2">
-                <x-access.logoutBtt/>
-            </div>
         </div>
-
-        <div class="hidden md:flex md:justify-center md:items-center">
-            <x-header.navs.navD/>
-        </div>
-
     </div>
-
-
-
-
-
-
 </header>
