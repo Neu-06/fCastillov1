@@ -109,7 +109,7 @@ class UsuarioController extends Controller
         $usuario->id_rol = $request->id_rol;
         $usuario->save();
         BitacoraController::registrar(
-            'EDITAR',
+            'ACTUALIZAR',
             'Se actualizó el usuario: ' . $usuario->nombre_usuario
         );
         return redirect()->route('usuario.index')->with('success', 'Usuario actualizado correctamente.');

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bitacora;
 use App\Models\Marca;
 use Illuminate\Http\Request;
-use app\Http\Controllers\BitacoraController;
 
 class MarcaController extends Controller
 {

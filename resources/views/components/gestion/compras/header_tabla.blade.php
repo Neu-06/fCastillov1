@@ -15,6 +15,17 @@
             </svg>
             Generar Reporte
         </a>
+                {{-- Botón para generar reporte Word --}}
+        <a href="{{ route('compra.reporte.word', request()->only(['proveedor_id', 'fecha_inicio', 'fecha_fin'])) }}"
+            class="flex select-none items-center gap-2 rounded bg-blue-700 py-2.5 px-4 text-xs font-semibold text-white shadow-md shadow-blue-900/10 transition-all hover:shadow-lg hover:shadow-blue-900/20 hover:bg-blue-800 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                class="w-4 h-4">
+                <path d="M4 4h16v16H4z" fill="#fff"/>
+                <text x="7" y="17" font-size="10" fill="#2563eb" font-family="Arial" font-weight="bold">W</text>
+            </svg>
+            Reporte en Word
+        </a>
+
         @endif
 
         {{-- Agregar Proveedor --}}

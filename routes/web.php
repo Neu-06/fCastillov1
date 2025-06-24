@@ -100,9 +100,16 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     // ==================== Proveedores ====================
     Route::prefix('admin/proveedor')->name('proveedor.')->group(function () {
-        Route::resource('/', ProveedorController::class)->except(['show']);
-        Route::get('/eliminados', [ProveedorController::class, 'eliminados'])->name('eliminados');
-        Route::put('/{id}/restaurar', [ProveedorController::class, 'restore'])->name('restore');
+        Route::get('/', [ProveedorController::class, 'index'])->name('index'); // Listar proveedores
+        Route::get('/create', [ProveedorController::class, 'create'])->name('create'); // Formulario para crear
+        Route::post('/', [ProveedorController::class, 'store'])->name('store'); // Guardar proveedor
+        Route::get('/{id}/edit', [ProveedorController::class, 'edit'])->name('edit'); // Formulario para editar
+        Route::put('/{id}', [ProveedorController::class, 'update'])->name('update'); // Actualizar proveedor
+        Route::delete('/{id}', [ProveedorController::class, 'destroy'])->name('destroy'); // Eliminar proveedor
+
+        // Rutas adicionales
+        Route::get('/eliminados', [ProveedorController::class, 'eliminados'])->name('eliminados'); // Listar eliminados
+        Route::put('/{id}/restaurar', [ProveedorController::class, 'restore'])->name('restore'); // Restaurar proveedor
     });
 
     // ==================== Permisos ====================
@@ -170,8 +177,9 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
     // ==================== Compras ====================
     Route::prefix('admin/compra')->name('compra.')->group(function () {
         Route::resource('/', CompraController::class)->except(['show']);
-        Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
+        Route::get('/compras/word', [CompraController::class, 'generarReporteWord'])->name('reporte.word');
         Route::get('/compras', [CompraController::class, 'generarReporte'])->name('reporte');
+        Route::get('/compras/{id}', [CompraController::class, 'show'])->name('show');
     });
 
     // ==================== Ventas ====================
@@ -207,6 +215,7 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
 
     // ==================== Rutas de Ventas ====================
     Route::prefix('admin/venta')->name('venta.')->group(function () {
+        Route::get('/reporte/word', [VentaController::class, 'generarReporteWord'])->name('reporte.word');
         Route::get('/', [VentaController::class, 'index'])->name('index');
         Route::get('/create', [VentaController::class, 'create'])->name('create');
         Route::post('/create', [VentaController::class, 'store'])->name('store');

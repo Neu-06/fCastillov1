@@ -10,7 +10,7 @@
     </div>
 @endif
 
-<form action="{{ route('proveedor.update', $proveedor->id_proveedor) }}" method="POST" class="space-y-6">
+<form action="{{ route('proveedor.edit', $proveedor->id_proveedor) }}" method="POST" class="space-y-6">
     @csrf
     @method('PUT')
     <div class="bg-white px-10 py-8 rounded-xl shadow-md max-w-sm mx-auto">

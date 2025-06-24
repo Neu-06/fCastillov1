@@ -7,6 +7,9 @@ use App\Models\Bitacora;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\BitacoraExport;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpWord\PhpWord;
 
 
 class BitacoraController extends Controller
@@ -68,8 +71,53 @@ class BitacoraController extends Controller
             ->orderByDesc('id_bitacora')
             ->get();
 
-        $pdf = PDF::loadView('pages.gestion.reportes.bitacoraPDF', compact('bitacoras'));
+        $formato = $request->input('formato', 'pdf');
 
+        if ($formato === 'excel') {
+            return $this->exportExcel($bitacoras);
+        } elseif ($formato === 'word') {
+            return $this->exportWord($bitacoras);
+        } else { // PDF por defecto
+            return $this->exportPDF($bitacoras);
+        }
+    }
+
+    protected function exportPDF($bitacoras)
+    {
+        $pdf = PDF::loadView('pages.gestion.reportes.bitacoraPDF', compact('bitacoras'));
         return $pdf->download('reporte_bitacora.pdf');
+    }
+
+    protected function exportExcel($bitacoras)
+    {
+        return Excel::download(new BitacoraExport($bitacoras), 'reporte_bitacora.xlsx');
+    }
+
+    protected function exportWord($bitacoras)
+    {
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        $section->addText('Reporte de Bitácora');
+
+        $table = $section->addTable();
+        $table->addRow();
+        $table->addCell()->addText('Acción');
+        $table->addCell()->addText('Descripción');
+        $table->addCell()->addText('Usuario');
+        $table->addCell()->addText('IP');
+        $table->addCell()->addText('Fecha y Hora');
+
+        foreach ($bitacoras as $b) {
+            $table->addRow();
+            $table->addCell()->addText($b->accion);
+            $table->addCell()->addText($b->descripcion);
+            $table->addCell()->addText($b->nombre_usuario);
+            $table->addCell()->addText($b->ip_origen);
+            $table->addCell()->addText($b->fecha_hora);
+        }
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'word');
+        $phpWord->save($tempFile, 'Word2007');
+        return response()->download($tempFile, 'reporte_bitacora.docx')->deleteFileAfterSend(true);
     }
 }
