@@ -10,6 +10,8 @@ use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\BitacoraController;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
 
 class CompraController extends Controller
 {
@@ -141,4 +143,55 @@ class CompraController extends Controller
 
         return $pdf->download('reporte_compras.pdf');
     }
+
+public function generarReporteWord(Request $request)
+{
+    $compras = Compra::with(['proveedor', 'detalles.producto'])
+        ->when($request->proveedor_id, fn($q) => $q->where('id_proveedor', $request->proveedor_id))
+        ->when($request->fecha_inicio, fn($q) => $q->whereDate('created_at', '>=', $request->fecha_inicio))
+        ->when($request->fecha_fin, fn($q) => $q->whereDate('created_at', '<=', $request->fecha_fin))
+        ->get();
+
+    $phpWord = new \PhpOffice\PhpWord\PhpWord();
+    $section = $phpWord->addSection();
+    $section->addText('Reporte de Compras', ['bold' => true, 'size' => 16]);
+    $section->addText('');
+
+    foreach ($compras as $compra) {
+        $section->addText("Compra ID: {$compra->id_compra}", ['bold' => true]);
+        $section->addText("Proveedor: {$compra->proveedor->nombreC_proveedor}");
+        $section->addText("Total: {$compra->total_compra}");
+        $section->addText("Fecha: {$compra->created_at}");
+        $section->addText("Detalles:");
+
+        // Crear tabla para los detalles de la compra
+        $table = $section->addTable([
+            'borderSize' => 6,
+            'borderColor' => '999999',
+            'cellMargin' => 50
+        ]);
+        // Encabezados de la tabla
+        $table->addRow();
+        $table->addCell(3000)->addText('Producto');
+        $table->addCell(1500)->addText('Cantidad');
+        $table->addCell(1500)->addText('Precio');
+        $table->addCell(1500)->addText('Subtotal');
+
+        // Filas de detalles
+        foreach ($compra->detalles as $detalle) {
+            $table->addRow();
+            $table->addCell(3000)->addText($detalle->producto->nombre_producto);
+            $table->addCell(1500)->addText($detalle->cantidad);
+            $table->addCell(1500)->addText($detalle->precio);
+            $table->addCell(1500)->addText($detalle->subtotal);
+        }
+        $section->addText(""); // Espacio entre compras
+    }
+
+    $fileName = 'reporte_compras.docx';
+    $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+    $phpWord->save($tempFile, 'Word2007');
+
+    return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+}
 }
