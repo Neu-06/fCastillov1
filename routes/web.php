@@ -123,6 +123,7 @@ Route::middleware(['auth:web', 'prevent-back-history'])->group(function () {
         // Rutas adicionales
         Route::get('/eliminados', [ProductoController::class, 'eliminados'])->name('eliminados'); // Mostrar productos eliminados
         Route::put('/{id}/restaurar', [ProductoController::class, 'restore'])->name('restore');    // Restaurar producto eliminado
+        Route::get('/{id_producto}/detalle', [ProductoController::class, 'show'])->name('show');
 
     });
 

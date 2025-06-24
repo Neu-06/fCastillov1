@@ -21,7 +21,7 @@ class Producto extends Model
     public $incrementing = true;
 
     // Indica que no se usan las columnas automáticas created_at y updated_at
-    public $timestamps = true;
+    public $timestamps = false;
 
     // Define el tipo de dato de la clave primaria
     protected $keyType = 'int';

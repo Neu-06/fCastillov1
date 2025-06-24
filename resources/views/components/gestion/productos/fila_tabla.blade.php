@@ -39,7 +39,7 @@
     <!-- Estante -->
     <td class="p-4 border-b border-slate-200">
         <p class="text-sm text-slate-700">
-            {{ $estante}}
+            {{ $estante }}
         </p>
     </td>
     <!-- Descripción -->
@@ -54,6 +54,17 @@
     <td class="p-4 border-b border-slate-200 text-center">
         <div class="flex justify-center gap-6">
             @if (!$eliminados)
+                @if (auth()->user()->tienePermiso('Ver Productos'))
+                    <a href="{{ route('producto.show', $id_producto) }}" class="text-blue-600 hover:underline"
+                        title="Ver Detalles">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 12C3.75 7.5 7.5 4.5 12 4.5s8.25 3 9.75 7.5c-1.5 4.5-5.25 7.5-9.75 7.5s-8.25-3-9.75-7.5z" />
+                        </svg>
+                    </a>
+                @endif
                 <!-- Botón Editar -->
                 @if (auth()->user()->tienePermiso('Editar Productos'))
                     <a href="{{ route('producto.edit', $id_producto) }}" class="text-slate-800 hover:underline"
